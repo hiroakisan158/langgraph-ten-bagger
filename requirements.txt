@@ -1,0 +1,10 @@
+streamlit
+openai
+python-dotenv
+azure-data-tables
+langgraph
+langchain_core
+langchain_openai
+typing_extensions
+langfuse
+langchain
