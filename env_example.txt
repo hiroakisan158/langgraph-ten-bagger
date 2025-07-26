@@ -1,0 +1,30 @@
+# MCP Configuration
+MCP_CONFIG_URL=https://your-mcp-server.com
+MCP_CONFIG_TOOLS=file_system,database,web_search,calendar
+MCP_CONFIG_AUTH_REQUIRED=true
+MCP_PROMPT=Use these MCP tools for enhanced research capabilities
+
+# Supabase Configuration (for MCP authentication)
+X_SUPABASE_ACCESS_TOKEN=your_supabase_token_here
+
+# Search API Configuration
+SEARCH_API=tavily
+
+# Model Configuration
+RESEARCH_MODEL=openai:gpt-4.1
+RESEARCH_MODEL_MAX_TOKENS=10000
+COMPRESSION_MODEL=openai:gpt-4.1-mini
+COMPRESSION_MODEL_MAX_TOKENS=8192
+FINAL_REPORT_MODEL=openai:gpt-4.1
+FINAL_REPORT_MODEL_MAX_TOKENS=10000
+
+# Research Configuration
+MAX_CONCURRENT_RESEARCH_UNITS=5
+MAX_RESEARCHER_ITERATIONS=3
+MAX_REACT_TOOL_CALLS=5
+ALLOW_CLARIFICATION=true
+
+# API Keys
+OPENAI_API_KEY=your_openai_api_key_here
+TAVILY_API_KEY=your_tavily_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here 
