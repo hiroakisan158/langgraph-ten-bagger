@@ -197,6 +197,9 @@ supervisor_subgraph = supervisor_builder.compile()
 
 
 async def researcher(state: ResearcherState, config: RunnableConfig) -> Command[Literal["researcher_tools"]]:
+    '''
+    This node is responsible for deciding which tools to call based on the research task and executing them by calling the researcher_tools node.
+    '''
     configurable = Configuration.from_runnable_config(config)
     researcher_messages = state.get("researcher_messages", [])
     tools = await get_all_tools(config)
@@ -209,7 +212,9 @@ async def researcher(state: ResearcherState, config: RunnableConfig) -> Command[
         "tags": ["langsmith:nostream"]
     }
     researcher_system_prompt = research_system_prompt.format(mcp_prompt=configurable.mcp_prompt or "", date=get_today_str())
+    # Bind ALL tools to the model so LLM can see them
     research_model = configurable_model.bind_tools(tools).with_retry(stop_after_attempt=configurable.max_structured_output_retries).with_config(research_model_config)
+    # LLM decides which tools to call based on the research task
     response = await research_model.ainvoke([SystemMessage(content=researcher_system_prompt)] + researcher_messages)
     return Command(
         goto="researcher_tools",
@@ -228,6 +233,9 @@ async def execute_tool_safely(tool, args, config):
 
 
 async def researcher_tools(state: ResearcherState, config: RunnableConfig) -> Command[Literal["researcher", "compress_research"]]:
+    '''
+    This node is responsible for executing the tool calls that the LLM decided to make.
+    '''
     configurable = Configuration.from_runnable_config(config)
     researcher_messages = state.get("researcher_messages", [])
     most_recent_message = researcher_messages[-1]
@@ -239,8 +247,10 @@ async def researcher_tools(state: ResearcherState, config: RunnableConfig) -> Co
     # Otherwise, execute tools and gather results.
     tools = await get_all_tools(config)
     tools_by_name = {tool.name if hasattr(tool, "name") else tool.get("name", "web_search"):tool for tool in tools}
+    # Get the tool calls that the LLM decided to make
     tool_calls = most_recent_message.tool_calls
     coros = [execute_tool_safely(tools_by_name[tool_call["name"]], tool_call["args"], config) for tool_call in tool_calls]
+    #  Run the selected tools in parallel
     observations = await asyncio.gather(*coros)
     tool_outputs = [ToolMessage(
                         content=observation,

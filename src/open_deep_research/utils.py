@@ -271,6 +271,20 @@ async def load_mcp_tools(
     return tools
 
 
+# ##########################
+# # Custom Tools
+# ##########################
+# @tool(description="Query a database for research data")
+# async def database_query(
+#     query: str,
+#     table: str = "research_data",
+#     config: RunnableConfig = None
+# ) -> str:
+#     """Execute a database query to retrieve research data."""
+#     # Your database connection and query logic here
+#     # This is a placeholder implementation
+#     return f"Database query result for: {query} from table {table}"
+
 ##########################
 # Tool Utils
 ##########################
@@ -291,6 +305,10 @@ async def get_all_tools(config: RunnableConfig):
     configurable = Configuration.from_runnable_config(config)
     search_api = SearchAPI(get_config_value(configurable.search_api))
     tools.extend(await get_search_tool(search_api))
+
+    # # Add custom tools example
+    # tools.append(database_query)
+
     existing_tool_names = {tool.name if hasattr(tool, "name") else tool.get("name", "web_search") for tool in tools}
     mcp_tools = await load_mcp_tools(config, existing_tool_names)
     tools.extend(mcp_tools)
