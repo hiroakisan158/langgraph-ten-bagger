@@ -68,8 +68,12 @@ jobs:
           # Optional: Add specific tools for running tests or linting
           # allowed_tools: "Bash(npm run test),Bash(npm run lint),Bash(npm run typecheck)"
           
-          # Optional: Skip review for certain conditions
-          # if: |
-          #   !contains(github.event.pull_request.title, '[skip-review]') &&
-          #   !contains(github.event.pull_request.title, '[WIP]')
+          # Skip review for certain conditions
+          # [skip-review]: Use when you want to skip the automated review entirely
+          # [WIP]: Use for work-in-progress PRs that aren't ready for review yet
+          # [no-review]: Use when you want to explicitly skip the review process
+          if: |
+            !contains(github.event.pull_request.title, '[skip-review]') &&
+            !contains(github.event.pull_request.title, '[WIP]') &&
+            !contains(github.event.pull_request.title, '[no-review]')
 

@@ -1,6 +1,6 @@
 # Deep Research Assistant - テンバガー発見ツール
 
-Deep Research技術を使用して潜在的な「テンバガー」（10倍成長する可能性のある株式）を発見し、包括的な市場分析を実施する包括的な研究アシスタントです。
+Deep Research技術を使用して潜在的な「テンバガー」（10倍成長する可能性のある株式）を発見し、包括的な市場分析を実施する包括的な調査アシスタントです。
 
 ## クイックスタート
 
@@ -34,7 +34,6 @@ cp streamlit_env_example.txt .env
 ```bash
 OPENAI_API_KEY=your_actual_openai_api_key
 TAVILY_API_KEY=your_actual_tavily_api_key
-ANTHROPIC_API_KEY=your_actual_anthropic_api_key
 ```
 
 ### 2. 依存関係のインストール
@@ -56,18 +55,13 @@ streamlit run streamlit_main.py
 
 ### メイン機能
 - **チャットインターフェース**: ユーザーの質問を入力してDeep Researchを実行
-- **リアルタイム研究**: 質問に対して包括的な研究を自動実行
-- **結果表示**: 研究結果をマークダウン形式で表示
+- **リアルタイム調査**: 質問に対して包括的な調査を自動実行
+- **結果表示**: 調査結果をマークダウン形式で表示
 
 ### サイドバー設定
-- **Research Settings**: 並行研究ユニット数、研究イテレーション数、確認質問の許可
-- **Model Settings**: 使用する研究モデルの選択
+- **Research Settings**: 並行調査ユニット数、調査イテレーション数、確認質問の許可
+- **Model Settings**: 使用する調査モデルの選択
 - **Search Settings**: 検索APIの選択
-
-### 表示機能
-- **研究結果**: 最終レポートの表示
-- **詳細情報**: 研究プロセスの詳細を展開可能なセクションで表示
-- **チャット履歴**: 過去の質問と回答の履歴
 
 ## 使用例
 
@@ -93,22 +87,6 @@ streamlit run streamlit_main.py
 "電気自動車市場の新興企業を調べてください"
 ```
 
-## トラブルシューティング
-
-### よくある問題
-
-1. **APIキーエラー**
-   - `.env`ファイルに正しいAPIキーが設定されているか確認
-   - APIキーの有効性を確認
-
-2. **研究が完了しない**
-   - サイドバーで研究設定を調整
-   - より具体的な質問を試す
-
-3. **エラーが発生する**
-   - ログを確認してエラーの詳細を確認
-   - 設定をリセットして再試行
-
 ## カスタマイズ
 
 ### プロンプトのカスタマイズ
@@ -128,20 +106,17 @@ StreamlitのUIをカスタマイズする場合は、`streamlit_main.py`を編�
 ## アーキテクチャ
 
 ### Deep Researchシステム
-- **スーパーバイザーエージェント**: `lead_researcher_prompt`を使用して研究戦略を調整
-- **研究エージェント**: `research_system_prompt`を使用して特定の研究タスクを実行
+- **スーパーバイザーエージェント**: `lead_researcher_prompt`を使用して調査戦略を調整
+- **調査エージェント**: `research_system_prompt`を使用して特定の調査タスクを実行
 - **ツール統合**: Web検索、MCPツール、カスタムツール
 - **レポート生成**: 発見事項を包括的なレポートに統合
 
 ### 主要コンポーネント
-- `src/open_deep_research/deep_researcher.py`: メイン研究ワークフロー
+- `src/open_deep_research/deep_researcher.py`: メイン調査ワークフロー
 - `src/open_deep_research/prompts.py`: システムプロンプト
 - `src/open_deep_research/utils.py`: ツールとユーティリティ
 - `streamlit_main.py`: Webインターフェース
 
 ## 注意事項
-
-- 研究には複雑さに応じて時間がかかる場合があります
-- API使用量のコストに注意してください
-- 機密情報は含めないでください
-- システムは包括的な市場研究と株式分析のために設計されています
+- 特定の投資信託、生命保険、株式、債券等の売買を推奨･勧誘するものではありません。
+- 当システムの出力内容に基づいて取られた投資行動の結果については、責任を負いません。
