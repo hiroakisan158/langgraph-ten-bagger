@@ -1,0 +1,30 @@
+# Streamlit Deep Research App Environment Variables
+
+# API Keys
+OPENAI_API_KEY=your_openai_api_key_here
+TAVILY_API_KEY=your_tavily_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+
+# Deep Research Configuration
+MAX_CONCURRENT_RESEARCH_UNITS=5
+MAX_RESEARCHER_ITERATIONS=3
+ALLOW_CLARIFICATION=true
+SEARCH_API=tavily
+
+# Model Configuration
+RESEARCH_MODEL=openai:gpt-4.1
+RESEARCH_MODEL_MAX_TOKENS=10000
+COMPRESSION_MODEL=openai:gpt-4.1-mini
+COMPRESSION_MODEL_MAX_TOKENS=8192
+FINAL_REPORT_MODEL=openai:gpt-4.1
+FINAL_REPORT_MODEL_MAX_TOKENS=10000
+
+# Optional: MCP Configuration (if using MCP tools)
+# MCP_CONFIG_URL=https://your-mcp-server.com
+# MCP_CONFIG_TOOLS=file_system,database,web_search
+# MCP_CONFIG_AUTH_REQUIRED=false
+# MCP_PROMPT=Use these MCP tools for enhanced research capabilities
+
+# Streamlit Configuration
+STREAMLIT_SERVER_PORT=8501
+STREAMLIT_SERVER_ADDRESS=localhost 
