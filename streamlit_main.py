@@ -26,20 +26,20 @@ def get_deep_research_config():
     return {
         "configurable": {
             "thread_id": str(uuid.uuid4()),
-            "max_structured_output_retries": 3,
-            "allow_clarification": True,
-            "max_concurrent_research_units": 5,
-            "search_api": "tavily",
-            "max_researcher_iterations": 3,
-            "max_react_tool_calls": 5,
-            "summarization_model": "openai:gpt-4.1-nano",
-            "summarization_model_max_tokens": 8192,
-            "research_model": "openai:gpt-4.1",
-            "research_model_max_tokens": 10000,
-            "compression_model": "openai:gpt-4.1-mini",
-            "compression_model_max_tokens": 8192,
-            "final_report_model": "openai:gpt-4.1",
-            "final_report_model_max_tokens": 10000,
+            "max_structured_output_retries": int(os.getenv("MAX_STRUCTURED_OUTPUT_RETRIES", "3")),
+            "allow_clarification": os.getenv("ALLOW_CLARIFICATION", "true").lower() == "true",
+            "max_concurrent_research_units": int(os.getenv("MAX_CONCURRENT_RESEARCH_UNITS", "5")),
+            "search_api": os.getenv("SEARCH_API", "tavily"),
+            "max_researcher_iterations": int(os.getenv("MAX_RESEARCHER_ITERATIONS", "3")),
+            "max_react_tool_calls": int(os.getenv("MAX_REACT_TOOL_CALLS", "5")),
+            "summarization_model": os.getenv("SUMMARIZATION_MODEL", "openai:gpt-4.1-nano"),
+            "summarization_model_max_tokens": int(os.getenv("SUMMARIZATION_MODEL_MAX_TOKENS", "8192")),
+            "research_model": os.getenv("RESEARCH_MODEL", "openai:gpt-4.1"),
+            "research_model_max_tokens": int(os.getenv("RESEARCH_MODEL_MAX_TOKENS", "10000")),
+            "compression_model": os.getenv("COMPRESSION_MODEL", "openai:gpt-4.1-mini"),
+            "compression_model_max_tokens": int(os.getenv("COMPRESSION_MODEL_MAX_TOKENS", "8192")),
+            "final_report_model": os.getenv("FINAL_REPORT_MODEL", "openai:gpt-4.1"),
+            "final_report_model_max_tokens": int(os.getenv("FINAL_REPORT_MODEL_MAX_TOKENS", "10000")),
         }
     }
 
@@ -77,15 +77,15 @@ with st.sidebar:
     
     # Research settings
     st.subheader("Research Settings")
-    max_concurrent = st.slider("Max Concurrent Research Units", 1, 10, 5)
-    max_iterations = st.slider("Max Research Iterations", 1, 10, 3)
-    allow_clarification = st.checkbox("Allow Clarification Questions", value=True)
+    max_concurrent = st.slider("Max Concurrent Research Units", 1, 10, int(os.getenv("MAX_CONCURRENT_RESEARCH_UNITS", "5")))
+    max_iterations = st.slider("Max Research Iterations", 1, 10, int(os.getenv("MAX_RESEARCHER_ITERATIONS", "3")))
+    allow_clarification = st.checkbox("Allow Clarification Questions", value=os.getenv("ALLOW_CLARIFICATION", "true").lower() == "true")
     
     # Model settings
     st.subheader("Model Settings")
     research_model = st.selectbox(
         "Research Model",
-        ["openai:gpt-4.1", "openai:gpt-4", "anthropic:claude-3-5-sonnet-20241022"],
+        ["openai:gpt-4.1-mini", "openai:gpt-4.1", "anthropic:claude-3-5-sonnet-20241022"],
         index=0
     )
     
