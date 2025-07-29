@@ -1,35 +1,35 @@
-# Deep Research Assistant - Ten Baggers Finder
+# Deep Research Assistant - テンバガー発見ツール
 
-A comprehensive research assistant that uses Deep Research technology to find potential "ten baggers" (stocks that can grow 10x) and conduct thorough market analysis.
+Deep Research技術を使用して潜在的な「テンバガー」（10倍成長する可能性のある株式）を発見し、包括的な市場分析を実施する包括的な研究アシスタントです。
 
-## Quick Start
+## クイックスタート
 
-### Method 1: Direct Streamlit Run
+### 方法1: 直接Streamlit実行
 ```bash
 streamlit run streamlit_main.py
 ```
 
-### Method 2: Docker Build & Run
+### 方法2: Dockerビルド＆実行
 ```bash
-# Build the Docker image
+# Dockerイメージをビルド
 docker build -t ten-baggers-app:latest .
 
-# Run the container
+# コンテナを実行
 docker run -p 8501:8501 ten-baggers-app:latest
 ```
 
-## Setup
+## セットアップ
 
-### 1. Environment Variables Configuration
+### 1. 環境変数の設定
 
-Create a `.env` file and configure the necessary API keys:
+`.env`ファイルを作成し、必要なAPIキーを設定してください：
 
 ```bash
-# Create .env file
+# .envファイルを作成
 cp streamlit_env_example.txt .env
 ```
 
-Edit the `.env` file with your actual API keys:
+`.env`ファイルを編集して、実際のAPIキーを設定：
 
 ```bash
 OPENAI_API_KEY=your_actual_openai_api_key
@@ -37,111 +37,111 @@ TAVILY_API_KEY=your_actual_tavily_api_key
 ANTHROPIC_API_KEY=your_actual_anthropic_api_key
 ```
 
-### 2. Install Dependencies
+### 2. 依存関係のインストール
 
-**Using pip (Recommended)**
+**pipを使用（推奨）**
 ```bash
 pip install -e .
 ```
 
-### 3. Run the Application
+### 3. アプリケーションの実行
 
 ```bash
 streamlit run streamlit_main.py
 ```
 
-The application will start at `http://localhost:8501`.
+アプリケーションは `http://localhost:8501` で起動します。
 
-## Features
+## 機能
 
-### Main Features
-- **Chat Interface**: Input user questions to trigger Deep Research
-- **Real-time Research**: Conduct comprehensive research automatically based on questions
-- **Result Display**: Display research results in markdown format
+### メイン機能
+- **チャットインターフェース**: ユーザーの質問を入力してDeep Researchを実行
+- **リアルタイム研究**: 質問に対して包括的な研究を自動実行
+- **結果表示**: 研究結果をマークダウン形式で表示
 
-### Sidebar Configuration
-- **Research Settings**: Number of concurrent research units, research iterations, clarification questions
-- **Model Settings**: Selection of research models to use
-- **Search Settings**: Selection of search APIs
+### サイドバー設定
+- **Research Settings**: 並行研究ユニット数、研究イテレーション数、確認質問の許可
+- **Model Settings**: 使用する研究モデルの選択
+- **Search Settings**: 検索APIの選択
 
-### Display Features
-- **Research Results**: Display final reports
-- **Detailed Information**: Expandable sections showing research process details
-- **Chat History**: History of past questions and answers
+### 表示機能
+- **研究結果**: 最終レポートの表示
+- **詳細情報**: 研究プロセスの詳細を展開可能なセクションで表示
+- **チャット履歴**: 過去の質問と回答の履歴
 
-## Usage Examples
+## 使用例
 
-### Basic Questions
+### 基本的な質問
 ```
-"Research the latest trends in quantum computing"
-```
-
-### Company Analysis
-```
-"Research Apple's latest performance and growth strategy"
+"量子コンピューティングの最新動向について調べてください"
 ```
 
-### Technical Research
+### 企業分析
 ```
-"Research the main AI technology trends for 2024"
-```
-
-### Stock Analysis (Ten Baggers Focus)
-```
-"Research potential ten bagger stocks in the AI sector"
-"Analyze Tesla's growth potential and market position"
-"Research emerging companies in the electric vehicle market"
+"Apple社の最新の業績と成長戦略について調べてください"
 ```
 
-## Troubleshooting
+### 技術調査
+```
+"AI技術の2024年の主要トレンドについて調べてください"
+```
 
-### Common Issues
+### 株式分析（テンバガー特化）
+```
+"AIセクターの潜在的なテンバガー株式を調べてください"
+"Teslaの成長可能性と市場ポジションを分析してください"
+"電気自動車市場の新興企業を調べてください"
+```
 
-1. **API Key Errors**
-   - Verify that correct API keys are set in the `.env` file
-   - Check the validity of API keys
+## トラブルシューティング
 
-2. **Research Not Completing**
-   - Adjust research settings in the sidebar
-   - Try more specific questions
+### よくある問題
 
-3. **Errors Occurring**
-   - Check logs for detailed error information
-   - Reset settings and retry
+1. **APIキーエラー**
+   - `.env`ファイルに正しいAPIキーが設定されているか確認
+   - APIキーの有効性を確認
 
-## Customization
+2. **研究が完了しない**
+   - サイドバーで研究設定を調整
+   - より具体的な質問を試す
 
-### Prompt Customization
-To customize for stock analysis, edit `src/open_deep_research/prompts.py`:
+3. **エラーが発生する**
+   - ログを確認してエラーの詳細を確認
+   - 設定をリセットして再試行
 
-- **`transform_messages_into_research_topic_prompt`**: Extract stock symbols and analysis perspectives
-- **`lead_researcher_prompt`**: Define stock analysis viewpoints (performance, financials, competition, growth, risks)
-- **`research_system_prompt`**: Prioritize stock-specific information sources
-- **`final_report_generation_prompt`**: Structure stock analysis reports
+## カスタマイズ
 
-### Tool Addition
-To add new tools, edit `src/open_deep_research/utils.py`
+### プロンプトのカスタマイズ
+株式分析用にカスタマイズする場合は、`src/open_deep_research/prompts.py`を編集してください：
 
-### UI Customization
-To customize the Streamlit UI, edit `streamlit_main.py`
+- **`transform_messages_into_research_topic_prompt`**: 銘柄名と分析観点を抽出
+- **`lead_researcher_prompt`**: 株式分析の観点（業績、財務、競合、成長性、リスク）を定義
+- **`research_system_prompt`**: 株式特化の情報源を優先
+- **`final_report_generation_prompt`**: 株式分析レポートの構成
 
-## Architecture
+### ツールの追加
+新しいツールを追加する場合は、`src/open_deep_research/utils.py`を編集してください
 
-### Deep Research System
-- **Supervisor Agent**: Orchestrates research strategy using `lead_researcher_prompt`
-- **Research Agents**: Execute specific research tasks using `research_system_prompt`
-- **Tool Integration**: Web search, MCP tools, custom tools
-- **Report Generation**: Synthesize findings into comprehensive reports
+### UIのカスタマイズ
+StreamlitのUIをカスタマイズする場合は、`streamlit_main.py`を編集してください
 
-### Key Components
-- `src/open_deep_research/deep_researcher.py`: Main research workflow
-- `src/open_deep_research/prompts.py`: System prompts
-- `src/open_deep_research/utils.py`: Tools and utilities
-- `streamlit_main.py`: Web interface
+## アーキテクチャ
 
-## Notes
+### Deep Researchシステム
+- **スーパーバイザーエージェント**: `lead_researcher_prompt`を使用して研究戦略を調整
+- **研究エージェント**: `research_system_prompt`を使用して特定の研究タスクを実行
+- **ツール統合**: Web検索、MCPツール、カスタムツール
+- **レポート生成**: 発見事項を包括的なレポートに統合
 
-- Research may take time depending on the complexity
-- Be mindful of API usage costs
-- Do not include confidential information
-- The system is designed for comprehensive market research and stock analysis
+### 主要コンポーネント
+- `src/open_deep_research/deep_researcher.py`: メイン研究ワークフロー
+- `src/open_deep_research/prompts.py`: システムプロンプト
+- `src/open_deep_research/utils.py`: ツールとユーティリティ
+- `streamlit_main.py`: Webインターフェース
+
+## 注意事項
+
+- 研究には複雑さに応じて時間がかかる場合があります
+- API使用量のコストに注意してください
+- 機密情報は含めないでください
+- システムは包括的な市場研究と株式分析のために設計されています
