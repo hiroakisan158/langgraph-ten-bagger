@@ -21,7 +21,7 @@ logger = configure_logging()
 # CONNECTION_STRING = os.getenv("CONNECTION_STRING")
 
 # History file path
-HISTORY_FILE = "research_history.json"
+HISTORY_FILE = os.getenv("RESEARCH_HISTORY_FILE", "research_history.json")
 
 ############################################
 # History Management Functions
@@ -31,7 +31,17 @@ def load_research_history_from_file():
     try:
         if os.path.exists(HISTORY_FILE):
             with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                history_data = json.load(f)
+                
+                # Validate each entry and filter out invalid ones
+                valid_entries = []
+                for entry in history_data:
+                    if validate_history_entry(entry):
+                        valid_entries.append(entry)
+                    else:
+                        logger.warning(f"Invalid history entry found and skipped: {entry.get('id', 'unknown')}")
+                
+                return valid_entries
     except Exception as e:
         logger.error(f"Error loading history file: {e}")
     return []
@@ -58,6 +68,11 @@ def save_research_history(query: str, result: dict, timestamp: str):
         "query": query,
         "result": serialized_result
     }
+    
+    # Validate the entry before saving
+    if not validate_history_entry(history_entry):
+        logger.error("Invalid history entry structure, skipping save")
+        return
     
     st.session_state.research_history.append(history_entry)
     
@@ -92,28 +107,52 @@ def clear_all_history():
         if os.path.exists(HISTORY_FILE):
             os.remove(HISTORY_FILE)
 
-def serialize_result_for_json(result):
-    """Convert result to JSON serializable format"""
-    if isinstance(result, dict):
-        serializable_result = {}
-        for key, value in result.items():
-            if isinstance(value, (str, int, float, bool, type(None))):
-                serializable_result[key] = value
-            elif isinstance(value, list):
-                serializable_result[key] = [
-                    str(item) if not isinstance(item, (str, int, float, bool, type(None))) else item
-                    for item in value
-                ]
-            elif isinstance(value, dict):
-                serializable_result[key] = serialize_result_for_json(value)
-            else:
-                # Convert any other objects to string
-                serializable_result[key] = str(value)
-        return serializable_result
-    elif isinstance(result, (str, int, float, bool, type(None))):
-        return result
-    else:
-        return str(result)
+def validate_history_entry(entry):
+    """Validate that a history entry has all required keys"""
+    required_keys = ['id', 'timestamp', 'query', 'result']
+    return all(key in entry for key in required_keys)
+
+def serialize_result_for_json(result, visited=None):
+    """Convert result to JSON serializable format with circular reference protection"""
+    if visited is None:
+        visited = set()
+    
+    # Check for circular reference
+    result_id = id(result)
+    if result_id in visited:
+        return "[Circular Reference]"
+    
+    visited.add(result_id)
+    
+    try:
+        if isinstance(result, dict):
+            serializable_result = {}
+            for key, value in result.items():
+                if isinstance(value, (str, int, float, bool, type(None))):
+                    serializable_result[key] = value
+                elif isinstance(value, list):
+                    serializable_result[key] = [
+                        serialize_result_for_json(item, visited) if not isinstance(item, (str, int, float, bool, type(None))) else item
+                        for item in value
+                    ]
+                elif isinstance(value, dict):
+                    serializable_result[key] = serialize_result_for_json(value, visited)
+                else:
+                    # Convert any other objects to string
+                    serializable_result[key] = str(value)
+            return serializable_result
+        elif isinstance(result, list):
+            return [
+                serialize_result_for_json(item, visited) if not isinstance(item, (str, int, float, bool, type(None))) else item
+                for item in result
+            ]
+        elif isinstance(result, (str, int, float, bool, type(None))):
+            return result
+        else:
+            return str(result)
+    finally:
+        # Remove from visited set to allow reuse in different contexts
+        visited.discard(result_id)
 
 def display_history_entry(entry: dict):
     """Display a single history entry"""
