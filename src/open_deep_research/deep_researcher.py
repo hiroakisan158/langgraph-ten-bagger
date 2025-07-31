@@ -23,7 +23,7 @@ from open_deep_research.state import (
     ResearchComplete,
     ResearcherOutputState
 )
-from open_deep_research.prompts import (
+from open_deep_research.prompts_jp import (
     clarify_with_user_instructions,
     transform_messages_into_research_topic_prompt,
     research_system_prompt,
