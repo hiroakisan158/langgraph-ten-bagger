@@ -260,7 +260,7 @@ with st.sidebar:
             with col1:
                 # Display as a clickable button-like element that loads directly into chat
                 if st.button(f"🔍 {query}", key=f"btn_{history_key}", help="Click to load into chat"):
-                    if "messages" not in st.session_state:
+                    if "messages" in st.session_state:
                         st.session_state.messages = []
                     
                     # Add the research to chat history
