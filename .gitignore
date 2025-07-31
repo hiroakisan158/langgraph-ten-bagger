@@ -68,3 +68,6 @@ temp/
 
 .langgraph_api
 .env
+
+# History file
+research_history.json
