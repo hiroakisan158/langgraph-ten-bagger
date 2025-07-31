@@ -12,11 +12,11 @@ on:
 
 jobs:
   claude-review:
-    # Optional: Filter by PR author
-    # if: |
-    #   github.event.pull_request.user.login == 'external-contributor' ||
-    #   github.event.pull_request.user.login == 'new-developer' ||
-    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
+    # Only run review when explicitly requested to save costs
+    # [need-review]: Use when you want to trigger the automated Claude review
+    # This opt-in approach helps reduce API costs by only running reviews when needed
+    if: |
+      contains(github.event.pull_request.title, '[need-review]')
     
     runs-on: ubuntu-latest
     permissions:
@@ -67,10 +67,4 @@ jobs:
           
           # Optional: Add specific tools for running tests or linting
           # allowed_tools: "Bash(npm run test),Bash(npm run lint),Bash(npm run typecheck)"
-          
-          # Only run review when explicitly requested to save costs
-          # [need-review]: Use when you want to trigger the automated Claude review
-          # This opt-in approach helps reduce API costs by only running reviews when needed
-          if: |
-            contains(github.event.pull_request.title, '[need-review]')
 
