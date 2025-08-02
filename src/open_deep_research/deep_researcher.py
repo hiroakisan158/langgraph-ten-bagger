@@ -32,6 +32,7 @@ from open_deep_research.prompts_jp import (
     final_report_generation_prompt,
     lead_researcher_prompt
 )
+from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
 from open_deep_research.utils import (
     get_today_str,
     is_token_limit_exceeded,
@@ -77,10 +78,17 @@ async def write_research_brief(state: AgentState, config: RunnableConfig)-> Comm
         "tags": ["langsmith:nostream"]
     }
     research_model = configurable_model.with_structured_output(ResearchQuestion).with_retry(stop_after_attempt=configurable.max_structured_output_retries).with_config(research_model_config)
-    response = await research_model.ainvoke([HumanMessage(content=transform_messages_into_research_topic_prompt.format(
+    
+    # プロンプトを処理（ガイドラインのプレースホルダーを置換してからフォーマット）
+    processed_prompt = transform_messages_into_research_topic_prompt.replace(
+        "{{transform_messages_into_research_topic_guideline}}", 
+        transform_messages_into_research_topic_guideline
+    ).format(
         messages=get_buffer_string(state.get("messages", [])),
         date=get_today_str()
-    ))])
+    )
+    
+    response = await research_model.ainvoke([HumanMessage(content=processed_prompt)])
     return Command(
         goto="research_supervisor", 
         update={
