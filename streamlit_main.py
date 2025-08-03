@@ -10,6 +10,7 @@ import json
 import pathlib
 from langgraph.checkpoint.memory import MemorySaver
 from open_deep_research.deep_researcher import deep_researcher_builder
+from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
 from logger_config import configure_logging
 
 load_dotenv()
@@ -182,7 +183,7 @@ def display_history_entry(entry: dict):
 ############################################
 def get_deep_research_config():
     """Get Deep Research configuration from environment variables or defaults"""
-    return {
+    config = {
         "configurable": {
             "thread_id": str(uuid.uuid4()),
             "max_structured_output_retries": int(os.getenv("MAX_STRUCTURED_OUTPUT_RETRIES", "3")),
@@ -201,6 +202,12 @@ def get_deep_research_config():
             "final_report_model_max_tokens": int(os.getenv("FINAL_REPORT_MODEL_MAX_TOKENS", "10000")),
         }
     }
+    
+    # カスタムガイドラインを設定に追加
+    if "custom_guideline" in st.session_state:
+        config["configurable"]["custom_guideline"] = st.session_state.custom_guideline
+    
+    return config
 
 async def run_deep_research(user_input: str):
     """Run Deep Research with user input"""
@@ -232,18 +239,49 @@ st.markdown("Ask me anything and I'll conduct comprehensive research for you!")
 # Sidebar for configuration and history
 ############################################
 with st.sidebar:
+    # Add New Chat button
+    if st.button("New Chat", type="primary"):
+        # Clear chat messages
+        if "messages" in st.session_state:
+            st.session_state.messages = []
+        st.rerun()
+
+    st.markdown("---")
+
+    # Guidelines editing section
+    st.markdown("### 🔧 Research Guidelines")
+    
+    # Load default guideline content from guidelines.py
+    default_guideline = transform_messages_into_research_topic_guideline
+    
+    # Get guideline from session state, use default if not available
+    if "custom_guideline" not in st.session_state:
+        st.session_state.custom_guideline = default_guideline
+    
+    # Guidelines editing text area
+    edited_guideline = st.text_area(
+        "Edit Research Guidelines:",
+        value=st.session_state.custom_guideline,
+        height=300,
+        help="Enter customized guidelines. These guidelines will be used when converting research topics."
+    )
+    
+    # Update session state if guideline has changed
+    if edited_guideline != st.session_state.custom_guideline:
+        st.session_state.custom_guideline = edited_guideline
+    
+    # Reset button
+    if st.button("Reset to Default", help="Reset guidelines to default"):
+        st.session_state.custom_guideline = default_guideline
+        st.rerun()
+    
+    st.markdown("---")
+    
     history = get_research_history()
     
-    if history:
-        # Add New Chat button
-        if st.button("New Chat", type="primary"):
-            # Clear chat messages
-            if "messages" in st.session_state:
-                st.session_state.messages = []
-            st.rerun()
-        
+    if history:        
         # Display history as a list with timestamps
-        st.markdown("**Recent Research:**")
+        st.markdown("### 🔍 Recent Research")
         
         # Reverse to show newest first
         for i, entry in enumerate(reversed(history)):
@@ -259,7 +297,7 @@ with st.sidebar:
             
             with col1:
                 # Display as a clickable button-like element that loads directly into chat
-                if st.button(f"🔍 {query}", key=f"btn_{history_key}", help="Click to load into chat"):
+                if st.button(f"{query}", key=f"btn_{history_key}", help="Click to load into chat"):
                     if "messages" in st.session_state:
                         st.session_state.messages = []
                     
@@ -301,9 +339,6 @@ if prompt := st.chat_input("What would you like me to research?"):
     # Show assistant message placeholder
     with st.chat_message("assistant"):
         with st.spinner("Conducting research..."):
-            # Update configuration based on sidebar settings
-            config = get_deep_research_config()
-            
             # Run Deep Research
             result = asyncio.run(run_deep_research(prompt))
             
@@ -337,4 +372,3 @@ if prompt := st.chat_input("What would you like me to research?"):
 
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": response_content})
-

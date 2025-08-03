@@ -33,6 +33,13 @@ from open_deep_research.prompts_jp import (
     lead_researcher_prompt
 )
 from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
+
+def get_custom_guideline(config):
+    """カスタムガイドラインを取得する。設定にカスタムガイドラインが含まれている場合はそれを使用し、そうでなければデフォルトを使用する"""
+    if hasattr(config, 'configurable') and hasattr(config.configurable, 'custom_guideline'):
+        return config.configurable.custom_guideline
+    return transform_messages_into_research_topic_guideline
+    
 from open_deep_research.utils import (
     get_today_str,
     is_token_limit_exceeded,
@@ -79,10 +86,13 @@ async def write_research_brief(state: AgentState, config: RunnableConfig)-> Comm
     }
     research_model = configurable_model.with_structured_output(ResearchQuestion).with_retry(stop_after_attempt=configurable.max_structured_output_retries).with_config(research_model_config)
     
+    # カスタムガイドラインを取得
+    custom_guideline = get_custom_guideline(configurable)
+    
     # プロンプトを処理（ガイドラインのプレースホルダーを置換してからフォーマット）
     processed_prompt = transform_messages_into_research_topic_prompt.replace(
         "{{transform_messages_into_research_topic_guideline}}", 
-        transform_messages_into_research_topic_guideline
+        custom_guideline
     ).format(
         messages=get_buffer_string(state.get("messages", [])),
         date=get_today_str()
