@@ -16,7 +16,7 @@ from mcp import McpError
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from open_deep_research.state import Summary, ResearchComplete
 from open_deep_research.configuration import SearchAPI, Configuration
-from open_deep_research.prompts import summarize_webpage_prompt
+from open_deep_research.prompts_jp import summarize_webpage_prompt
 
 
 ##########################

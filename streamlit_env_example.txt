@@ -28,3 +28,8 @@ FINAL_REPORT_MODEL_MAX_TOKENS=10000
 # Streamlit Configuration
 STREAMLIT_SERVER_PORT=8501
 STREAMLIT_SERVER_ADDRESS=localhost 
+
+# langfuse
+LANGFUSE_SECRET_KEY = "sk-lf-..."
+LANGFUSE_PUBLIC_KEY = "pk-lf-..."
+LANGFUSE_HOST = "https://cloud.langfuse.com" 

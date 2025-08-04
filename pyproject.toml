@@ -43,7 +43,9 @@ dependencies = [
     "supabase>=2.15.3",
     "mcp>=1.9.4",
     "streamlit>=1.32.0",
-    "azure-data-tables"
+    "azure-data-tables",
+    "langfuse",
+    "langchain-openai"
 ]
 
 [project.optional-dependencies]
