@@ -12,6 +12,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from open_deep_research.deep_researcher import deep_researcher_builder
 from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
 from logger_config import configure_logging
+from langfuse.langchain import CallbackHandler
 
 load_dotenv()
 
@@ -183,6 +184,9 @@ def display_history_entry(entry: dict):
 ############################################
 def get_deep_research_config():
     """Get Deep Research configuration from environment variables or defaults"""
+
+    langfuse_handler = CallbackHandler()
+
     config = {
         "configurable": {
             "thread_id": str(uuid.uuid4()),
@@ -200,7 +204,8 @@ def get_deep_research_config():
             "compression_model_max_tokens": int(os.getenv("COMPRESSION_MODEL_MAX_TOKENS", "8192")),
             "final_report_model": os.getenv("FINAL_REPORT_MODEL", "openai:gpt-4.1"),
             "final_report_model_max_tokens": int(os.getenv("FINAL_REPORT_MODEL_MAX_TOKENS", "10000")),
-        }
+        },
+        "callbacks": [langfuse_handler]
     }
     
     # カスタムガイドラインを設定に追加
