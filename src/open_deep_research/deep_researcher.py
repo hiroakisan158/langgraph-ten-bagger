@@ -26,7 +26,7 @@ from open_deep_research.state import (
 from open_deep_research.prompts_jp import (
     clarify_with_user_instructions,
     transform_messages_into_research_topic_prompt,
-    stock_analysis_system_prompt,
+    stock_analysis_researcher_system_prompt,
     compress_research_system_prompt,
     compress_research_simple_human_message,
     stock_analysis_final_report_prompt,
@@ -230,7 +230,7 @@ async def researcher(state: ResearcherState, config: RunnableConfig) -> Command[
         "tags": ["langsmith:nostream"]
     }
     # 株式分析特化のシステムプロンプトを使用
-    researcher_system_prompt = stock_analysis_system_prompt.format(mcp_prompt=configurable.mcp_prompt or "", date=get_today_str())
+    researcher_system_prompt = stock_analysis_researcher_system_prompt.format(mcp_prompt=configurable.mcp_prompt or "", date=get_today_str())
     # Bind ALL tools to the model so LLM can see them
     research_model = configurable_model.bind_tools(tools).with_retry(stop_after_attempt=configurable.max_structured_output_retries).with_config(research_model_config)
     # LLM decides which tools to call based on the research task
