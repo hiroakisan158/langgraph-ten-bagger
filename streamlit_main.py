@@ -11,6 +11,15 @@ import pathlib
 from langgraph.checkpoint.memory import MemorySaver
 from open_deep_research.deep_researcher import deep_researcher_builder
 from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
+from open_deep_research.prompts_jp import (
+    lead_researcher_prompt,
+    stock_analysis_researcher_system_prompt,
+    compress_research_system_prompt,
+    compress_research_simple_human_message,
+    summarize_webpage_prompt,
+    stock_analysis_final_report_prompt
+)
+from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
 from logger_config import configure_logging
 from langfuse.langchain import CallbackHandler
 
@@ -208,10 +217,6 @@ def get_deep_research_config():
         "callbacks": [langfuse_handler]
     }
     
-    # カスタムガイドラインを設定に追加
-    if "custom_guideline" in st.session_state:
-        config["configurable"]["custom_guideline"] = st.session_state.custom_guideline
-    
     return config
 
 async def run_deep_research(user_input: str):
@@ -253,32 +258,52 @@ with st.sidebar:
 
     st.markdown("---")
 
-    # Guidelines editing section
-    st.markdown("### 🔧 Research Guidelines")
+    # Prompt display section
+    st.markdown("### 📋 Available Prompts")
     
-    # Load default guideline content from guidelines.py
-    default_guideline = transform_messages_into_research_topic_guideline
+    # Define available prompts with descriptions
+    available_prompts = {
+        "Research Guidelines": {
+            "content": transform_messages_into_research_topic_guideline,
+            "description": "調査トピック変換のためのガイドライン"
+        },
+        "Lead Researcher Prompt": {
+            "content": lead_researcher_prompt,
+            "description": "🔍 リードリサーチャーのシステムプロンプト（調査全体の指揮・統制）"
+        },
+        "Stock Analysis Researcher": {
+            "content": stock_analysis_researcher_system_prompt,
+            "description": "📊 株式分析リサーチャーのシステムプロンプト（銘柄分析の専門調査）"
+        },
+        "Compress Research System": {
+            "content": compress_research_system_prompt,
+            "description": "📝 調査結果圧縮のシステムプロンプト（情報整理・統合）"
+        },
+        "Compress Research Simple": {
+            "content": compress_research_simple_human_message,
+            "description": "📋 調査結果圧縮のシンプルメッセージ（簡易版）"
+        },
+        "Summarize Webpage": {
+            "content": summarize_webpage_prompt,
+            "description": "🌐 ウェブページ要約のプロンプト（情報抽出・要約）"
+        },
+        "Stock Analysis Final Report": {
+            "content": stock_analysis_final_report_prompt,
+            "description": "📈 株式分析最終レポートのプロンプト（投資判断レポート作成）"
+        }
+    }
     
-    # Get guideline from session state, use default if not available
-    if "custom_guideline" not in st.session_state:
-        st.session_state.custom_guideline = default_guideline
-    
-    # Guidelines editing text area
-    edited_guideline = st.text_area(
-        "Edit Research Guidelines:",
-        value=st.session_state.custom_guideline,
-        height=300,
-        help="Enter customized guidelines. These guidelines will be used when converting research topics."
-    )
-    
-    # Update session state if guideline has changed
-    if edited_guideline != st.session_state.custom_guideline:
-        st.session_state.custom_guideline = edited_guideline
-    
-    # Reset button
-    if st.button("Reset to Default", help="Reset guidelines to default"):
-        st.session_state.custom_guideline = default_guideline
-        st.rerun()
+    # Display all prompts in expandable sections
+    for prompt_name, prompt_info in available_prompts.items():
+        with st.expander(f"📝 {prompt_name}", expanded=False):
+            st.caption(f"💡 {prompt_info['description']}")
+            st.text_area(
+                f"Content:",
+                value=prompt_info['content'],
+                height=200,
+                disabled=True,
+                help="このプロンプトは現在の調査で使用されています"
+            )
     
     st.markdown("---")
     
