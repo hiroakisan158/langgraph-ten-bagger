@@ -32,7 +32,6 @@ from open_deep_research.prompts_jp import (
     stock_analysis_final_report_prompt,
     lead_researcher_prompt
 )
-from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
 
 
     
@@ -82,11 +81,8 @@ async def write_research_brief(state: AgentState, config: RunnableConfig)-> Comm
     }
     research_model = configurable_model.with_structured_output(ResearchQuestion).with_retry(stop_after_attempt=configurable.max_structured_output_retries).with_config(research_model_config)
     
-    # プロンプトを処理（ガイドラインのプレースホルダーを置換してからフォーマット）
-    processed_prompt = transform_messages_into_research_topic_prompt.replace(
-        "{{transform_messages_into_research_topic_guideline}}", 
-        transform_messages_into_research_topic_guideline
-    ).format(
+    # プロンプトをフォーマット
+    processed_prompt = transform_messages_into_research_topic_prompt.format(
         messages=get_buffer_string(state.get("messages", [])),
         date=get_today_str()
     )
