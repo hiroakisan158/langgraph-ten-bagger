@@ -26,19 +26,14 @@ from open_deep_research.state import (
 from open_deep_research.prompts_jp import (
     clarify_with_user_instructions,
     transform_messages_into_research_topic_prompt,
-    research_system_prompt,
+    stock_analysis_researcher_system_prompt,
     compress_research_system_prompt,
     compress_research_simple_human_message,
-    final_report_generation_prompt,
+    stock_analysis_final_report_prompt,
     lead_researcher_prompt
 )
-from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
 
-def get_custom_guideline(config):
-    """カスタムガイドラインを取得する。設定にカスタムガイドラインが含まれている場合はそれを使用し、そうでなければデフォルトを使用する"""
-    if hasattr(config, 'configurable') and hasattr(config.configurable, 'custom_guideline'):
-        return config.configurable.custom_guideline
-    return transform_messages_into_research_topic_guideline
+
     
 from open_deep_research.utils import (
     get_today_str,
@@ -86,14 +81,8 @@ async def write_research_brief(state: AgentState, config: RunnableConfig)-> Comm
     }
     research_model = configurable_model.with_structured_output(ResearchQuestion).with_retry(stop_after_attempt=configurable.max_structured_output_retries).with_config(research_model_config)
     
-    # カスタムガイドラインを取得
-    custom_guideline = get_custom_guideline(configurable)
-    
-    # プロンプトを処理（ガイドラインのプレースホルダーを置換してからフォーマット）
-    processed_prompt = transform_messages_into_research_topic_prompt.replace(
-        "{{transform_messages_into_research_topic_guideline}}", 
-        custom_guideline
-    ).format(
+    # プロンプトをフォーマット
+    processed_prompt = transform_messages_into_research_topic_prompt.format(
         messages=get_buffer_string(state.get("messages", [])),
         date=get_today_str()
     )
@@ -229,7 +218,8 @@ async def researcher(state: ResearcherState, config: RunnableConfig) -> Command[
         "api_key": get_api_key_for_model(configurable.research_model, config),
         "tags": ["langsmith:nostream"]
     }
-    researcher_system_prompt = research_system_prompt.format(mcp_prompt=configurable.mcp_prompt or "", date=get_today_str())
+    # 株式分析特化のシステムプロンプトを使用
+    researcher_system_prompt = stock_analysis_researcher_system_prompt.format(mcp_prompt=configurable.mcp_prompt or "", date=get_today_str())
     # Bind ALL tools to the model so LLM can see them
     research_model = configurable_model.bind_tools(tools).with_retry(stop_after_attempt=configurable.max_structured_output_retries).with_config(research_model_config)
     # LLM decides which tools to call based on the research task
@@ -348,10 +338,11 @@ async def final_report_generation(state: AgentState, config: RunnableConfig):
     max_retries = 3
     current_retry = 0
     while current_retry <= max_retries:
-        final_report_prompt = final_report_generation_prompt.format(
+        # 株式分析特化の最終レポート生成プロンプトを使用
+        final_report_prompt = stock_analysis_final_report_prompt.format(
+            compressed_research=findings,
             research_brief=state.get("research_brief", ""),
             messages=get_buffer_string(state.get("messages", [])),
-            findings=findings,
             date=get_today_str()
         )
         try:
