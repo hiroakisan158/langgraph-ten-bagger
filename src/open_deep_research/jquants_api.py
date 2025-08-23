@@ -134,25 +134,35 @@ class JQuantsAPI:
         
         return self._make_request(endpoint, params)
     
-    def get_stock_price(self, code: str, date_from: Optional[str] = None, date_to: Optional[str] = None) -> Dict[str, Any]:
+    def get_stock_price(self, code: Optional[str] = None, date: Optional[str] = None, 
+                       date_from: Optional[str] = None, date_to: Optional[str] = None) -> Dict[str, Any]:
         """
         株価情報を取得
         
         Args:
-            code: 企業コード
-            date_from: 開始日（YYYY-MM-DD形式）
-            date_to: 終了日（YYYY-MM-DD形式）
+            code: 企業コード（codeまたはdateが必須）
+            date: 特定の日付（YYYY-MM-DD形式、codeまたはdateが必須）
+            date_from: 開始日（YYYY-MM-DD形式、範囲指定時）
+            date_to: 終了日（YYYY-MM-DD形式、範囲指定時）
             
         Returns:
             株価情報の辞書
         """
         endpoint = "/prices/daily_quotes"
-        params = {"code": code}
+        params = {}
         
+        if code:
+            params['code'] = code
+        if date:
+            params['date'] = date
         if date_from:
             params['from'] = date_from
         if date_to:
             params['to'] = date_to
+            
+        # codeまたはdateのどちらかが必須
+        if not code and not date:
+            raise ValueError("codeまたはdateのどちらかを指定してください")
         
         return self._make_request(endpoint, params)
     

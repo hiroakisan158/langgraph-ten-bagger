@@ -28,66 +28,101 @@ def analyze_company_financials(company_code: str, company_name: str):
         print("\n1. 企業基本情報")
         print("-" * 30)
         company_info = api.get_company_info(company_code)
-        print(f"企業名: {company_info.get('company_name', 'N/A')}")
-        print(f"業種: {company_info.get('sector', 'N/A')}")
-        print(f"市場: {company_info.get('market', 'N/A')}")
+        
+        # デバッグ: 実際のレスポンス構造を確認
+        print(f"DEBUG: 企業情報レスポンスのキー: {list(company_info.keys())}")
+        if 'info' in company_info and company_info['info']:
+            info = company_info['info'][0]  # 最初の結果を取得
+            print(f"DEBUG: 企業情報のフィールド: {list(info.keys())}")
+            # 実際のデータの一部を表示
+            print(f"DEBUG: 最初の3つのフィールドの値:")
+            for key in list(info.keys())[:3]:
+                print(f"  {key}: {info[key]}")
+            print(f"企業名: {info.get('company_name', info.get('CompanyName', 'N/A'))}")
+            print(f"業種: {info.get('sector_name', info.get('SectorName', 'N/A'))}")
+            print(f"市場: {info.get('market_name', info.get('MarketName', 'N/A'))}")
+        else:
+            print("企業基本情報が取得できませんでした")
         
         # 2. 財務諸表（最新）
         print("\n2. 財務諸表（最新）")
         print("-" * 30)
         financial_data = api.get_financial_statements(company_code)
         
-        if 'data' in financial_data and financial_data['data']:
-            latest_financial = financial_data['data'][0]  # 最新のデータ
-            print(f"決算期: {latest_financial.get('fiscal_year', 'N/A')}")
-            print(f"売上高: {latest_financial.get('net_sales', 'N/A'):,} 円")
-            print(f"営業利益: {latest_financial.get('operating_income', 'N/A'):,} 円")
-            print(f"当期純利益: {latest_financial.get('net_income', 'N/A'):,} 円")
+        # デバッグ: 実際のレスポンス構造を確認
+        print(f"DEBUG: 財務情報レスポンスのキー: {list(financial_data.keys())}")
+        if 'statements' in financial_data and financial_data['statements']:
+            latest_financial = financial_data['statements'][0]  # 最新のデータ
+            print(f"DEBUG: 財務情報のフィールド: {list(latest_financial.keys())}")
+            print(f"決算期: {latest_financial.get('fiscal_year', latest_financial.get('FiscalYear', 'N/A'))}")
+            print(f"売上高: {latest_financial.get('net_sales', latest_financial.get('NetSales', 'N/A'))} 円")
+            print(f"営業利益: {latest_financial.get('operating_income', latest_financial.get('OperatingIncome', 'N/A'))} 円")
+            print(f"当期純利益: {latest_financial.get('net_income', latest_financial.get('NetIncome', 'N/A'))} 円")
         else:
             print("財務データが取得できませんでした")
         
-        # 3. 株価情報（過去1ヶ月）
-        print("\n3. 株価情報（過去1ヶ月）")
+        # 3. 株価情報（最新データ）
+        print("\n3. 株価情報（最新データ）")
         print("-" * 30)
-        end_date = datetime.now().strftime('%Y-%m-%d')
-        start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
-        
-        stock_data = api.get_stock_price(company_code, start_date, end_date)
-        
-        if 'data' in stock_data and stock_data['data']:
-            stock_prices = stock_data['data']
-            print(f"取得期間: {start_date} 〜 {end_date}")
-            print(f"データ数: {len(stock_prices)} 件")
+        # 企業コードを指定して最新データを取得
+        try:
+            stock_data = api.get_stock_price(code=company_code)
             
-            if stock_prices:
-                latest_price = stock_prices[0]
-                oldest_price = stock_prices[-1]
+            # デバッグ: 実際のレスポンス構造を確認
+            print(f"DEBUG: 株価情報レスポンスのキー: {list(stock_data.keys())}")
+            if 'daily_quotes' in stock_data and stock_data['daily_quotes']:
+                stock_prices = stock_data['daily_quotes']
+                print(f"最新株価データ数: {len(stock_prices)} 件")
                 
-                print(f"最新株価: {latest_price.get('close', 'N/A')} 円")
-                print(f"1ヶ月前株価: {oldest_price.get('close', 'N/A')} 円")
-                
-                # 変化率を計算
-                if latest_price.get('close') and oldest_price.get('close'):
-                    change_rate = ((latest_price['close'] - oldest_price['close']) / oldest_price['close']) * 100
-                    print(f"1ヶ月変化率: {change_rate:.2f}%")
+                if stock_prices:
+                    latest_price = stock_prices[0]
+                    print(f"DEBUG: 株価情報のフィールド: {list(latest_price.keys())}")
+                    print(f"最新株価: {latest_price.get('Close', latest_price.get('close', 'N/A'))} 円")
+                    print(f"取引日: {latest_price.get('Date', latest_price.get('date', 'N/A'))}")
+                    print(f"始値: {latest_price.get('Open', latest_price.get('open', 'N/A'))} 円")
+                    print(f"高値: {latest_price.get('High', latest_price.get('high', 'N/A'))} 円")
+                    print(f"安値: {latest_price.get('Low', latest_price.get('low', 'N/A'))} 円")
+                    
+                    # データが複数ある場合、変化率を計算
+                    if len(stock_prices) > 1:
+                        older_price = stock_prices[-1]
+                        try:
+                            latest_close = float(latest_price.get('Close', latest_price.get('close', 0)))
+                            older_close = float(older_price.get('Close', older_price.get('close', 0)))
+                            if latest_close > 0 and older_close > 0:
+                                change_rate = ((latest_close - older_close) / older_close) * 100
+                                print(f"変化率: {change_rate:.2f}%")
+                        except (ValueError, TypeError):
+                            print("変化率の計算ができませんでした")
+            else:
+                print("株価データが取得できませんでした")
+        except Exception as e:
+            print(f"株価データ取得エラー: {e}")
+            # 日付なしでも失敗した場合は、データがない可能性がある
+            print("※ この銘柄の株価データが利用できない可能性があります")
         
-        # 4. 業績予想
-        print("\n4. 業績予想")
+        # 4. 決算発表予定日
+        print("\n4. 決算発表予定日")
         print("-" * 30)
         forecast_data = api.get_earnings_forecast(company_code)
         
-        if 'data' in forecast_data and forecast_data['data']:
-            forecasts = forecast_data['data']
-            print(f"予想データ数: {len(forecasts)} 件")
+        # デバッグ: 実際のレスポンス構造を確認
+        print(f"DEBUG: 決算情報レスポンスのキー: {list(forecast_data.keys())}")
+        if 'announcement' in forecast_data and forecast_data['announcement']:
+            announcements = forecast_data['announcement']
+            print(f"発表予定データ数: {len(announcements)} 件")
             
-            for forecast in forecasts[:3]:  # 最新3件を表示
-                print(f"決算期: {forecast.get('fiscal_year', 'N/A')}")
-                print(f"予想売上高: {forecast.get('net_sales_forecast', 'N/A'):,} 円")
-                print(f"予想営業利益: {forecast.get('operating_income_forecast', 'N/A'):,} 円")
-                print(f"予想当期純利益: {forecast.get('net_income_forecast', 'N/A'):,} 円")
+            if announcements:
+                announcement = announcements[0]
+                print(f"DEBUG: 決算情報のフィールド: {list(announcement.keys())}")
+            
+            for announcement in announcements[:3]:  # 最新3件を表示
+                print(f"銘柄コード: {announcement.get('Code', announcement.get('code', 'N/A'))}")
+                print(f"発表予定日: {announcement.get('Date', announcement.get('date', 'N/A'))}")
+                print(f"決算期: {announcement.get('FiscalYear', announcement.get('fiscal_year', 'N/A'))}")
                 print("---")
         else:
-            print("業績予想データが取得できませんでした")
+            print("決算発表予定日データが取得できませんでした")
             
     except Exception as e:
         print(f"エラーが発生しました: {e}")
@@ -104,16 +139,24 @@ def compare_companies(company_codes: list):
         
         for code in company_codes:
             company_info = api.get_company_info(code)
-            company_name = company_info.get('company_name', f'企業{code}')
+            
+            # 企業名を取得
+            if 'info' in company_info and company_info['info']:
+                company_name = company_info['info'][0].get('company_name', f'企業{code}')
+            else:
+                company_name = f'企業{code}'
             
             # 株価情報を取得（最新）
-            stock_data = api.get_stock_price(code)
-            
-            if 'data' in stock_data and stock_data['data']:
-                latest_price = stock_data['data'][0]
-                print(f"{company_name} ({code}): {latest_price.get('close', 'N/A')} 円")
-            else:
-                print(f"{company_name} ({code}): データなし")
+            try:
+                stock_data = api.get_stock_price(code=code)
+                
+                if 'daily_quotes' in stock_data and stock_data['daily_quotes']:
+                    latest_price = stock_data['daily_quotes'][0]
+                    print(f"{company_name} ({code}): {latest_price.get('close', 'N/A')} 円")
+                else:
+                    print(f"{company_name} ({code}): データなし")
+            except Exception as e:
+                print(f"{company_name} ({code}): 取得エラー - {e}")
                 
     except Exception as e:
         print(f"エラーが発生しました: {e}")
@@ -187,9 +230,17 @@ def main():
         print("="*60)
         
         try:
+            api = JQuantsAPI()
             calendar_data = api.get_market_info()
             if 'trading_calendar' in calendar_data:
-                print(f"✅ 取引カレンダー情報の取得に成功: {len(calendar_data['trading_calendar'])}件のデータ")
+                calendar_entries = calendar_data['trading_calendar']
+                print(f"✅ 取引カレンダー情報の取得に成功: {len(calendar_entries)}件のデータ")
+                
+                # 最新の数件を表示
+                for entry in calendar_entries[:5]:
+                    date = entry.get('date', 'N/A')
+                    holiday_division = entry.get('holiday_division', 'N/A')
+                    print(f"  {date}: {holiday_division}")
             else:
                 print("⚠️ 取引カレンダー情報の取得に成功しましたが、期待されるデータ形式ではありません")
         except Exception as e:
