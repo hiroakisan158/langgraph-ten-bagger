@@ -11,10 +11,12 @@ J-Quants APIを使用して財務情報を取得するモジュール
 import os
 import time
 import requests
+import json
 from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta
 import logging
 from dotenv import load_dotenv
+from pprint import pprint
 
 # ログ設定
 logging.basicConfig(level=logging.INFO)
@@ -118,14 +120,17 @@ class JQuantsAPI:
     
     def get_financial_statements(self, code: str, year: Optional[int] = None) -> Dict[str, Any]:
         """
-        財務諸表を取得
+        財務情報を取得（基本的な財務指標）
+        
+        注意: フリープランでは基本的な財務情報（売上高、営業利益、当期純利益等）のみ取得可能。
+        詳細な財務諸表（貸借対照表、損益計算書の詳細項目）はプレミアムプランで利用可能。
         
         Args:
             code: 企業コード
             year: 年度（指定しない場合は最新）
             
         Returns:
-            財務諸表の辞書
+            財務情報の辞書
         """
         endpoint = "/fins/statements"
         params = {"code": code}
@@ -198,39 +203,7 @@ class JQuantsAPI:
         if date_to:
             params['to'] = date_to
         return self._make_request(endpoint, params)
-    
-    # 以下のメソッドはFreeプランでは利用できない可能性があります
-    # 必要に応じてAPIプランを確認してください
-    
-    def get_sector_info(self, sector_code: str) -> Dict[str, Any]:
-        """
-        セクター情報を取得（プラン制限あり）
-        
-        Args:
-            sector_code: セクターコード
-            
-        Returns:
-            セクター情報の辞書
-        """
-        # このエンドポイントは推測です。実際のAPIドキュメントを確認してください
-        endpoint = "/listed/sectors"
-        params = {"sector_code": sector_code}
-        return self._make_request(endpoint, params)
-    
-    def search_companies(self, keyword: str) -> Dict[str, Any]:
-        """
-        企業を検索（プラン制限あり）
-        
-        Args:
-            keyword: 検索キーワード（企業名、コード等）
-            
-        Returns:
-            検索結果の辞書
-        """
-        # このエンドポイントは推測です。実際のAPIドキュメントを確認してください
-        endpoint = "/listed/search"
-        params = {"keyword": keyword}
-        return self._make_request(endpoint, params)
+
 
 
 def main():
@@ -242,26 +215,59 @@ def main():
         # 楽天（8697）の企業情報を取得
         print("=== 楽天の企業情報 ===")
         company_info = api.get_company_info("8697")
-        print(f"企業名: {company_info.get('company_name', 'N/A')}")
-        print(f"業種: {company_info.get('sector', 'N/A')}")
         
-        # 財務諸表を取得
-        print("\n=== 財務諸表 ===")
+        # デバッグ: レスポンス構造を確認
+        print(f"DEBUG: 企業情報レスポンスのキー: {list(company_info.keys())}")
+        if 'info' in company_info and company_info['info']:
+            info = company_info['info'][0]
+            print(f"DEBUG: 企業情報のフィールド: {list(info.keys())}")
+            print(f"DEBUG: 最初の5つのフィールドの値:")
+            for key in list(info.keys())[:5]:
+                print(f"  {key}: {info[key]}")
+
+        # JSONファイルに保存
+        with open('jquants_company_info.json', 'w', encoding='utf-8') as f:
+            json.dump(company_info, f, ensure_ascii=False, indent=2)
+        print("企業情報をjquants_company_info.jsonに保存しました")
+        
+        # 財務情報を取得（基本的な財務指標）
+        print("\n=== 財務情報 ===")
         financial_data = api.get_financial_statements("8697")
-        print(f"取得データ数: {len(financial_data.get('data', []))}")
+        print(f"DEBUG: 財務情報レスポンスのキー: {list(financial_data.keys())}")
+        if 'statements' in financial_data:
+            print(f"取得データ数: {len(financial_data.get('statements', []))}")
         
-        # 株価情報を取得（過去1週間）
+        # JSONファイルに保存
+        with open('jquants_financial_data.json', 'w', encoding='utf-8') as f:
+            json.dump(financial_data, f, ensure_ascii=False, indent=2)
+        print("財務情報をjquants_financial_data.jsonに保存しました")
+
+        # 株価情報を取得（企業コードのみ）
         print("\n=== 株価情報 ===")
-        end_date = datetime.now().strftime('%Y-%m-%d')
-        start_date = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
+        stock_data = api.get_stock_price(code="8697")
+        print(f"DEBUG: 株価情報レスポンスのキー: {list(stock_data.keys())}")
+        if 'daily_quotes' in stock_data:
+            print(f"取得データ数: {len(stock_data.get('daily_quotes', []))}")
+            if stock_data['daily_quotes']:
+                quote = stock_data['daily_quotes'][0]
+                print(f"DEBUG: 株価データのフィールド: {list(quote.keys())}")
         
-        stock_data = api.get_stock_price("8697", start_date, end_date)
-        print(f"取得データ数: {len(stock_data.get('data', []))}")
-        
-        # 業績予想を取得
-        print("\n=== 業績予想 ===")
+        # JSONファイルに保存
+        with open('jquants_stock_data.json', 'w', encoding='utf-8') as f:
+            json.dump(stock_data, f, ensure_ascii=False, indent=2)
+        print("株価情報をjquants_stock_data.jsonに保存しました")
+
+        # 決算発表予定日を取得
+        print("\n=== 決算発表予定日 ===")
         forecast_data = api.get_earnings_forecast("8697")
-        print(f"取得データ数: {len(forecast_data.get('data', []))}")
+        print(f"DEBUG: 決算情報レスポンスのキー: {list(forecast_data.keys())}")
+        if 'announcement' in forecast_data:
+            print(f"取得データ数: {len(forecast_data.get('announcement', []))}")
+        
+        # JSONファイルに保存
+        with open('jquants_forecast_data.json', 'w', encoding='utf-8') as f:
+            json.dump(forecast_data, f, ensure_ascii=False, indent=2)
+        print("決算情報をjquants_forecast_data.jsonに保存しました")
         
     except Exception as e:
         logger.error(f"エラーが発生しました: {e}")
