@@ -278,7 +278,7 @@ def main():
 
         # 株価情報を取得（企業コードのみ）
         print("\n=== 株価情報 ===")
-        stock_data = api.get_stock_price(code="8697")
+        stock_data = api.get_stock_price(code="4493")
         print(f"DEBUG: 株価情報レスポンスのキー: {list(stock_data.keys())}")
         if 'daily_quotes' in stock_data:
             print(f"取得データ数: {len(stock_data.get('daily_quotes', []))}")

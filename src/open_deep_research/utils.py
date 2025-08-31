@@ -279,7 +279,7 @@ async def load_mcp_tools(
 from open_deep_research.jquants_api import JQuantsAPI
 
 JQUANTS_FINANCIAL_DESCRIPTION = (
-    "J-Quants APIを使って企業コードと年度から財務情報（売上高、営業利益、当期純利益など）を取得します。"
+    "J-Quants APIを使って企業コードと年度から財務情報（売上高、営業利益、当期純利益など）を取得します。過去5年分のデータが取得可能です。"
 )
 
 # Rate limiting management
@@ -356,7 +356,8 @@ async def get_financial_statements_tool(
     return cleaned_data
 
 JQUANTS_STOCK_PRICE_DESCRIPTION = (
-    "J-Quants APIを使って企業コードから直近1週間の株価を取得します。"
+    "【最優先ツール】J-Quants APIを使って企業コードから現在の株価情報を取得します。"
+    "株式分析では必ず最初に実行してください。直近1週間の株価データが取得できます。"
 )
 
 @tool(description=JQUANTS_STOCK_PRICE_DESCRIPTION)
@@ -365,12 +366,14 @@ async def get_recent_stock_price_tool(
     config: RunnableConfig = None
 ) -> Dict[str, Any]:
     """
-    J-Quants APIを使って企業コードから直近1週間の株価を取得します。
+    【重要】株式分析で最初に実行すべきツール
+    J-Quants APIを使って企業コードから現在の株価情報を取得します。
+    投資判断には現在の株価情報が必須です。
 
     Args:
-        code (str): 企業コード（4桁の数字）
+        code (str): 企業コード（4桁の数字）例：7203（トヨタ）、8697（楽天）
     Returns:
-        直近1週間の株価情報の辞書
+        現在の株価情報を含む辞書（終値、出来高、高値・安値等）
     """
     from datetime import datetime, timedelta
     
@@ -437,11 +440,13 @@ async def get_all_tools(config: RunnableConfig):
     tools = [tool(ResearchComplete)]
     configurable = Configuration.from_runnable_config(config)
     search_api = SearchAPI(get_config_value(configurable.search_api))
-    tools.extend(await get_search_tool(search_api))
-
-    # Add custom tools
+    
+    # Add J-Quants custom tools first (higher priority)
+    tools.append(get_recent_stock_price_tool)  # 最優先
     tools.append(get_financial_statements_tool)
-    tools.append(get_recent_stock_price_tool)
+    
+    # Then add search tools
+    tools.extend(await get_search_tool(search_api))
 
     existing_tool_names = {tool.name if hasattr(tool, "name") else tool.get("name", "web_search") for tool in tools}
     mcp_tools = await load_mcp_tools(config, existing_tool_names)
