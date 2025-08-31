@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 from openai import RateLimitError
 import time
+import functools
 
 # Load environment variables from .env file
 load_dotenv()
@@ -55,9 +56,10 @@ configurable_model = init_chat_model(
 
 # Rate limiting aware retry decorator
 def rate_limit_retry(func):
+    @functools.wraps(func)
     @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=2, max=60),
+        stop=stop_after_attempt(5),  # リトライ回数を5回に増加
+        wait=wait_exponential(multiplier=2, min=10, max=120),  # より長い待機時間
         retry=retry_if_exception_type((RateLimitError, Exception)),
         reraise=True
     )
@@ -65,10 +67,16 @@ def rate_limit_retry(func):
         try:
             return await func(*args, **kwargs)
         except Exception as e:
-            if "rate_limit_exceeded" in str(e) or "Rate limit" in str(e):
-                print(f"Rate limit hit, waiting before retry: {e}")
-                await asyncio.sleep(5)  # Wait 5 seconds for rate limit
-                raise
+            error_msg = str(e).lower()
+            if any(keyword in error_msg for keyword in [
+                "rate_limit_exceeded", "rate limit", "too many requests", 
+                "429", "quota exceeded", "tokens per min"
+            ]):
+                # レート制限の場合はより長く待機
+                wait_time = 30 + (5 * getattr(wrapper, '_retry_count', 0))
+                print(f"Rate limit detected, waiting {wait_time} seconds before retry: {e}")
+                await asyncio.sleep(wait_time)
+                wrapper._retry_count = getattr(wrapper, '_retry_count', 0) + 1
             raise
     return wrapper
 

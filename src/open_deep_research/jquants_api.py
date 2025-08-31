@@ -92,7 +92,19 @@ class JQuantsAPI:
         url = f"{self.base_url}/v1{endpoint}"
         
         try:
+            logger.info(f"APIリクエスト送信: {url}")
+            if params:
+                logger.info(f"パラメータ: {params}")
+            
             response = self.session.get(url, params=params)
+            
+            # デバッグ情報をログに出力
+            logger.info(f"レスポンスステータス: {response.status_code}")
+            logger.info(f"リクエストヘッダー: {dict(response.request.headers)}")
+            
+            if response.status_code != 200:
+                logger.error(f"APIエラーレスポンス: {response.text}")
+            
             response.raise_for_status()
             
             # レート制限対応
@@ -102,6 +114,9 @@ class JQuantsAPI:
             
         except requests.exceptions.RequestException as e:
             logger.error(f"APIリクエストエラー ({endpoint}): {e}")
+            if hasattr(e, 'response') and e.response is not None:
+                logger.error(f"エラーレスポンステキスト: {e.response.text}")
+                logger.error(f"ステータスコード: {e.response.status_code}")
             raise
     
     def get_company_info(self, code: str) -> Dict[str, Any]:
@@ -156,8 +171,13 @@ class JQuantsAPI:
         endpoint = "/prices/daily_quotes"
         params = {}
         
+        # 企業コードのバリデーション
         if code:
+            # 4桁の数字であることを確認
+            if not code.isdigit() or len(code) != 4:
+                logger.warning(f"無効な企業コード形式: {code}（4桁の数字である必要があります）")
             params['code'] = code
+            
         if date:
             params['date'] = date
         if date_from:
@@ -169,7 +189,21 @@ class JQuantsAPI:
         if not code and not date:
             raise ValueError("codeまたはdateのどちらかを指定してください")
         
-        return self._make_request(endpoint, params)
+        logger.info(f"株価取得リクエスト - コード: {code}, 期間: {date_from} - {date_to}")
+        
+        try:
+            return self._make_request(endpoint, params)
+        except requests.exceptions.HTTPError as e:
+            if hasattr(e, 'response') and e.response.status_code == 400:
+                logger.error(f"Bad Request: 企業コード {code} が存在しないか、日付範囲が無効です")
+                logger.error(f"リクエストパラメータ: {params}")
+                # 企業情報を確認してみる
+                try:
+                    company_info = self.get_company_info(code)
+                    logger.info(f"企業情報は取得できました: {company_info.get('info', [{}])[0].get('CompanyName', 'N/A')}")
+                except:
+                    logger.error(f"企業コード {code} の企業情報も取得できませんでした。無効なコードの可能性があります。")
+            raise
     
     def get_earnings_forecast(self, code: str) -> Dict[str, Any]:
         """

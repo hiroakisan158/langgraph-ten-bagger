@@ -198,19 +198,19 @@ def get_deep_research_config():
     config = {
         "configurable": {
             "thread_id": str(uuid.uuid4()),
-            "max_structured_output_retries": int(os.getenv("MAX_STRUCTURED_OUTPUT_RETRIES", "3")),
-            "max_concurrent_research_units": int(os.getenv("MAX_CONCURRENT_RESEARCH_UNITS", "5")),
+            "max_structured_output_retries": int(os.getenv("MAX_STRUCTURED_OUTPUT_RETRIES", "2")),  # 減らす
+            "max_concurrent_research_units": int(os.getenv("MAX_CONCURRENT_RESEARCH_UNITS", "2")),  # 大幅に減らす
             "search_api": os.getenv("SEARCH_API", "tavily"),
-            "max_researcher_iterations": int(os.getenv("MAX_RESEARCHER_ITERATIONS", "3")),
-            "max_react_tool_calls": int(os.getenv("MAX_REACT_TOOL_CALLS", "5")),
+            "max_researcher_iterations": int(os.getenv("MAX_RESEARCHER_ITERATIONS", "2")),  # 減らす
+            "max_react_tool_calls": int(os.getenv("MAX_REACT_TOOL_CALLS", "3")),  # 減らす
             "summarization_model": os.getenv("SUMMARIZATION_MODEL", "openai:gpt-4o-mini"),
-            "summarization_model_max_tokens": int(os.getenv("SUMMARIZATION_MODEL_MAX_TOKENS", "8192")),
+            "summarization_model_max_tokens": int(os.getenv("SUMMARIZATION_MODEL_MAX_TOKENS", "4096")),  # 減らす
             "research_model": os.getenv("RESEARCH_MODEL", "openai:gpt-4o-mini"),
-            "research_model_max_tokens": int(os.getenv("RESEARCH_MODEL_MAX_TOKENS", "10000")),
+            "research_model_max_tokens": int(os.getenv("RESEARCH_MODEL_MAX_TOKENS", "4096")),  # 減らす
             "compression_model": os.getenv("COMPRESSION_MODEL", "openai:gpt-4o-mini"),
-            "compression_model_max_tokens": int(os.getenv("COMPRESSION_MODEL_MAX_TOKENS", "8192")),
+            "compression_model_max_tokens": int(os.getenv("COMPRESSION_MODEL_MAX_TOKENS", "4096")),  # 減らす
             "final_report_model": os.getenv("FINAL_REPORT_MODEL", "openai:gpt-4o-mini"),
-            "final_report_model_max_tokens": int(os.getenv("FINAL_REPORT_MODEL_MAX_TOKENS", "10000")),
+            "final_report_model_max_tokens": int(os.getenv("FINAL_REPORT_MODEL_MAX_TOKENS", "4096")),  # 減らす
         },
         "callbacks": [langfuse_handler]
     }
