@@ -1,6 +1,19 @@
-# Deep Research Assistant - テンバガー発見ツール
+# Deep Research Assistant - 株式投資分析ツール
 
-Deep Research技術を使用して潜在的な「テンバガー」（10倍成長する可能性のある株式）を発見し、包括的な市場分析を実施する包括的な調査アシスタントです。
+J-Quants APIと高度なDeep Research技術を活用した包括的な株式投資分析システムです。現在の株価情報取得から詳細な企業分析まで、投資判断に必要な情報を自動収集・分析します。
+
+## 主要機能
+
+### 株式分析特化機能
+- **現在株価取得**: J-Quants APIで直近の株価・出来高データを自動取得
+- **財務分析**: 売上・利益・ROE等の詳細財務指標分析
+- **割安・割高判断**: PER/PBR等の指標による客観的評価
+- **業界分析**: 競合他社との比較分析
+- **リスク評価**: 事業・財務・市場リスクの包括的評価
+
+### J-Quants APIツール
+- **get_recent_stock_price_tool**: 企業コードから現在の株価情報を取得
+- **get_financial_statements_tool**: 財務諸表データの詳細分析
 
 ## クイックスタート
 
@@ -36,13 +49,13 @@ OPENAI_API_KEY=your_actual_openai_api_key
 TAVILY_API_KEY=your_actual_tavily_api_key
 ```
 
-#### JQUANTS_REFRESH_TOKEN
+#### J-Quants API設定
 
-このプロジェクトは J-Quants API のトークン更新を行うために `JQUANTS_REFRESH_TOKEN` を利用します。
+J-Quants APIを使用して日本株の株価・財務データを取得します。
 
-- 何か: J-Quants のリフレッシュトークンで、長期的に API へのアクセスを維持するために使用されます。アクセストークンが期限切れになった際に新しいアクセストークンを取得するためのトークンです。
-- 取得方法: J-Quants の開発者ポータルやアプリケーション設定からリフレッシュトークンを発行してください（J-Quants 側の手順に従ってください）。
-- 設定方法: `.env` に以下のように追加します。
+- **何に使うか**: 日本の上場企業の現在の株価、財務諸表、業績データの取得
+- **取得方法**: [J-Quants](https://jpx-jquants.com/)でアカウント登録後、リフレッシュトークンを発行
+- **設定方法**: `.env`に以下を追加
 
 ```bash
 JQUANTS_REFRESH_TOKEN=your_actual_jquants_refresh_token
@@ -77,58 +90,85 @@ streamlit run streamlit_main.py
 
 ## 使用例
 
-### 基本的な質問
-```
-"量子コンピューティングの最新動向について調べてください"
-```
+### 株式分析の例
 
-### 企業分析
 ```
-"Apple社の最新の業績と成長戦略について調べてください"
-```
-
-### 技術調査
-```
-"AI技術の2024年の主要トレンドについて調べてください"
+"トヨタ自動車（7203）の投資妙味を分析してください"
+"ソフトバンクグループ（9984）の現在の株価水準は割安ですか？"
+"半導体関連銘柄で成長性の高い企業を教えてください"
+"楽天（4755）の事業モデルと競争優位性を分析してください"
 ```
 
-### 株式分析（テンバガー特化）
-```
-"AIセクターの潜在的なテンバガー株式を調べてください"
-"Teslaの成長可能性と市場ポジションを分析してください"
-"電気自動車市場の新興企業を調べてください"
-```
+### 分析に含まれる項目
+- 現在の株価情報（終値、出来高、高値・安値）
+- 財務指標分析（売上、利益、ROE、ROA等）
+- 事業分析（収益構造、競争優位性）
+- 業界環境（市場規模、競合状況）
+- 投資判断（割安・割高・適正の評価）
 
-## カスタマイズ
+## システム設計
 
-### プロンプトのカスタマイズ
-株式分析用にカスタマイズする場合は、`src/open_deep_research/prompts.py`を編集してください：
+### 株式分析に特化したプロンプト設計
 
-- **`transform_messages_into_research_topic_prompt`**: 銘柄名と分析観点を抽出
-- **`lead_researcher_prompt`**: 株式分析の観点（業績、財務、競合、成長性、リスク）を定義
-- **`research_system_prompt`**: 株式特化の情報源を優先
-- **`final_report_generation_prompt`**: 株式分析レポートの構成
+最新のプロンプト設計では、現在の株価情報取得を最優先とし、包括的な投資分析を行います：
 
-### ツールの追加
-新しいツールを追加する場合は、`src/open_deep_research/utils.py`を編集してください
+#### lead_researcher_prompt
+- **最優先タスク**: 現在の株価情報の取得を必須化
+- **分析観点**: 財務・事業・業界・リスク・割安割高判断を体系化
+- **実行順序**: ConductResearchツールの必須実行を明記
 
-### UIのカスタマイズ
-StreamlitのUIをカスタマイズする場合は、`streamlit_main.py`を編集してください
+#### stock_analysis_researcher_system_prompt  
+- **必須の初期ステップ**: get_recent_stock_price_toolの最優先実行
+- **J-Quantsツール優先**: 株価・財務データ取得を他ツールより優先
+- **ResearchComplete制御**: 十分な調査完了後のみ実行を許可
 
-## アーキテクチャ
+#### 最終レポート生成
+- **現在株価セクション**: 直近の株価動向を独立章として追加
+- **投資判断**: 現在株価を基準とした割安・割高・適正の明確な判定
+- **適正株価推定**: 将来成長性を考慮した価格レンジ算出
 
-### Deep Researchシステム
-- **スーパーバイザーエージェント**: `lead_researcher_prompt`を使用して調査戦略を調整
-- **調査エージェント**: `research_system_prompt`を使用して特定の調査タスクを実行
-- **ツール統合**: Web検索、MCPツール、カスタムツール
-- **レポート生成**: 発見事項を包括的なレポートに統合
+### J-Quants APIツール統合
 
-### 主要コンポーネント
-- `src/open_deep_research/deep_researcher.py`: メイン調査ワークフロー
-- `src/open_deep_research/prompts.py`: システムプロンプト
-- `src/open_deep_research/utils.py`: ツールとユーティリティ
+#### get_recent_stock_price_tool
+- **機能**: 企業コード（4桁）から直近1週間の株価データを取得
+- **優先度**: 全ツール中で最優先実行
+- **データ**: 終値、出来高、高値・安値、変動率等
+
+#### get_financial_statements_tool
+- **機能**: 企業の財務諸表データを取得・分析
+- **データ**: 売上、利益、ROE、ROA、財務比率等
+- **年度指定**: 特定年度または最新データの取得が可能
+
+### アーキテクチャ概要
+
+- **スーパーバイザーエージェント**: 株価取得を最優先とした調査戦略を制御
+- **調査エージェント**: J-Quants APIツールを活用した専門的株式分析
+- **レポート生成**: 現在株価を基準とした投資判断レポートを自動生成
+
+### 主要ファイル
+- `src/open_deep_research/deep_researcher.py`: メイン分析ワークフロー
+- `src/open_deep_research/prompts_jp.py`: 株式分析特化プロンプト
+- `src/open_deep_research/utils.py`: J-Quants APIツール実装
+- `src/open_deep_research/jquants_api.py`: J-Quants API接続クライアント
 - `streamlit_main.py`: Webインターフェース
 
-## 注意事項
-- 特定の投資信託、生命保険、株式、債券等の売買を推奨･勧誘するものではありません。
-- 当システムの出力内容に基づいて取られた投資行動の結果については、責任を負いません。
+## J-Quants APIテスト
+
+企業コードでの株価取得をテストする場合：
+
+```python
+# test_stock_price.py
+from src.open_deep_research.jquants_api import JQuantsAPI
+
+api = JQuantsAPI()
+result = api.get_stock_price(code="7203")  # トヨタ
+print(result)
+```
+
+```bash
+python test_stock_price.py
+```
+
+## 免責事項
+
+このシステムは投資判断の参考情報提供を目的としており、特定の投資を推奨するものではありません。投資の最終判断は利用者の責任で行ってください。システムの分析結果に基づく投資行動の結果について、開発者は責任を負いません。
