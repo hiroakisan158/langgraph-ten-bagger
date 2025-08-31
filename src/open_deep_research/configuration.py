@@ -41,16 +41,6 @@ class Configuration(BaseModel):
             }
         }
     )
-    allow_clarification: bool = Field(
-        default=True,
-        metadata={
-            "x_oap_ui_config": {
-                "type": "boolean",
-                "default": True,
-                "description": "Whether to allow the researcher to ask the user clarifying questions before starting research"
-            }
-        }
-    )
     max_concurrent_research_units: int = Field(
         default=5,
         metadata={
