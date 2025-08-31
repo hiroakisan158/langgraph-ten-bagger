@@ -54,7 +54,7 @@ TAVILY_API_KEY=your_actual_tavily_api_key
 J-Quants APIを使用して日本株の株価・財務データを取得します。
 
 - **何に使うか**: 日本の上場企業の現在の株価、財務諸表、業績データの取得
-- **取得方法**: [J-Quants](https://jpx-jquants.com/)でアカウント登録後、リフレッシュトークンを発行
+- **取得方法**: [J-Quants](https://jpx-jquants.com/)でアカウント登録後、リフレッシュトークンを発行 (最新の株価と過去5年分の財務情報取得のためにライトプランへ課金登録が必要)
 - **設定方法**: `.env`に以下を追加
 
 ```bash
