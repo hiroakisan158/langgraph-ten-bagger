@@ -274,6 +274,58 @@ async def load_mcp_tools(
 # ##########################
 # # Custom Tools
 # ##########################
+from open_deep_research.jquants_api import JQuantsAPI
+
+JQUANTS_FINANCIAL_DESCRIPTION = (
+    "J-Quants APIを使って企業コードと年度から財務情報（売上高、営業利益、当期純利益など）を取得します。"
+)
+
+@tool(description=JQUANTS_FINANCIAL_DESCRIPTION)
+async def get_financial_statements_tool(
+    code: str,
+    year: Optional[int] = None,
+    config: RunnableConfig = None
+) -> Dict[str, Any]:
+    """
+    J-Quants APIを使って財務情報を取得します。
+
+    Args:
+        code (str): 企業コード
+        year (Optional[int]): 年度（指定しない場合は最新）
+    Returns:
+        財務情報の辞書
+    """
+    api = JQuantsAPI()
+    return api.get_financial_statements(code, year)
+
+JQUANTS_STOCK_PRICE_DESCRIPTION = (
+    "J-Quants APIを使って企業コードから直近1週間の株価を取得します。"
+)
+
+@tool(description=JQUANTS_STOCK_PRICE_DESCRIPTION)
+async def get_recent_stock_price_tool(
+    code: str,
+    config: RunnableConfig = None
+) -> Dict[str, Any]:
+    """
+    J-Quants APIを使って企業コードから直近1週間の株価を取得します。
+
+    Args:
+        code (str): 企業コード
+    Returns:
+        直近1週間の株価情報の辞書
+    """
+    from datetime import datetime, timedelta
+    
+    # 直近1週間の日付を計算
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=7)
+    
+    date_from = start_date.strftime("%Y-%m-%d")
+    date_to = end_date.strftime("%Y-%m-%d")
+    
+    api = JQuantsAPI()
+    return api.get_stock_price(code=code, date_from=date_from, date_to=date_to)
 # @tool(description="Query a database for research data")
 # async def database_query(
 #     query: str,
@@ -306,8 +358,9 @@ async def get_all_tools(config: RunnableConfig):
     search_api = SearchAPI(get_config_value(configurable.search_api))
     tools.extend(await get_search_tool(search_api))
 
-    # # Add custom tools example
-    # tools.append(database_query)
+    # Add custom tools
+    tools.append(get_financial_statements_tool)
+    tools.append(get_recent_stock_price_tool)
 
     existing_tool_names = {tool.name if hasattr(tool, "name") else tool.get("name", "web_search") for tool in tools}
     mcp_tools = await load_mcp_tools(config, existing_tool_names)

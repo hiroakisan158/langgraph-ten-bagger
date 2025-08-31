@@ -10,16 +10,15 @@ import json
 import pathlib
 from langgraph.checkpoint.memory import MemorySaver
 from open_deep_research.deep_researcher import deep_researcher_builder
-from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
 from open_deep_research.prompts_jp import (
     lead_researcher_prompt,
+    transform_messages_into_research_topic_prompt,
     stock_analysis_researcher_system_prompt,
     compress_research_system_prompt,
     compress_research_simple_human_message,
     summarize_webpage_prompt,
     stock_analysis_final_report_prompt
 )
-from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
 from logger_config import configure_logging
 from langfuse.langchain import CallbackHandler
 
@@ -263,13 +262,13 @@ with st.sidebar:
     
     # Define available prompts with descriptions
     available_prompts = {
-        "Research Guidelines": {
-            "content": transform_messages_into_research_topic_guideline,
-            "description": "調査トピック変換のためのガイドライン"
-        },
         "Lead Researcher Prompt": {
             "content": lead_researcher_prompt,
             "description": "🔍 リードリサーチャーのシステムプロンプト（調査全体の指揮・統制）"
+        },
+        "Transform Messages into Research Topic": {
+            "content": transform_messages_into_research_topic_prompt,
+            "description": "📝 メッセージを調査トピックに変換するプロンプト"
         },
         "Stock Analysis Researcher": {
             "content": stock_analysis_researcher_system_prompt,
