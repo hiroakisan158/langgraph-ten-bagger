@@ -36,6 +36,18 @@ OPENAI_API_KEY=your_actual_openai_api_key
 TAVILY_API_KEY=your_actual_tavily_api_key
 ```
 
+#### JQUANTS_REFRESH_TOKEN
+
+このプロジェクトは J-Quants API のトークン更新を行うために `JQUANTS_REFRESH_TOKEN` を利用します。
+
+- 何か: J-Quants のリフレッシュトークンで、長期的に API へのアクセスを維持するために使用されます。アクセストークンが期限切れになった際に新しいアクセストークンを取得するためのトークンです。
+- 取得方法: J-Quants の開発者ポータルやアプリケーション設定からリフレッシュトークンを発行してください（J-Quants 側の手順に従ってください）。
+- 設定方法: `.env` に以下のように追加します。
+
+```bash
+JQUANTS_REFRESH_TOKEN=your_actual_jquants_refresh_token
+```
+
 ### 2. 依存関係のインストール
 
 **pipを使用（推奨）**

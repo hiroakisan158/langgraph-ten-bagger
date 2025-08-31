@@ -6,6 +6,10 @@ from langgraph.types import Command
 import asyncio
 from typing import Literal
 from dotenv import load_dotenv
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+from openai import RateLimitError
+import time
+import functools
 
 # Load environment variables from .env file
 load_dotenv()
@@ -17,14 +21,12 @@ from open_deep_research.state import (
     AgentInputState,
     SupervisorState,
     ResearcherState,
-    ClarifyWithUser,
     ResearchQuestion,
     ConductResearch,
     ResearchComplete,
     ResearcherOutputState
 )
 from open_deep_research.prompts_jp import (
-    clarify_with_user_instructions,
     transform_messages_into_research_topic_prompt,
     stock_analysis_researcher_system_prompt,
     compress_research_system_prompt,
@@ -52,25 +54,33 @@ configurable_model = init_chat_model(
     configurable_fields=("model", "max_tokens", "api_key"),
 )
 
-async def clarify_with_user(state: AgentState, config: RunnableConfig) -> Command[Literal["write_research_brief", "__end__"]]:
-    configurable = Configuration.from_runnable_config(config)
-    if not configurable.allow_clarification:
-        return Command(goto="write_research_brief")
-    messages = state["messages"]
-    model_config = {
-        "model": configurable.research_model,
-        "max_tokens": configurable.research_model_max_tokens,
-        "api_key": get_api_key_for_model(configurable.research_model, config),
-        "tags": ["langsmith:nostream"]
-    }
-    model = configurable_model.with_structured_output(ClarifyWithUser).with_retry(stop_after_attempt=configurable.max_structured_output_retries).with_config(model_config)
-    response = await model.ainvoke([HumanMessage(content=clarify_with_user_instructions.format(messages=get_buffer_string(messages), date=get_today_str()))])
-    if response.need_clarification:
-        return Command(goto=END, update={"messages": [AIMessage(content=response.question)]})
-    else:
-        return Command(goto="write_research_brief", update={"messages": [AIMessage(content=response.verification)]})
+# Rate limiting aware retry decorator
+def rate_limit_retry(func):
+    @functools.wraps(func)
+    @retry(
+        stop=stop_after_attempt(5),  # リトライ回数を5回に増加
+        wait=wait_exponential(multiplier=2, min=10, max=120),  # より長い待機時間
+        retry=retry_if_exception_type((RateLimitError, Exception)),
+        reraise=True
+    )
+    async def wrapper(*args, **kwargs):
+        try:
+            return await func(*args, **kwargs)
+        except Exception as e:
+            error_msg = str(e).lower()
+            if any(keyword in error_msg for keyword in [
+                "rate_limit_exceeded", "rate limit", "too many requests", 
+                "429", "quota exceeded", "tokens per min"
+            ]):
+                # レート制限の場合はより長く待機
+                wait_time = 30 + (5 * getattr(wrapper, '_retry_count', 0))
+                print(f"Rate limit detected, waiting {wait_time} seconds before retry: {e}")
+                await asyncio.sleep(wait_time)
+                wrapper._retry_count = getattr(wrapper, '_retry_count', 0) + 1
+            raise
+    return wrapper
 
-
+@rate_limit_retry
 async def write_research_brief(state: AgentState, config: RunnableConfig)-> Command[Literal["research_supervisor"]]:
     configurable = Configuration.from_runnable_config(config)
     research_model_config = {
@@ -106,6 +116,7 @@ async def write_research_brief(state: AgentState, config: RunnableConfig)-> Comm
     )
 
 
+@rate_limit_retry
 async def supervisor(state: SupervisorState, config: RunnableConfig) -> Command[Literal["supervisor_tools"]]:
     configurable = Configuration.from_runnable_config(config)
     research_model_config = {
@@ -203,6 +214,7 @@ supervisor_builder.add_edge(START, "supervisor")
 supervisor_subgraph = supervisor_builder.compile()
 
 
+@rate_limit_retry
 async def researcher(state: ResearcherState, config: RunnableConfig) -> Command[Literal["researcher_tools"]]:
     '''
     This node is responsible for deciding which tools to call based on the research task and executing them by calling the researcher_tools node.
@@ -233,6 +245,7 @@ async def researcher(state: ResearcherState, config: RunnableConfig) -> Command[
     )
 
 
+@rate_limit_retry
 async def execute_tool_safely(tool, args, config):
     try:
         return await tool.ainvoke(args, config)
@@ -283,6 +296,7 @@ async def researcher_tools(state: ResearcherState, config: RunnableConfig) -> Co
     )
 
 
+@rate_limit_retry
 async def compress_research(state: ResearcherState, config: RunnableConfig):
     configurable = Configuration.from_runnable_config(config)
     synthesis_attempts = 0
@@ -324,6 +338,7 @@ researcher_builder.add_edge("compress_research", END)
 researcher_subgraph = researcher_builder.compile()
 
 
+@rate_limit_retry
 async def final_report_generation(state: AgentState, config: RunnableConfig):
     notes = state.get("notes", [])
     cleared_state = {"notes": {"type": "override", "value": []},}
@@ -380,11 +395,10 @@ async def final_report_generation(state: AgentState, config: RunnableConfig):
     }
 
 deep_researcher_builder = StateGraph(AgentState, input=AgentInputState, config_schema=Configuration)
-deep_researcher_builder.add_node("clarify_with_user", clarify_with_user)
 deep_researcher_builder.add_node("write_research_brief", write_research_brief)
 deep_researcher_builder.add_node("research_supervisor", supervisor_subgraph)
 deep_researcher_builder.add_node("final_report_generation", final_report_generation)
-deep_researcher_builder.add_edge(START, "clarify_with_user")
+deep_researcher_builder.add_edge(START, "write_research_brief")
 deep_researcher_builder.add_edge("research_supervisor", "final_report_generation")
 deep_researcher_builder.add_edge("final_report_generation", END)
 

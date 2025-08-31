@@ -10,16 +10,15 @@ import json
 import pathlib
 from langgraph.checkpoint.memory import MemorySaver
 from open_deep_research.deep_researcher import deep_researcher_builder
-from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
 from open_deep_research.prompts_jp import (
     lead_researcher_prompt,
+    transform_messages_into_research_topic_prompt,
     stock_analysis_researcher_system_prompt,
     compress_research_system_prompt,
     compress_research_simple_human_message,
     summarize_webpage_prompt,
     stock_analysis_final_report_prompt
 )
-from open_deep_research.guidelines import transform_messages_into_research_topic_guideline
 from logger_config import configure_logging
 from langfuse.langchain import CallbackHandler
 
@@ -199,20 +198,19 @@ def get_deep_research_config():
     config = {
         "configurable": {
             "thread_id": str(uuid.uuid4()),
-            "max_structured_output_retries": int(os.getenv("MAX_STRUCTURED_OUTPUT_RETRIES", "3")),
-            "allow_clarification": os.getenv("ALLOW_CLARIFICATION", "true").lower() == "true",
-            "max_concurrent_research_units": int(os.getenv("MAX_CONCURRENT_RESEARCH_UNITS", "5")),
+            "max_structured_output_retries": int(os.getenv("MAX_STRUCTURED_OUTPUT_RETRIES", "2")),  # 減らす
+            "max_concurrent_research_units": int(os.getenv("MAX_CONCURRENT_RESEARCH_UNITS", "2")),  # 大幅に減らす
             "search_api": os.getenv("SEARCH_API", "tavily"),
-            "max_researcher_iterations": int(os.getenv("MAX_RESEARCHER_ITERATIONS", "3")),
-            "max_react_tool_calls": int(os.getenv("MAX_REACT_TOOL_CALLS", "5")),
-            "summarization_model": os.getenv("SUMMARIZATION_MODEL", "openai:gpt-4.1-nano"),
-            "summarization_model_max_tokens": int(os.getenv("SUMMARIZATION_MODEL_MAX_TOKENS", "8192")),
-            "research_model": os.getenv("RESEARCH_MODEL", "openai:gpt-4.1"),
-            "research_model_max_tokens": int(os.getenv("RESEARCH_MODEL_MAX_TOKENS", "10000")),
-            "compression_model": os.getenv("COMPRESSION_MODEL", "openai:gpt-4.1-mini"),
-            "compression_model_max_tokens": int(os.getenv("COMPRESSION_MODEL_MAX_TOKENS", "8192")),
-            "final_report_model": os.getenv("FINAL_REPORT_MODEL", "openai:gpt-4.1"),
-            "final_report_model_max_tokens": int(os.getenv("FINAL_REPORT_MODEL_MAX_TOKENS", "10000")),
+            "max_researcher_iterations": int(os.getenv("MAX_RESEARCHER_ITERATIONS", "2")),  # 減らす
+            "max_react_tool_calls": int(os.getenv("MAX_REACT_TOOL_CALLS", "3")),  # 減らす
+            "summarization_model": os.getenv("SUMMARIZATION_MODEL", "openai:gpt-4o-mini"),
+            "summarization_model_max_tokens": int(os.getenv("SUMMARIZATION_MODEL_MAX_TOKENS", "4096")),  # 減らす
+            "research_model": os.getenv("RESEARCH_MODEL", "openai:gpt-4o-mini"),
+            "research_model_max_tokens": int(os.getenv("RESEARCH_MODEL_MAX_TOKENS", "4096")),  # 減らす
+            "compression_model": os.getenv("COMPRESSION_MODEL", "openai:gpt-4o-mini"),
+            "compression_model_max_tokens": int(os.getenv("COMPRESSION_MODEL_MAX_TOKENS", "4096")),  # 減らす
+            "final_report_model": os.getenv("FINAL_REPORT_MODEL", "openai:gpt-4o-mini"),
+            "final_report_model_max_tokens": int(os.getenv("FINAL_REPORT_MODEL_MAX_TOKENS", "4096")),  # 減らす
         },
         "callbacks": [langfuse_handler]
     }
@@ -263,13 +261,13 @@ with st.sidebar:
     
     # Define available prompts with descriptions
     available_prompts = {
-        "Research Guidelines": {
-            "content": transform_messages_into_research_topic_guideline,
-            "description": "調査トピック変換のためのガイドライン"
-        },
         "Lead Researcher Prompt": {
             "content": lead_researcher_prompt,
             "description": "🔍 リードリサーチャーのシステムプロンプト（調査全体の指揮・統制）"
+        },
+        "Transform Messages into Research Topic": {
+            "content": transform_messages_into_research_topic_prompt,
+            "description": "📝 メッセージを調査トピックに変換するプロンプト"
         },
         "Stock Analysis Researcher": {
             "content": stock_analysis_researcher_system_prompt,
