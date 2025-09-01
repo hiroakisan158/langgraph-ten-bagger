@@ -83,11 +83,6 @@ streamlit run streamlit_main.py
 - **リアルタイム調査**: 質問に対して包括的な調査を自動実行
 - **結果表示**: 調査結果をマークダウン形式で表示
 
-### サイドバー設定
-- **Research Settings**: 並行調査ユニット数、調査イテレーション数、確認質問の許可
-- **Model Settings**: 使用する調査モデルの選択
-- **Search Settings**: 検索APIの選択
-
 ## 使用例
 
 ### 株式分析の例
