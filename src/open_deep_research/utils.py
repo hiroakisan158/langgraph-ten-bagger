@@ -469,7 +469,7 @@ async def get_search_tool(search_api: SearchAPI):
         return []
     
 async def get_all_tools(config: RunnableConfig):
-    tools = [tool(ResearchComplete)]
+    tools = [tool(ResearchComplete), think_tool]  # think_toolを追加
     configurable = Configuration.from_runnable_config(config)
     search_api = SearchAPI(get_config_value(configurable.search_api))
     

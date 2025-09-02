@@ -46,7 +46,8 @@ from open_deep_research.utils import (
     anthropic_websearch_called,
     remove_up_to_last_ai_message,
     get_api_key_for_model,
-    get_notes_from_tool_calls
+    get_notes_from_tool_calls,
+    think_tool
 )
 
 # Initialize a configurable model that we will use throughout the agent
@@ -125,7 +126,7 @@ async def supervisor(state: SupervisorState, config: RunnableConfig) -> Command[
         "api_key": get_api_key_for_model(configurable.research_model, config),
         "tags": ["langsmith:nostream"]
     }
-    lead_researcher_tools = [ConductResearch, ResearchComplete]
+    lead_researcher_tools = [ConductResearch, ResearchComplete, think_tool]
     research_model = configurable_model.bind_tools(lead_researcher_tools).with_retry(stop_after_attempt=configurable.max_structured_output_retries).with_config(research_model_config)
     supervisor_messages = state.get("supervisor_messages", [])
     response = await research_model.ainvoke(supervisor_messages)
