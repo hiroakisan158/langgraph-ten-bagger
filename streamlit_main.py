@@ -238,6 +238,13 @@ async def run_deep_research(user_input: str):
         return {"error": str(e)}
 
 ############################################
+# Initialize session state
+############################################
+# Initialize chat history early
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+############################################
 # Show title
 ############################################
 st.title("Deep Research Assistant")
@@ -326,7 +333,10 @@ with st.sidebar:
             with col1:
                 # Display as a clickable button-like element that loads directly into chat
                 if st.button(f"{query}", key=f"btn_{history_key}", help="Click to load into chat"):
-                    if "messages" in st.session_state:
+                    # Ensure messages is initialized
+                    if "messages" not in st.session_state:
+                        st.session_state.messages = []
+                    else:
                         st.session_state.messages = []
                     
                     # Add the research to chat history
@@ -345,11 +355,7 @@ with st.sidebar:
 ############################################
 # Show chat history
 ############################################
-# Initialize chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-# Display chat messages
+# Display chat messages (initialization is done earlier)
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
@@ -359,6 +365,10 @@ for message in st.session_state.messages:
 ############################################
 
 if prompt := st.chat_input("What would you like me to research?"):
+    # Ensure messages is initialized
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+    
     # Show user message first
     st.chat_message("user").markdown(prompt)
     # Add user message to chat history
@@ -399,4 +409,7 @@ if prompt := st.chat_input("What would you like me to research?"):
                 response_content = final_report
 
     # Add assistant response to chat history
+    # Ensure messages is initialized
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
     st.session_state.messages.append({"role": "assistant", "content": response_content})
