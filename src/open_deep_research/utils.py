@@ -54,6 +54,10 @@ def think_tool(reflection: str) -> str:
     Returns:
         Confirmation that reflection was recorded for decision-making
     """
+    # ログを出力
+    print(f"\n🧠 THINK_TOOL CALLED:")
+    print(f"📝 Reflection: {reflection}")
+    
     return f"Reflection recorded: {reflection}"
 
 
@@ -473,7 +477,8 @@ async def get_search_tool(search_api: SearchAPI):
         return []
     
 async def get_all_tools(config: RunnableConfig):
-    tools = [tool(ResearchComplete), think_tool]  # think_toolを追加
+    # Prioritize think_tool before ResearchComplete to encourage strategic reflection first
+    tools = [think_tool, tool(ResearchComplete)]
     configurable = Configuration.from_runnable_config(config)
     search_api = SearchAPI(get_config_value(configurable.search_api))
     
