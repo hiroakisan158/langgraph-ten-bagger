@@ -205,7 +205,7 @@ def get_deep_research_config():
             "max_react_tool_calls": int(os.getenv("MAX_REACT_TOOL_CALLS", "3")),  # 減らす
             "summarization_model": os.getenv("SUMMARIZATION_MODEL", "openai:gpt-4o-mini"),
             "summarization_model_max_tokens": int(os.getenv("SUMMARIZATION_MODEL_MAX_TOKENS", "4096")),  # 減らす
-            "research_model": os.getenv("RESEARCH_MODEL", "openai:gpt-4o-mini"),
+            "research_model": os.getenv("RESEARCH_MODEL", "openai:gpt-4.1-mini"),
             "research_model_max_tokens": int(os.getenv("RESEARCH_MODEL_MAX_TOKENS", "4096")),  # 減らす
             "compression_model": os.getenv("COMPRESSION_MODEL", "openai:gpt-4o-mini"),
             "compression_model_max_tokens": int(os.getenv("COMPRESSION_MODEL_MAX_TOKENS", "4096")),  # 減らす
@@ -236,6 +236,13 @@ async def run_deep_research(user_input: str):
     except Exception as e:
         logger.error(f"Deep Research error: {e}")
         return {"error": str(e)}
+
+############################################
+# Initialize session state
+############################################
+# Initialize chat history early
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
 ############################################
 # Show title
@@ -326,7 +333,10 @@ with st.sidebar:
             with col1:
                 # Display as a clickable button-like element that loads directly into chat
                 if st.button(f"{query}", key=f"btn_{history_key}", help="Click to load into chat"):
-                    if "messages" in st.session_state:
+                    # Ensure messages is initialized
+                    if "messages" not in st.session_state:
+                        st.session_state.messages = []
+                    else:
                         st.session_state.messages = []
                     
                     # Add the research to chat history
@@ -345,11 +355,7 @@ with st.sidebar:
 ############################################
 # Show chat history
 ############################################
-# Initialize chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-# Display chat messages
+# Display chat messages (initialization is done earlier)
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
@@ -359,6 +365,10 @@ for message in st.session_state.messages:
 ############################################
 
 if prompt := st.chat_input("What would you like me to research?"):
+    # Ensure messages is initialized
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+    
     # Show user message first
     st.chat_message("user").markdown(prompt)
     # Add user message to chat history
@@ -399,4 +409,7 @@ if prompt := st.chat_input("What would you like me to research?"):
                 response_content = final_report
 
     # Add assistant response to chat history
+    # Ensure messages is initialized
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
     st.session_state.messages.append({"role": "assistant", "content": response_content})
