@@ -205,7 +205,7 @@ def get_deep_research_config():
             "max_react_tool_calls": int(os.getenv("MAX_REACT_TOOL_CALLS", "3")),  # 減らす
             "summarization_model": os.getenv("SUMMARIZATION_MODEL", "openai:gpt-4o-mini"),
             "summarization_model_max_tokens": int(os.getenv("SUMMARIZATION_MODEL_MAX_TOKENS", "4096")),  # 減らす
-            "research_model": os.getenv("RESEARCH_MODEL", "openai:gpt-4o-mini"),
+            "research_model": os.getenv("RESEARCH_MODEL", "openai:gpt-4.1-mini"),
             "research_model_max_tokens": int(os.getenv("RESEARCH_MODEL_MAX_TOKENS", "4096")),  # 減らす
             "compression_model": os.getenv("COMPRESSION_MODEL", "openai:gpt-4o-mini"),
             "compression_model_max_tokens": int(os.getenv("COMPRESSION_MODEL_MAX_TOKENS", "4096")),  # 減らす
