@@ -161,9 +161,15 @@ async def supervisor_tools(state: SupervisorState, config: RunnableConfig) -> Co
         )
     # Otherwise, conduct research and gather results.
     try:
-        all_conduct_research_calls = [tool_call for tool_call in most_recent_message.tool_calls if tool_call["name"] == "ConductResearch"]
+        # Handle all tool calls
+        all_tool_calls = most_recent_message.tool_calls
+        all_conduct_research_calls = [tool_call for tool_call in all_tool_calls if tool_call["name"] == "ConductResearch"]
+        think_tool_calls = [tool_call for tool_call in all_tool_calls if tool_call["name"] == "think_tool"]
+        
         conduct_research_calls = all_conduct_research_calls[:configurable.max_concurrent_research_units]
         overflow_conduct_research_calls = all_conduct_research_calls[configurable.max_concurrent_research_units:]
+        
+        # Handle ConductResearch calls
         coros = [
             researcher_subgraph.ainvoke({
                 "researcher_messages": [
@@ -179,6 +185,15 @@ async def supervisor_tools(state: SupervisorState, config: RunnableConfig) -> Co
                             name=tool_call["name"],
                             tool_call_id=tool_call["id"]
                         ) for observation, tool_call in zip(tool_results, conduct_research_calls)]
+        
+        # Handle think_tool calls
+        for think_call in think_tool_calls:
+            reflection = think_call["args"].get("reflection", "No reflection provided")
+            tool_messages.append(ToolMessage(
+                content=f"Reflection recorded: {reflection}",
+                name="think_tool",
+                tool_call_id=think_call["id"]
+            ))
         # Handle any tool calls made > max_concurrent_research_units
         for overflow_conduct_research_call in overflow_conduct_research_calls:
             tool_messages.append(ToolMessage(
@@ -190,7 +205,7 @@ async def supervisor_tools(state: SupervisorState, config: RunnableConfig) -> Co
         return Command(
             goto="supervisor",
             update={
-                "supervisor_messages": tool_messages,
+                "supervisor_messages": supervisor_messages + tool_messages,
                 "raw_notes": [raw_notes_concat]
             }
         )
