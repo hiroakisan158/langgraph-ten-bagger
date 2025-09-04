@@ -46,9 +46,9 @@ from open_deep_research.utils import (
     anthropic_websearch_called,
     remove_up_to_last_ai_message,
     get_api_key_for_model,
-    get_notes_from_tool_calls,
-    think_tool
+    get_notes_from_tool_calls
 )
+from open_deep_research.tools import think_tool
 
 # Initialize a configurable model that we will use throughout the agent
 configurable_model = init_chat_model(
