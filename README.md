@@ -40,7 +40,7 @@ docker run -p 8501:8501 ten-baggers-app:latest
 python -m venv .venv
 
 # 仮想環境をアクティベート 
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
 ### 2. 環境変数の設定
@@ -73,8 +73,18 @@ JQUANTS_REFRESH_TOKEN=your_actual_jquants_refresh_token
 
 ### 3. 依存関係のインストール
 
+**方法1: pip（通常）**
 ```bash
 pip install -e .
+```
+
+**方法2: uv（高速、推奨）**
+```bash
+# uvをインストール（まだの場合）
+pip install uv
+
+# 依存関係をインストール
+uv pip install -e .
 ```
 
 ### 4. アプリケーションの実行
