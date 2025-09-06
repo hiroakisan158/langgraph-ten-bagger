@@ -33,7 +33,17 @@ docker run -p 8501:8501 ten-baggers-app:latest
 
 ## セットアップ
 
-### 1. 環境変数の設定
+### 1. Python仮想環境の構築
+
+```bash
+# 仮想環境を作成
+python -m venv .venv
+
+# 仮想環境をアクティベート 
+source .venv/bin/activate
+```
+
+### 2. 環境変数の設定
 
 `.env`ファイルを作成し、必要なAPIキーを設定してください：
 
@@ -61,14 +71,23 @@ J-Quants APIを使用して日本株の株価・財務データを取得しま�
 JQUANTS_REFRESH_TOKEN=your_actual_jquants_refresh_token
 ```
 
-### 2. 依存関係のインストール
+### 3. 依存関係のインストール
 
-**pipを使用（推奨）**
+**方法1: pip（通常）**
 ```bash
 pip install -e .
 ```
 
-### 3. アプリケーションの実行
+**方法2: uv（高速、推奨）**
+```bash
+# uvをインストール（まだの場合）
+pip install uv
+
+# 依存関係をインストール
+uv pip install -e .
+```
+
+### 4. アプリケーションの実行
 
 ```bash
 streamlit run streamlit_main.py
