@@ -1,0 +1,132 @@
+{
+  "company": {
+    "code": "7203",
+    "name": "トヨタ自動車"
+  },
+  "valuation_analysis": {
+    "code": "7203",
+    "analysis_target": "2024年度 FY",
+    "stock_price": 2616.0,
+    "analysis_date": "2025-09-06",
+    "period": "2024-04-01 - 2025-03-31",
+    "fundamental_metrics": {
+      "per": 7.28,
+      "pbr": 0.95,
+      "roe_percentage": 12.92,
+      "roa_percentage": 5.09,
+      "operating_margin_percentage": 9.98,
+      "net_margin_percentage": 9.92,
+      "equity_ratio_percentage": 39.4
+    },
+    "valuation_assessment": {
+      "per_assessment": "割安",
+      "pbr_assessment": "割安",
+      "roe_assessment": "良好",
+      "overall_valuation": "割安"
+    },
+    "investment_score": {
+      "total_score": 77,
+      "max_score": 100,
+      "score_percentage": 77.0,
+      "overall_rating": "投資魅力度：高い",
+      "score_details": {
+        "per_score": 25,
+        "per_comment": "割安（25点）",
+        "pbr_score": 20,
+        "pbr_comment": "割安（20点）",
+        "roe_score": 12,
+        "roe_comment": "普通（12点）",
+        "stability_score": 10,
+        "stability_comment": "普通（10点）",
+        "profitability_score": 10,
+        "profitability_comment": "普通（10点）"
+      }
+    },
+    "risk_factors": [],
+    "investment_recommendation": "推奨",
+    "key_insights": [
+      "割安かつ高ROE企業として魅力的"
+    ]
+  },
+  "growth_analysis": {
+    "code": "7203",
+    "analysis_period": "2023-2025",
+    "quarter": "Annual",
+    "normalized_quarter": "FY",
+    "data_consistency": "全てFYデータで比較",
+    "growth_metrics": {
+      "net_sales_cagr": 3.21,
+      "profit_cagr": -1.84,
+      "eps_cagr": -0.88,
+      "latest_net_sales_growth": 0.0,
+      "latest_profit_growth": 0.0
+    },
+    "growth_trend": {
+      "revenue_trend": "減速",
+      "profit_trend": "加速",
+      "roe_trend": "悪化",
+      "consistency": "不安定"
+    },
+    "growth_quality": {
+      "profitability_trend": "悪化",
+      "efficiency_trend": "悪化"
+    },
+    "future_outlook": {
+      "growth_sustainability": "低い",
+      "acceleration_potential": "限定的"
+    },
+    "growth_score": {
+      "total_score": 10,
+      "max_score": 100,
+      "growth_rating": "成長鈍化"
+    },
+    "investment_timing": "見送り推奨",
+    "growth_catalysts": [],
+    "growth_risks": [
+      "成長の不安定性",
+      "収益性悪化傾向"
+    ],
+    "yearly_data": [
+      {
+        "year": 2023,
+        "quarter": "FY",
+        "period_type": "FY",
+        "net_sales": 45095325000000.0,
+        "operating_profit": 5352934000000.0,
+        "profit": 4944933000000.0,
+        "total_assets": 90114296000000.0,
+        "equity": 35239338000000.0,
+        "eps": 365.94,
+        "roe": 14.032423083543739,
+        "operating_margin": 11.870263713588937
+      },
+      {
+        "year": 2024,
+        "quarter": "FY",
+        "period_type": "FY",
+        "net_sales": 48036704000000.0,
+        "operating_profit": 4795586000000.0,
+        "profit": 4765086000000.0,
+        "total_assets": 93601350000000.0,
+        "equity": 36878913000000.0,
+        "eps": 359.56,
+        "roe": 12.920896014478517,
+        "operating_margin": 9.983170369057794
+      },
+      {
+        "year": 2025,
+        "quarter": "FY",
+        "period_type": "FY",
+        "net_sales": 48036704000000.0,
+        "operating_profit": 4795586000000.0,
+        "profit": 4765086000000.0,
+        "total_assets": 93601350000000.0,
+        "equity": 36878913000000.0,
+        "eps": 359.56,
+        "roe": 12.920896014478517,
+        "operating_margin": 9.983170369057794
+      }
+    ]
+  },
+  "test_timestamp": "2025-09-06T10:41:55.550610"
+}

@@ -1,0 +1,1759 @@
+{
+  "announcement": [
+    {
+      "Date": "2025-08-14",
+      "Code": "55920",
+      "CompanyName": "くすりの窓口",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "43760",
+      "CompanyName": "くふうカンパニーホールディングス",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "366A0",
+      "CompanyName": "ウェルネス・コミュニケーションズ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "70410",
+      "CompanyName": "ＣＲＧホールディングス",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "44160",
+      "CompanyName": "Ｔｒｕｅ　Ｄａｔａ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "67500",
+      "CompanyName": "エレコム",
+      "FiscalYear": "3月31日",
+      "SectorName": "電気機器",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "67310",
+      "CompanyName": "ピクセラ",
+      "FiscalYear": "9月30日",
+      "SectorName": "電気機器",
+      "FiscalQuarter": "第３四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "41930",
+      "CompanyName": "ファブリカホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "51330",
+      "CompanyName": "テリロジーホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "23510",
+      "CompanyName": "ＡＳＪ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "75220",
+      "CompanyName": "ワタミ",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "23320",
+      "CompanyName": "クエスト",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "302A0",
+      "CompanyName": "ビースタイルホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "39790",
+      "CompanyName": "うるる",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "82530",
+      "CompanyName": "クレディセゾン",
+      "FiscalYear": "3月31日",
+      "SectorName": "その他金融業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "70660",
+      "CompanyName": "ピアズ",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "70920",
+      "CompanyName": "Ｆａｓｔ　Ｆｉｔｎｅｓｓ　Ｊａｐａｎ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "78370",
+      "CompanyName": "アールシーコア",
+      "FiscalYear": "3月31日",
+      "SectorName": "その他製品",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "61900",
+      "CompanyName": "フェニックスバイオ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "39890",
+      "CompanyName": "シェアリングテクノロジー",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "14470",
+      "CompanyName": "ＳＡＡＦホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "建設業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "26730",
+      "CompanyName": "夢みつけ隊",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "44450",
+      "CompanyName": "リビン・テクノロジーズ",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "26560",
+      "CompanyName": "ベクターホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "92480",
+      "CompanyName": "人・夢・技術グループ",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "25860",
+      "CompanyName": "フルッタフルッタ",
+      "FiscalYear": "3月31日",
+      "SectorName": "食料品",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "23400",
+      "CompanyName": "極楽湯ホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "70620",
+      "CompanyName": "フレアス",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "38580",
+      "CompanyName": "ユビキタスＡＩ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "48330",
+      "CompanyName": "Ｄｅｆ　ｃｏｎｓｕｌｔｉｎｇ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "13800",
+      "CompanyName": "秋川牧園",
+      "FiscalYear": "3月31日",
+      "SectorName": "水産・農林業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "49250",
+      "CompanyName": "ハーバー研究所",
+      "FiscalYear": "3月31日",
+      "SectorName": "化学",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "18410",
+      "CompanyName": "サンユー建設",
+      "FiscalYear": "3月31日",
+      "SectorName": "建設業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "81050",
+      "CompanyName": "堀田丸正",
+      "FiscalYear": "3月31日",
+      "SectorName": "卸売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "36240",
+      "CompanyName": "アクセルマーク",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "61980",
+      "CompanyName": "キャリア",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "75710",
+      "CompanyName": "ヤマノホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "99270",
+      "CompanyName": "ワットマン",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "99890",
+      "CompanyName": "サンドラッグ",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "68900",
+      "CompanyName": "フェローテック",
+      "FiscalYear": "3月31日",
+      "SectorName": "電気機器",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "39050",
+      "CompanyName": "データセクション",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "66990",
+      "CompanyName": "ダイヤモンドエレクトリックホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "電気機器",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "99410",
+      "CompanyName": "太洋物産",
+      "FiscalYear": "9月30日",
+      "SectorName": "卸売業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "42650",
+      "CompanyName": "Ｉｎｓｔｉｔｕｔｉｏｎ　ｆｏｒ　ａ　Ｇｌｏｂａｌ　Ｓｏｃｉｅｔｙ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "50330",
+      "CompanyName": "ヌーラボ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "75780",
+      "CompanyName": "ニチリョク",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "63430",
+      "CompanyName": "フリージア・マクロス",
+      "FiscalYear": "3月31日",
+      "SectorName": "機械",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "65450",
+      "CompanyName": "インターネットインフィニティー",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "90870",
+      "CompanyName": "タカセ",
+      "FiscalYear": "3月31日",
+      "SectorName": "陸運業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "38560",
+      "CompanyName": "Ａｂａｌａｎｃｅ",
+      "FiscalYear": "3月31日",
+      "SectorName": "電気機器",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "69420",
+      "CompanyName": "ソフィアホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "64940",
+      "CompanyName": "ＮＦＫホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "機械",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "89380",
+      "CompanyName": "グローム・ホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "不動産業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "87460",
+      "CompanyName": "ｕｎｂａｎｋｅｄ",
+      "FiscalYear": "3月31日",
+      "SectorName": "証券、商品先物取引業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "43460",
+      "CompanyName": "ＮＥＸＹＺ．Ｇｒｏｕｐ",
+      "FiscalYear": "9月30日",
+      "SectorName": "その他金融業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "73450",
+      "CompanyName": "アイ・パートナーズフィナンシャル",
+      "FiscalYear": "3月31日",
+      "SectorName": "その他金融業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "39000",
+      "CompanyName": "クラウドワークス",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "36940",
+      "CompanyName": "オプティム",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "31850",
+      "CompanyName": "夢展望",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "31750",
+      "CompanyName": "エー・ピーホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "58450",
+      "CompanyName": "全保連",
+      "FiscalYear": "3月31日",
+      "SectorName": "その他金融業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "61760",
+      "CompanyName": "ブランジスタ",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "76770",
+      "CompanyName": "ヤシマキザイ",
+      "FiscalYear": "3月31日",
+      "SectorName": "卸売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "39630",
+      "CompanyName": "シンクロ・フード",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "177A0",
+      "CompanyName": "コージンバイオ",
+      "FiscalYear": "3月31日",
+      "SectorName": "化学",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "60940",
+      "CompanyName": "フリークアウト・ホールディングス",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "35610",
+      "CompanyName": "力の源ホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "87370",
+      "CompanyName": "あかつき本社",
+      "FiscalYear": "3月31日",
+      "SectorName": "証券、商品先物取引業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "60390",
+      "CompanyName": "日本動物高度医療センター",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "58560",
+      "CompanyName": "エルアイイーエイチ",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "14430",
+      "CompanyName": "技研ホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "建設業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "147A0",
+      "CompanyName": "ソラコム",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "43010",
+      "CompanyName": "アミューズ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "48140",
+      "CompanyName": "ネクストウェア",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "67860",
+      "CompanyName": "ＲＶＨ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "70720",
+      "CompanyName": "インティメート・マージャー",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "55710",
+      "CompanyName": "エキサイトホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "36740",
+      "CompanyName": "オークファン",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "71140",
+      "CompanyName": "フーディソン",
+      "FiscalYear": "3月31日",
+      "SectorName": "卸売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "99800",
+      "CompanyName": "ＭＲＫホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "21580",
+      "CompanyName": "ＦＲＯＮＴＥＯ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "52590",
+      "CompanyName": "ＢＢＤイニシアティブ",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "94670",
+      "CompanyName": "アルファポリス",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "40310",
+      "CompanyName": "片倉コープアグリ",
+      "FiscalYear": "3月31日",
+      "SectorName": "化学",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "44250",
+      "CompanyName": "Ｋｕｄａｎ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "70580",
+      "CompanyName": "共栄セキュリティーサービス",
+      "FiscalYear": "7月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "80700",
+      "CompanyName": "東京産業",
+      "FiscalYear": "3月31日",
+      "SectorName": "卸売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "53550",
+      "CompanyName": "日本坩堝",
+      "FiscalYear": "3月31日",
+      "SectorName": "ガラス・土石製品",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "76350",
+      "CompanyName": "杉田エース",
+      "FiscalYear": "3月31日",
+      "SectorName": "卸売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "55870",
+      "CompanyName": "インバウンドプラットフォーム",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "43870",
+      "CompanyName": "ＺＵＵ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "33970",
+      "CompanyName": "トリドールホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "78000",
+      "CompanyName": "アミファ",
+      "FiscalYear": "9月30日",
+      "SectorName": "その他製品",
+      "FiscalQuarter": "第３四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "32240",
+      "CompanyName": "ゼネラル・オイスター",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "33580",
+      "CompanyName": "ワイエスフード",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "70910",
+      "CompanyName": "リビングプラットフォーム",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "60450",
+      "CompanyName": "レントラックス",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "37530",
+      "CompanyName": "フライトソリューションズ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "173A0",
+      "CompanyName": "ハンモック",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "70840",
+      "CompanyName": "Ｓｍｉｌｅ　Ｈｏｌｄｉｎｇｓ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "28760",
+      "CompanyName": "デルソーレ",
+      "FiscalYear": "3月31日",
+      "SectorName": "食料品",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "60920",
+      "CompanyName": "エンバイオ・ホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "23880",
+      "CompanyName": "ウェッジホールディングス",
+      "FiscalYear": "9月30日",
+      "SectorName": "その他金融業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "44210",
+      "CompanyName": "ディ・アイ・システム",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "80660",
+      "CompanyName": "三谷商事",
+      "FiscalYear": "3月31日",
+      "SectorName": "卸売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "52520",
+      "CompanyName": "日本ナレッジ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "36910",
+      "CompanyName": "デジタルプラス",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "44960",
+      "CompanyName": "コマースＯｎｅホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "76380",
+      "CompanyName": "ＮＥＷ　ＡＲＴ　ＨＯＬＤＩＮＧＳ",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "33750",
+      "CompanyName": "ＺＯＡ",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "73890",
+      "CompanyName": "あいちフィナンシャルグループ",
+      "FiscalYear": "3月31日",
+      "SectorName": "銀行業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "70780",
+      "CompanyName": "ＩＮＣＬＵＳＩＶＥ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "95530",
+      "CompanyName": "マイクロアド",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "36870",
+      "CompanyName": "フィックスターズ",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "95540",
+      "CompanyName": "ＡＶｉＣ",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "41650",
+      "CompanyName": "プレイド",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "70420",
+      "CompanyName": "アクセスグループ・ホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "62290",
+      "CompanyName": "オーケーエム",
+      "FiscalYear": "3月31日",
+      "SectorName": "機械",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "80430",
+      "CompanyName": "スターゼン",
+      "FiscalYear": "3月31日",
+      "SectorName": "卸売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "39330",
+      "CompanyName": "チエル",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "56210",
+      "CompanyName": "ヒューマンテクノロジーズ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "71190",
+      "CompanyName": "ハルメクホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "57210",
+      "CompanyName": "エス・サイエンス",
+      "FiscalYear": "3月31日",
+      "SectorName": "非鉄金属",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "36860",
+      "CompanyName": "ディー・エル・イー",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "65630",
+      "CompanyName": "みらいワークス",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "72730",
+      "CompanyName": "イクヨ",
+      "FiscalYear": "3月31日",
+      "SectorName": "輸送用機器",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "44370",
+      "CompanyName": "ｇｏｏｄｄａｙｓホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "24980",
+      "CompanyName": "オリエンタルコンサルタンツホールディングス",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "44360",
+      "CompanyName": "ミンカブ・ジ・インフォノイド",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "41670",
+      "CompanyName": "ココペリ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "36610",
+      "CompanyName": "エムアップホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "44990",
+      "CompanyName": "Ｓｐｅｅｅ",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "68190",
+      "CompanyName": "伊豆シャボテンリゾート",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "76990",
+      "CompanyName": "オムニ・プラス・システム・リミテッド",
+      "FiscalYear": "3月31日",
+      "SectorName": "卸売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース（外国）"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "195A0",
+      "CompanyName": "ＭＵＳＣＡＴ　ＧＲＯＵＰ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "62930",
+      "CompanyName": "日精樹脂工業",
+      "FiscalYear": "3月31日",
+      "SectorName": "機械",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "86300",
+      "CompanyName": "ＳＯＭＰＯホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "保険業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "29980",
+      "CompanyName": "クリアル",
+      "FiscalYear": "3月31日",
+      "SectorName": "不動産業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "77790",
+      "CompanyName": "ＣＹＢＥＲＤＹＮＥ",
+      "FiscalYear": "3月31日",
+      "SectorName": "精密機器",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "254A0",
+      "CompanyName": "ＡＩフュージョンキャピタルグループ",
+      "FiscalYear": "3月31日",
+      "SectorName": "証券、商品先物取引業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "26540",
+      "CompanyName": "アスモ",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "35560",
+      "CompanyName": "リネットジャパングループ",
+      "FiscalYear": "9月30日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "160A0",
+      "CompanyName": "アズパートナーズ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "52730",
+      "CompanyName": "三谷セキサン",
+      "FiscalYear": "3月31日",
+      "SectorName": "ガラス・土石製品",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "46500",
+      "CompanyName": "ＳＤエンターテイメント",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "65790",
+      "CompanyName": "ログリー",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "21830",
+      "CompanyName": "リニカル",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "39930",
+      "CompanyName": "ＰＫＳＨＡ　Ｔｅｃｈｎｏｌｏｇｙ",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "49900",
+      "CompanyName": "昭和化学工業",
+      "FiscalYear": "3月31日",
+      "SectorName": "化学",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "60700",
+      "CompanyName": "キャリアリンク",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "74940",
+      "CompanyName": "コナカ",
+      "FiscalYear": "9月30日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "31330",
+      "CompanyName": "海帆",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "76860",
+      "CompanyName": "ひとまいる",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "88360",
+      "CompanyName": "ＲＩＳＥ",
+      "FiscalYear": "3月31日",
+      "SectorName": "不動産業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "47540",
+      "CompanyName": "トスネット",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "27500",
+      "CompanyName": "石光商事",
+      "FiscalYear": "3月31日",
+      "SectorName": "卸売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "43370",
+      "CompanyName": "ぴあ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "65740",
+      "CompanyName": "コンヴァノ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "60690",
+      "CompanyName": "トレンダーズ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "78360",
+      "CompanyName": "アビックス",
+      "FiscalYear": "3月31日",
+      "SectorName": "その他製品",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "23340",
+      "CompanyName": "イオレ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "39360",
+      "CompanyName": "グローバルウェイ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "38250",
+      "CompanyName": "リミックスポイント",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "41770",
+      "CompanyName": "ｉ‐ｐｌｕｇ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "87830",
+      "CompanyName": "ＧＦＡ",
+      "FiscalYear": "8月31日",
+      "SectorName": "その他金融業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "42560",
+      "CompanyName": "サインド",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "39620",
+      "CompanyName": "チェンジホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "39270",
+      "CompanyName": "フーバーブレイン",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "65990",
+      "CompanyName": "エブレン",
+      "FiscalYear": "3月31日",
+      "SectorName": "電気機器",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "42600",
+      "CompanyName": "ハイブリッドテクノロジーズ",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "46910",
+      "CompanyName": "ワシントンホテル",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "85180",
+      "CompanyName": "日本アジア投資",
+      "FiscalYear": "3月31日",
+      "SectorName": "証券、商品先物取引業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "206A0",
+      "CompanyName": "ＰＲＩＳＭ　ＢｉｏＬａｂ",
+      "FiscalYear": "9月30日",
+      "SectorName": "医薬品",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "40550",
+      "CompanyName": "ティアンドエスグループ",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "30420",
+      "CompanyName": "セキュアヴェイル",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "38450",
+      "CompanyName": "アイフリークモバイル",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "48820",
+      "CompanyName": "ペルセウスプロテオミクス",
+      "FiscalYear": "3月31日",
+      "SectorName": "医薬品",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "41790",
+      "CompanyName": "ジーネクスト",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "60950",
+      "CompanyName": "メドピア",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "26520",
+      "CompanyName": "まんだらけ",
+      "FiscalYear": "9月30日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "73830",
+      "CompanyName": "ネットプロテクションズホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "その他金融業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "17110",
+      "CompanyName": "ＳＤＳホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "建設業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "37500",
+      "CompanyName": "ＡＤＲ１２０Ｓ",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "60820",
+      "CompanyName": "ライドオンエクスプレスホールディングス",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "264A0",
+      "CompanyName": "Ｓｃｈｏｏ",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "60960",
+      "CompanyName": "レアジョブ",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "67060",
+      "CompanyName": "電気興業",
+      "FiscalYear": "3月31日",
+      "SectorName": "電気機器",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "52580",
+      "CompanyName": "トランザクション・メディア・ネットワークス",
+      "FiscalYear": "3月31日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "57070",
+      "CompanyName": "東邦亜鉛",
+      "FiscalYear": "3月31日",
+      "SectorName": "非鉄金属",
+      "FiscalQuarter": "第１四半期",
+      "Section": "プライム"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "40590",
+      "CompanyName": "まぐまぐ",
+      "FiscalYear": "9月30日",
+      "SectorName": "情報・通信業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "92440",
+      "CompanyName": "デジタリフト",
+      "FiscalYear": "9月30日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第３四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "49320",
+      "CompanyName": "アルマード",
+      "FiscalYear": "3月31日",
+      "SectorName": "化学",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "70310",
+      "CompanyName": "インバウンドテック",
+      "FiscalYear": "3月31日",
+      "SectorName": "サービス業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "76940",
+      "CompanyName": "いつも",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "グロース"
+    },
+    {
+      "Date": "2025-08-14",
+      "Code": "75240",
+      "CompanyName": "マルシェ",
+      "FiscalYear": "3月31日",
+      "SectorName": "小売業",
+      "FiscalQuarter": "第１四半期",
+      "Section": "スタンダード"
+    }
+  ]
+}
