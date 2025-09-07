@@ -245,10 +245,10 @@ def main():
     try:
         # J-Quants APIクライアントを初期化
         api = JQuantsAPI()
-        
-        # 楽天（8697）の企業情報を取得
-        print("=== 楽天の企業情報 ===")
-        company_info = api.get_company_info("8697")
+
+        # ソニーグループ（6758）の企業情報を取得
+        print("=== ソニーグループ（6758）の企業情報 ===")
+        company_info = api.get_company_info("6758")
         
         # デバッグ: レスポンス構造を確認
         print(f"DEBUG: 企業情報レスポンスのキー: {list(company_info.keys())}")
@@ -266,7 +266,7 @@ def main():
         
         # 財務情報を取得（基本的な財務指標）
         print("\n=== 財務情報 ===")
-        financial_data = api.get_financial_statements("8697")
+        financial_data = api.get_financial_statements("6758")
         print(f"DEBUG: 財務情報レスポンスのキー: {list(financial_data.keys())}")
         if 'statements' in financial_data:
             print(f"取得データ数: {len(financial_data.get('statements', []))}")
@@ -278,7 +278,7 @@ def main():
 
         # 株価情報を取得（企業コードのみ）
         print("\n=== 株価情報 ===")
-        stock_data = api.get_stock_price(code="4493")
+        stock_data = api.get_stock_price(code="6758")
         print(f"DEBUG: 株価情報レスポンスのキー: {list(stock_data.keys())}")
         if 'daily_quotes' in stock_data:
             print(f"取得データ数: {len(stock_data.get('daily_quotes', []))}")
@@ -293,7 +293,7 @@ def main():
 
         # 決算発表予定日を取得
         print("\n=== 決算発表予定日 ===")
-        forecast_data = api.get_earnings_forecast("8697")
+        forecast_data = api.get_earnings_forecast("6758")
         print(f"DEBUG: 決算情報レスポンスのキー: {list(forecast_data.keys())}")
         if 'announcement' in forecast_data:
             print(f"取得データ数: {len(forecast_data.get('announcement', []))}")

@@ -1,0 +1,243 @@
+{
+  "company": {
+    "code": "9984",
+    "name": "ソフトバンクグループ"
+  },
+  "valuation_analysis": {
+    "code": "9984",
+    "analysis_target": "2024年度 FY",
+    "stock_price": 8962.0,
+    "analysis_date": "2025-09-07",
+    "period": "2023-04-01 - 2024-03-31",
+    "fundamental_metrics": {
+      "pbr": 1.2,
+      "roe_percentage": -1.72,
+      "roa_percentage": -0.49,
+      "net_margin_percentage": -3.37,
+      "equity_ratio_percentage": 28.33
+    },
+    "valuation_assessment": {
+      "pbr_assessment": "適正範囲",
+      "roe_assessment": "改善余地あり",
+      "overall_valuation": "適正"
+    },
+    "investment_score": {
+      "total_score": 20,
+      "max_score": 100,
+      "score_percentage": 20.0,
+      "overall_rating": "投資魅力度：低い",
+      "score_details": {
+        "pbr_score": 15,
+        "pbr_comment": "やや割安（15点）",
+        "roe_score": 0,
+        "roe_comment": "低い（0点）",
+        "stability_score": 5,
+        "stability_comment": "やや不安（5点）"
+      }
+    },
+    "risk_factors": [
+      "自己資本比率低（財務安定性リスク）",
+      "営業利益率低（収益性リスク）"
+    ],
+    "investment_recommendation": "非推奨",
+    "key_insights": []
+  },
+  "growth_analysis": {
+    "code": "9984",
+    "analysis_period": "2021-2025",
+    "quarter": "Annual",
+    "normalized_quarter": "FY",
+    "data_consistency": "全てFYデータで比較",
+    "growth_metrics": {
+      "net_sales_cagr": 6.51,
+      "profit_cagr": -30.66,
+      "eps_cagr": -26.11,
+      "latest_net_sales_growth": 7.21,
+      "latest_profit_growth": -606.63
+    },
+    "growth_trend": {
+      "revenue_trend": "安定的減速",
+      "revenue_analysis": {
+        "average_growth_rate": 6.55,
+        "recent_average": 5.02,
+        "early_average": 8.08,
+        "volatility": 2.79,
+        "yearly_growth_rates": [
+          10.54,
+          5.61,
+          2.83,
+          7.21
+        ]
+      },
+      "profit_trend": "利益減少",
+      "profit_analysis": {
+        "average_growth_rate": -134.24,
+        "data_points": 1,
+        "yearly_growth_rates": [
+          -134.24
+        ]
+      },
+      "roe_trend": "ROE悪化傾向",
+      "roe_analysis": {
+        "average_change": -8.36,
+        "recent_change": 8.69,
+        "roe_values": [
+          41.72,
+          -14.59,
+          -9.11,
+          -1.72,
+          8.27
+        ]
+      },
+      "consistency": "高い一貫性",
+      "consistency_analysis": {
+        "net_sales_consistency": {
+          "level": "非常に一貫した成長",
+          "growth_ratio": 1.0,
+          "decline_ratio": 0.0,
+          "periods": {
+            "growth": 4,
+            "decline": 0,
+            "flat": 0,
+            "total": 4
+          }
+        },
+        "profit_consistency": {
+          "level": "非常に不安定",
+          "growth_ratio": 0.0,
+          "decline_ratio": 0.25,
+          "periods": {
+            "growth": 0,
+            "decline": 1,
+            "flat": 0,
+            "total": 4
+          }
+        },
+        "eps_consistency": {
+          "level": "非常に不安定",
+          "growth_ratio": 0.0,
+          "decline_ratio": 0.25,
+          "periods": {
+            "growth": 0,
+            "decline": 1,
+            "flat": 0,
+            "total": 4
+          }
+        }
+      },
+      "overall_consistency_score": 0.6
+    },
+    "growth_quality": {
+      "efficiency_trend": "悪化"
+    },
+    "future_outlook": {
+      "growth_sustainability": "中程度",
+      "acceleration_potential": "限定的"
+    },
+    "growth_score": {
+      "total_score": 30,
+      "max_score": 100,
+      "growth_rating": "成長鈍化"
+    },
+    "investment_timing": "見送り推奨",
+    "growth_catalysts": [],
+    "growth_risks": [],
+    "yearly_growth_rates": [
+      {
+        "year": 2022,
+        "previous_year": 2021,
+        "net_sales_growth_rate": 10.54,
+        "profit_growth_rate": -134.24,
+        "eps_growth_rate": -138.88,
+        "roe_growth_rate": -134.97
+      },
+      {
+        "year": 2023,
+        "previous_year": 2022,
+        "net_sales_growth_rate": 5.61,
+        "profit_growth_rate": -43.2,
+        "eps_growth_rate": -35.95,
+        "roe_growth_rate": -37.56
+      },
+      {
+        "year": 2024,
+        "previous_year": 2023,
+        "net_sales_growth_rate": 2.83,
+        "profit_growth_rate": -76.53,
+        "eps_growth_rate": -73.79,
+        "roe_growth_rate": -81.12
+      },
+      {
+        "year": 2025,
+        "previous_year": 2024,
+        "net_sales_growth_rate": 7.21,
+        "profit_growth_rate": -606.63,
+        "eps_growth_rate": -556.65,
+        "roe_growth_rate": -580.64
+      }
+    ],
+    "yearly_data": [
+      {
+        "year": 2021,
+        "quarter": "FY",
+        "period_type": "FY",
+        "net_sales": 5628167000000.0,
+        "operating_profit": null,
+        "profit": 4987962000000.0,
+        "total_assets": 45750453000000.0,
+        "equity": 11955593000000.0,
+        "eps": 2619.61,
+        "roe": 41.7207410790916
+      },
+      {
+        "year": 2022,
+        "quarter": "FY",
+        "period_type": "FY",
+        "net_sales": 6221534000000.0,
+        "operating_profit": null,
+        "profit": -1708029000000.0,
+        "total_assets": 47544670000000.0,
+        "equity": 11707762000000.0,
+        "eps": -1018.58,
+        "roe": -14.588859937535457
+      },
+      {
+        "year": 2023,
+        "quarter": "FY",
+        "period_type": "FY",
+        "net_sales": 6570439000000.0,
+        "operating_profit": null,
+        "profit": -970144000000.0,
+        "total_assets": 43936368000000.0,
+        "equity": 10649215000000.0,
+        "eps": -652.37,
+        "roe": -9.110004821951664
+      },
+      {
+        "year": 2024,
+        "quarter": "FY",
+        "period_type": "FY",
+        "net_sales": 6756500000000.0,
+        "operating_profit": null,
+        "profit": -227646000000.0,
+        "total_assets": 46724243000000.0,
+        "equity": 13237169000000.0,
+        "eps": -170.99,
+        "roe": -1.7197483842655479
+      },
+      {
+        "year": 2025,
+        "quarter": "FY",
+        "period_type": "FY",
+        "net_sales": 7243752000000.0,
+        "operating_profit": null,
+        "profit": 1153332000000.0,
+        "total_assets": 45013756000000.0,
+        "equity": 13953026000000.0,
+        "eps": 780.82,
+        "roe": 8.26581990171881
+      }
+    ]
+  },
+  "test_timestamp": "2025-09-07T22:37:56.979423"
+}

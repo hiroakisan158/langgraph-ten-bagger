@@ -118,18 +118,20 @@ def get_quarterly_financial_data(financial_data: Dict[str, Any], quarter: Option
     # 年度でフィルタ
     if year is not None:
         # 指定年度の決算データを検索
-        # 年度は企業により決算期が異なるため、柔軟に対応
-        # 例: 2024年度 → 2024年または2025年の決算期末日
+        # 年度は決算期末日で判定（例: 2024年度 → 決算期末日が2024年3月31日）
         temp_filtered = []
         for s in filtered_statements:
             fiscal_year_end = s.get("CurrentFiscalYearEndDate", "")
             if fiscal_year_end:
-                # 決算期末日から年度を判定
-                if fiscal_year_end.startswith(str(year)) or fiscal_year_end.startswith(str(year + 1)):
-                    # 期首日も確認して正確な年度を判定
-                    fiscal_year_start = s.get("CurrentFiscalYearStartDate", "")
-                    if fiscal_year_start.startswith(str(year)):
+                # 決算期末日から年度を判定（YYYY-MM-DD形式）
+                try:
+                    end_year = int(fiscal_year_end[:4])
+                    # 指定年度の決算期末日は指定年の3月31日が一般的
+                    # 例: 2024年度 → 2024-03-31が期末
+                    if end_year == year:
                         temp_filtered.append(s)
+                except (ValueError, IndexError):
+                    continue
         filtered_statements = temp_filtered
     
     if not filtered_statements:
@@ -304,7 +306,7 @@ def calculate_investment_attractiveness_score(ratios: Dict[str, Any], financials
     }
 
 
-@tool(description=VALUATION_ANALYSIS_DESCRIPTION)
+# @tool(description=VALUATION_ANALYSIS_DESCRIPTION)
 async def analyze_stock_valuation_tool(
     code: str,
     quarter: Optional[str] = None,
@@ -552,7 +554,7 @@ async def analyze_stock_valuation_tool(
         }
 
 
-@tool(description=GROWTH_ANALYSIS_DESCRIPTION)
+# @tool(description=GROWTH_ANALYSIS_DESCRIPTION)
 async def analyze_growth_potential_tool(
     code: str,
     analysis_years: int = 3,
@@ -580,11 +582,26 @@ async def analyze_growth_potential_tool(
                     "latest_revenue_growth": "最新年売上成長率（%）",
                     "latest_profit_growth": "最新年利益成長率（%）"
                 },
+                "yearly_growth_rates": [
+                    {
+                        "year": "対象年",
+                        "previous_year": "比較対象前年",
+                        "net_sales_growth_rate": "売上成長率（%）",
+                        "profit_growth_rate": "利益成長率（%）",
+                        "eps_growth_rate": "EPS成長率（%）",
+                        "roe_growth_rate": "ROE成長率（%）"
+                    }
+                ],
                 "growth_trend": {
-                    "revenue_trend": "売上トレンド（加速/安定/減速）",
-                    "profit_trend": "利益トレンド", 
-                    "roe_trend": "ROEトレンド",
-                    "consistency": "成長の一貫性評価"
+                    "revenue_trend": "売上トレンド（安定的加速/不安定な加速/安定成長/やや不安定/非常に不安定）",
+                    "profit_trend": "利益トレンド（安定的利益拡大/不安定な利益拡大/安定利益成長/やや不安定な利益/非常に不安定な利益）", 
+                    "roe_trend": "ROEトレンド（持続的ROE改善/緩やかROE改善/ROE横ばい/ROE悪化傾向）",
+                    "consistency": "成長の一貫性評価（非常に高い一貫性/高い一貫性/中程度の一貫性/やや不安定/非常に不安定）",
+                    "revenue_analysis": "売上詳細分析（平均成長率、変動性、年次成長率など）",
+                    "profit_analysis": "利益詳細分析（平均成長率、変動性、年次成長率など）",
+                    "roe_analysis": "ROE詳細分析（平均変化、ROE推移など）",
+                    "consistency_analysis": "各指標の詳細一貫性分析",
+                    "overall_consistency_score": "総合一貫性スコア"
                 },
                 "growth_quality": {
                     "profitability_trend": "収益性改善傾向",
@@ -609,7 +626,7 @@ async def analyze_growth_potential_tool(
         await rate_limit_delay()
         api = JQuantsAPI()
         
-        # 複数年のデータを取得
+        # 複数年のデータを取得（データ取得優先版）
         current_year = datetime.now().year
         yearly_data = []
         
@@ -631,15 +648,16 @@ async def analyze_growth_potential_tool(
                         target_statement = max(annual_statements, key=lambda x: x.get("DisclosedDate", ""))
                 
                 if target_statement:
+                    # データが取得できる場合は追加（重複チェックを緩和）
                     yearly_data.append({
                         "year": year,
                         "quarter": normalized_quarter or "FY",  # 正規化された四半期を使用
                         "data": target_statement
                     })
         
-        if len(yearly_data) < 2:
+        if len(yearly_data) < 1:
             return {
-                "error": f"成長性分析には最低2年分の{normalized_quarter or quarter}データが必要です",
+                "error": f"成長性分析には最低1年分の{normalized_quarter or quarter}データが必要です",
                 "code": code,
                 "quarter": quarter,
                 "normalized_quarter": normalized_quarter,
@@ -677,26 +695,94 @@ async def analyze_growth_potential_tool(
             
             metrics_by_year.append(metrics)
         
-        # CAGR計算
-        first_year = metrics_by_year[0]
-        last_year = metrics_by_year[-1]
-        years_span = last_year["year"] - first_year["year"]
-        
+        # CAGR計算（データ範囲に応じて柔軟に対応）
         growth_metrics = {}
-        if years_span > 0:
-            for metric in ["net_sales", "profit", "eps"]:
-                first_value = first_year.get(metric)
-                last_value = last_year.get(metric)
-                
-                if (first_value is not None and last_value is not None and 
-                    first_value > 0 and last_value > 0):
-                    cagr = ((last_value / first_value) ** (1/years_span) - 1) * 100
-                    growth_metrics[f"{metric}_cagr"] = round(cagr, 2)
+        if len(metrics_by_year) >= 2:
+            first_year = metrics_by_year[0]
+            last_year = metrics_by_year[-1]
+            years_span = last_year["year"] - first_year["year"]
+            
+            if years_span > 0:
+                for metric in ["net_sales", "profit", "eps"]:
+                    first_value = first_year.get(metric)
+                    last_value = last_year.get(metric)
+                    
+                    if (first_value is not None and last_value is not None and 
+                        first_value > 0 and last_value > 0):
+                        cagr = ((last_value / first_value) ** (1/years_span) - 1) * 100
+                        growth_metrics[f"{metric}_cagr"] = round(cagr, 2)
+        elif len(metrics_by_year) == 1:
+            # 1年のデータしかない場合は、基本情報のみ提供
+            growth_metrics["data_note"] = "1年分のデータのみ - 成長率計算不可"
         
-        # 最新年の成長率計算
+        # 各年成長率を計算（データがある範囲で計算）
+        yearly_growth_rates = []
+        for i in range(1, len(metrics_by_year)):
+            current_year_data = metrics_by_year[i]
+            previous_year_data = metrics_by_year[i-1]
+            
+            year_growth = {
+                "year": current_year_data["year"],
+                "previous_year": previous_year_data["year"]
+            }
+            
+            # 各指標の前年比成長率を計算（データがあれば計算）
+            is_duplicate_data = True
+            for metric in ["net_sales", "profit", "eps"]:
+                current_value = current_year_data.get(metric)
+                previous_value = previous_year_data.get(metric)
+                
+                # 重複データチェック
+                if current_value != previous_value:
+                    is_duplicate_data = False
+                
+                if (current_value is not None and previous_value is not None and 
+                    previous_value != 0):
+                    growth_rate = ((current_value - previous_value) / previous_value) * 100
+                    year_growth[f"{metric}_growth_rate"] = round(growth_rate, 2)
+                    
+                    # 重複データの場合は注釈を追加
+                    if current_value == previous_value:
+                        year_growth[f"{metric}_growth_note"] = f"注意: {current_year_data['year']}年と{previous_year_data['year']}年のデータが同一（重複データの可能性）"
+                else:
+                    year_growth[f"{metric}_growth_rate"] = None
+            
+            # ROE成長率も計算
+            current_roe = current_year_data.get("roe")
+            previous_roe = previous_year_data.get("roe")
+            if (current_roe is not None and previous_roe is not None and 
+                previous_roe != 0):
+                roe_growth = ((current_roe - previous_roe) / previous_roe) * 100
+                year_growth["roe_growth_rate"] = round(roe_growth, 2)
+                
+                # ROEも重複チェック
+                if current_roe == previous_roe:
+                    year_growth["roe_growth_note"] = f"注意: {current_year_data['year']}年と{previous_year_data['year']}年のROEが同一（重複データの可能性）"
+            else:
+                year_growth["roe_growth_rate"] = None
+            
+            # 重複データの警告メッセージを追加
+            if is_duplicate_data:
+                year_growth["data_warning"] = f"警告: {current_year_data['year']}年のデータが{previous_year_data['year']}年と完全に同一です。将来予測データまたは重複データの可能性があります。"
+            
+            # データが少しでもあれば成長率データとして追加
+            if any(year_growth[f"{m}_growth_rate"] is not None for m in ["net_sales", "profit", "eps"]):
+                yearly_growth_rates.append(year_growth)
+        
+        # 最新年の成長率（重複データを考慮して計算）
         if len(metrics_by_year) >= 2:
             latest = metrics_by_year[-1]
             previous = metrics_by_year[-2]
+            
+            # 重複データかどうかをチェック
+            is_latest_duplicate = True
+            for check_metric in ["net_sales", "profit"]:
+                if latest.get(check_metric) != previous.get(check_metric):
+                    is_latest_duplicate = False
+                    break
+            
+            if is_latest_duplicate:
+                growth_metrics["latest_data_warning"] = f"注意: {latest['year']}年のデータが{previous['year']}年と同一です"
             
             for metric in ["net_sales", "profit"]:
                 current_value = latest.get(metric)
@@ -707,61 +793,252 @@ async def analyze_growth_potential_tool(
                     growth_rate = ((current_value - previous_value) / previous_value) * 100
                     growth_metrics[f"latest_{metric}_growth"] = round(growth_rate, 2)
         
-        # 成長トレンド分析
+        # 成長トレンド分析（改善版）
         growth_trend = {}
         
-        # 売上トレンド
+        # 売上トレンド分析（データがある範囲で分析）
         revenue_values = [m.get("net_sales") for m in metrics_by_year if m.get("net_sales")]
-        if len(revenue_values) >= 3:
-            recent_growth = revenue_values[-1] / revenue_values[-2] - 1 if revenue_values[-2] > 0 else 0
-            past_growth = revenue_values[-2] / revenue_values[-3] - 1 if revenue_values[-3] > 0 else 0
+        if len(revenue_values) >= 2:  # 最低2年あれば分析
+            # 各年の成長率を計算
+            revenue_growth_rates = []
+            for i in range(1, len(revenue_values)):
+                if revenue_values[i-1] > 0:
+                    growth_rate = (revenue_values[i] / revenue_values[i-1] - 1) * 100
+                    revenue_growth_rates.append(growth_rate)
             
-            if recent_growth > past_growth * 1.1:
-                growth_trend["revenue_trend"] = "加速"
-            elif recent_growth < past_growth * 0.9:
-                growth_trend["revenue_trend"] = "減速"
-            else:
-                growth_trend["revenue_trend"] = "安定"
+            if len(revenue_growth_rates) >= 1:
+                # 成長率の平均と傾向を分析
+                avg_growth = sum(revenue_growth_rates) / len(revenue_growth_rates)
+                
+                # データ点数に応じた分析
+                if len(revenue_growth_rates) >= 3:
+                    recent_avg = sum(revenue_growth_rates[-2:]) / 2
+                    early_avg = sum(revenue_growth_rates[:2]) / 2 if len(revenue_growth_rates) >= 2 else revenue_growth_rates[0]
+                    
+                    # 成長率の標準偏差で安定性を評価
+                    growth_variance = sum([(x - avg_growth) ** 2 for x in revenue_growth_rates]) / len(revenue_growth_rates)
+                    growth_std = growth_variance ** 0.5
+                    
+                    # トレンド判定
+                    if recent_avg > early_avg + 2:
+                        if growth_std < 5:
+                            growth_trend["revenue_trend"] = "安定的加速"
+                        else:
+                            growth_trend["revenue_trend"] = "不安定な加速"
+                    elif recent_avg < early_avg - 2:
+                        if growth_std < 5:
+                            growth_trend["revenue_trend"] = "安定的減速"
+                        else:
+                            growth_trend["revenue_trend"] = "不安定な減速"
+                    else:
+                        if growth_std < 3:
+                            growth_trend["revenue_trend"] = "安定成長"
+                        elif growth_std < 8:
+                            growth_trend["revenue_trend"] = "やや不安定"
+                        else:
+                            growth_trend["revenue_trend"] = "非常に不安定"
+                    
+                    growth_trend["revenue_analysis"] = {
+                        "average_growth_rate": round(avg_growth, 2),
+                        "recent_average": round(recent_avg, 2),
+                        "early_average": round(early_avg, 2),
+                        "volatility": round(growth_std, 2),
+                        "yearly_growth_rates": [round(x, 2) for x in revenue_growth_rates]
+                    }
+                else:
+                    # データ点数が少ない場合は簡易分析
+                    growth_trend["revenue_trend"] = "安定成長" if avg_growth > 0 else "減少傾向"
+                    growth_trend["revenue_analysis"] = {
+                        "average_growth_rate": round(avg_growth, 2),
+                        "data_points": len(revenue_growth_rates),
+                        "yearly_growth_rates": [round(x, 2) for x in revenue_growth_rates]
+                    }
         
-        # 利益トレンド
+        # 利益トレンド分析（データがある範囲で分析）
         profit_values = [m.get("profit") for m in metrics_by_year if m.get("profit")]
-        if len(profit_values) >= 3:
-            recent_profit_growth = profit_values[-1] / profit_values[-2] - 1 if profit_values[-2] > 0 else 0
-            past_profit_growth = profit_values[-2] / profit_values[-3] - 1 if profit_values[-3] > 0 else 0
+        if len(profit_values) >= 2:  # 最低2年あれば分析
+            # 各年の利益成長率を計算
+            profit_growth_rates = []
+            for i in range(1, len(profit_values)):
+                if profit_values[i-1] > 0:
+                    growth_rate = (profit_values[i] / profit_values[i-1] - 1) * 100
+                    profit_growth_rates.append(growth_rate)
             
-            if recent_profit_growth > past_profit_growth * 1.1:
-                growth_trend["profit_trend"] = "加速"
-            elif recent_profit_growth < past_profit_growth * 0.9:
-                growth_trend["profit_trend"] = "減速"
-            else:
-                growth_trend["profit_trend"] = "安定"
+            if len(profit_growth_rates) >= 1:
+                # 利益成長率の平均と傾向を分析
+                avg_profit_growth = sum(profit_growth_rates) / len(profit_growth_rates)
+                
+                # データ点数に応じた分析
+                if len(profit_growth_rates) >= 3:
+                    recent_profit_avg = sum(profit_growth_rates[-2:]) / 2
+                    early_profit_avg = sum(profit_growth_rates[:2]) / 2 if len(profit_growth_rates) >= 2 else profit_growth_rates[0]
+                    
+                    # 利益成長率の変動性
+                    profit_variance = sum([(x - avg_profit_growth) ** 2 for x in profit_growth_rates]) / len(profit_growth_rates)
+                    profit_std = profit_variance ** 0.5
+                    
+                    # 利益トレンド判定
+                    if recent_profit_avg > early_profit_avg + 3:
+                        if profit_std < 8:
+                            growth_trend["profit_trend"] = "安定的利益拡大"
+                        else:
+                            growth_trend["profit_trend"] = "不安定な利益拡大"
+                    elif recent_profit_avg < early_profit_avg - 3:
+                        if profit_std < 8:
+                            growth_trend["profit_trend"] = "安定的利益縮小"
+                        else:
+                            growth_trend["profit_trend"] = "不安定な利益縮小"
+                    else:
+                        if profit_std < 5:
+                            growth_trend["profit_trend"] = "安定利益成長"
+                        elif profit_std < 12:
+                            growth_trend["profit_trend"] = "やや不安定な利益"
+                        else:
+                            growth_trend["profit_trend"] = "非常に不安定な利益"
+                    
+                    growth_trend["profit_analysis"] = {
+                        "average_growth_rate": round(avg_profit_growth, 2),
+                        "recent_average": round(recent_profit_avg, 2),
+                        "early_average": round(early_profit_avg, 2),
+                        "volatility": round(profit_std, 2),
+                        "yearly_growth_rates": [round(x, 2) for x in profit_growth_rates]
+                    }
+                else:
+                    # データ点数が少ない場合は簡易分析
+                    growth_trend["profit_trend"] = "利益成長" if avg_profit_growth > 0 else "利益減少"
+                    growth_trend["profit_analysis"] = {
+                        "average_growth_rate": round(avg_profit_growth, 2),
+                        "data_points": len(profit_growth_rates),
+                        "yearly_growth_rates": [round(x, 2) for x in profit_growth_rates]
+                    }
         
-        # ROEトレンド
+        # ROEトレンド分析（改善版）
         roe_values = [m.get("roe") for m in metrics_by_year if m.get("roe")]
         if len(roe_values) >= 2:
-            roe_improving = roe_values[-1] > roe_values[-2]
-            growth_trend["roe_trend"] = "改善" if roe_improving else "悪化"
-        
-        # 成長の一貫性評価
-        consistent_growth = 0
-        total_comparisons = 0
-        
-        for metric in ["net_sales", "profit"]:
-            values = [m.get(metric) for m in metrics_by_year if m.get(metric)]
-            if len(values) >= 2:
-                for i in range(1, len(values)):
-                    total_comparisons += 1
-                    if values[i] > values[i-1]:
-                        consistent_growth += 1
-        
-        if total_comparisons > 0:
-            consistency_rate = consistent_growth / total_comparisons
-            if consistency_rate >= 0.8:
-                growth_trend["consistency"] = "高い一貫性"
-            elif consistency_rate >= 0.6:
-                growth_trend["consistency"] = "中程度の一貫性"
+            # ROEの長期トレンドを分析
+            if len(roe_values) >= 3:
+                roe_changes = []
+                for i in range(1, len(roe_values)):
+                    roe_changes.append(roe_values[i] - roe_values[i-1])
+                
+                avg_roe_change = sum(roe_changes) / len(roe_changes)
+                recent_roe_change = sum(roe_changes[-2:]) / min(2, len(roe_changes))
+                
+                if avg_roe_change > 1:
+                    growth_trend["roe_trend"] = "持続的ROE改善"
+                elif avg_roe_change > 0:
+                    growth_trend["roe_trend"] = "緩やかROE改善"
+                elif avg_roe_change > -1:
+                    growth_trend["roe_trend"] = "ROE横ばい"
+                else:
+                    growth_trend["roe_trend"] = "ROE悪化傾向"
+                
+                growth_trend["roe_analysis"] = {
+                    "average_change": round(avg_roe_change, 2),
+                    "recent_change": round(recent_roe_change, 2),
+                    "roe_values": [round(x, 2) for x in roe_values]
+                }
             else:
-                growth_trend["consistency"] = "不安定"
+                # 2年間のみの場合
+                roe_improving = roe_values[-1] > roe_values[-2]
+                growth_trend["roe_trend"] = "改善" if roe_improving else "悪化"
+        
+        # 成長の一貫性評価（改善版）
+        consistency_analysis = {}
+        
+        # より詳細な一貫性評価
+        for metric in ["net_sales", "profit", "eps"]:
+            values = [m.get(metric) for m in metrics_by_year if m.get(metric)]
+            if len(values) >= 3:
+                # 成長回数をカウント
+                growth_count = 0
+                decline_count = 0
+                flat_count = 0
+                
+                for i in range(1, len(values)):
+                    if values[i-1] > 0:  # ゼロ除算回避
+                        change_rate = (values[i] - values[i-1]) / values[i-1]
+                        if change_rate > 0.02:  # 2%以上の成長
+                            growth_count += 1
+                        elif change_rate < -0.02:  # 2%以上の減少
+                            decline_count += 1
+                        else:  # ほぼ横ばい
+                            flat_count += 1
+                
+                total_periods = len(values) - 1
+                growth_ratio = growth_count / total_periods
+                decline_ratio = decline_count / total_periods
+                
+                # 一貫性レベルを判定
+                if growth_ratio >= 0.8:
+                    consistency_level = "非常に一貫した成長"
+                elif growth_ratio >= 0.6:
+                    consistency_level = "概ね一貫した成長"
+                elif growth_ratio >= 0.4:
+                    consistency_level = "やや不安定な成長"
+                elif decline_ratio >= 0.5:
+                    consistency_level = "減少傾向"
+                else:
+                    consistency_level = "非常に不安定"
+                
+                consistency_analysis[f"{metric}_consistency"] = {
+                    "level": consistency_level,
+                    "growth_ratio": round(growth_ratio, 2),
+                    "decline_ratio": round(decline_ratio, 2),
+                    "periods": {
+                        "growth": growth_count,
+                        "decline": decline_count,
+                        "flat": flat_count,
+                        "total": total_periods
+                    }
+                }
+        
+        # 総合的な成長一貫性
+        if len(consistency_analysis) > 0:
+            # 売上と利益の一貫性を重視して総合評価
+            revenue_consistency = consistency_analysis.get("net_sales_consistency", {})
+            profit_consistency = consistency_analysis.get("profit_consistency", {})
+            
+            revenue_growth_ratio = revenue_consistency.get("growth_ratio", 0)
+            profit_growth_ratio = profit_consistency.get("growth_ratio", 0)
+            
+            # 重み付き平均（売上60%、利益40%）
+            overall_consistency = revenue_growth_ratio * 0.6 + profit_growth_ratio * 0.4
+            
+            if overall_consistency >= 0.75:
+                growth_trend["consistency"] = "非常に高い一貫性"
+            elif overall_consistency >= 0.6:
+                growth_trend["consistency"] = "高い一貫性"
+            elif overall_consistency >= 0.4:
+                growth_trend["consistency"] = "中程度の一貫性"
+            elif overall_consistency >= 0.25:
+                growth_trend["consistency"] = "やや不安定"
+            else:
+                growth_trend["consistency"] = "非常に不安定"
+            
+            growth_trend["consistency_analysis"] = consistency_analysis
+            growth_trend["overall_consistency_score"] = round(overall_consistency, 2)
+        else:
+            # データ不足の場合は従来の方法
+            consistent_growth = 0
+            total_comparisons = 0
+            
+            for metric in ["net_sales", "profit"]:
+                values = [m.get(metric) for m in metrics_by_year if m.get(metric)]
+                if len(values) >= 2:
+                    for i in range(1, len(values)):
+                        total_comparisons += 1
+                        if values[i] > values[i-1]:
+                            consistent_growth += 1
+            
+            if total_comparisons > 0:
+                consistency_rate = consistent_growth / total_comparisons
+                if consistency_rate >= 0.8:
+                    growth_trend["consistency"] = "高い一貫性"
+                elif consistency_rate >= 0.6:
+                    growth_trend["consistency"] = "中程度の一貫性"
+                else:
+                    growth_trend["consistency"] = "不安定"
         
         # 成長の質分析
         growth_quality = {}
@@ -896,6 +1173,7 @@ async def analyze_growth_potential_tool(
             "investment_timing": investment_timing,
             "growth_catalysts": growth_catalysts,
             "growth_risks": growth_risks,
+            "yearly_growth_rates": yearly_growth_rates,
             "yearly_data": metrics_by_year
         }
         
@@ -1004,7 +1282,7 @@ async def main():
             print("📊 成長性分析実行中...")
             growth_result = await test_growth_analysis(
                 code=code,
-                analysis_years=3,
+                analysis_years=5,
                 quarter="Annual"
             )
             
