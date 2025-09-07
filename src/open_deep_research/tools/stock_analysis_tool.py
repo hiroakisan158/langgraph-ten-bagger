@@ -306,7 +306,7 @@ def calculate_investment_attractiveness_score(ratios: Dict[str, Any], financials
     }
 
 
-# @tool(description=VALUATION_ANALYSIS_DESCRIPTION)
+@tool(description=VALUATION_ANALYSIS_DESCRIPTION)
 async def analyze_stock_valuation_tool(
     code: str,
     quarter: Optional[str] = None,
@@ -554,7 +554,7 @@ async def analyze_stock_valuation_tool(
         }
 
 
-# @tool(description=GROWTH_ANALYSIS_DESCRIPTION)
+@tool(description=GROWTH_ANALYSIS_DESCRIPTION)
 async def analyze_growth_potential_tool(
     code: str,
     analysis_years: int = 3,
