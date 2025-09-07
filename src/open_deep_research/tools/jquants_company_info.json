@@ -1,15 +1,15 @@
 {
   "info": [
     {
-      "Date": "2025-09-01",
-      "Code": "86970",
-      "CompanyName": "日本取引所グループ",
-      "CompanyNameEnglish": "Japan Exchange Group,Inc.",
-      "Sector17Code": "16",
-      "Sector17CodeName": "金融（除く銀行）",
-      "Sector33Code": "7200",
-      "Sector33CodeName": "その他金融業",
-      "ScaleCategory": "TOPIX Large70",
+      "Date": "2025-09-08",
+      "Code": "67580",
+      "CompanyName": "ソニーグループ",
+      "CompanyNameEnglish": "SONY GROUP CORPORATION",
+      "Sector17Code": "9",
+      "Sector17CodeName": "電機・精密",
+      "Sector33Code": "3650",
+      "Sector33CodeName": "電気機器",
+      "ScaleCategory": "TOPIX Core30",
       "MarketCode": "0111",
       "MarketCodeName": "プライム"
     }

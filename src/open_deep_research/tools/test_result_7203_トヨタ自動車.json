@@ -6,34 +6,34 @@
   "valuation_analysis": {
     "code": "7203",
     "analysis_target": "2024年度 FY",
-    "stock_price": 2616.0,
-    "analysis_date": "2025-09-06",
-    "period": "2024-04-01 - 2025-03-31",
+    "stock_price": 3792.0,
+    "analysis_date": "2025-09-07",
+    "period": "2023-04-01 - 2024-03-31",
     "fundamental_metrics": {
-      "per": 7.28,
-      "pbr": 0.95,
-      "roe_percentage": 12.92,
-      "roa_percentage": 5.09,
-      "operating_margin_percentage": 9.98,
-      "net_margin_percentage": 9.92,
-      "equity_ratio_percentage": 39.4
+      "per": 10.36,
+      "pbr": 1.49,
+      "roe_percentage": 14.03,
+      "roa_percentage": 5.49,
+      "operating_margin_percentage": 11.87,
+      "net_margin_percentage": 10.97,
+      "equity_ratio_percentage": 39.11
     },
     "valuation_assessment": {
-      "per_assessment": "割安",
-      "pbr_assessment": "割安",
+      "per_assessment": "適正範囲",
+      "pbr_assessment": "適正範囲",
       "roe_assessment": "良好",
-      "overall_valuation": "割安"
+      "overall_valuation": "適正"
     },
     "investment_score": {
-      "total_score": 77,
+      "total_score": 67,
       "max_score": 100,
-      "score_percentage": 77.0,
+      "score_percentage": 67.0,
       "overall_rating": "投資魅力度：高い",
       "score_details": {
-        "per_score": 25,
-        "per_comment": "割安（25点）",
-        "pbr_score": 20,
-        "pbr_comment": "割安（20点）",
+        "per_score": 20,
+        "per_comment": "やや割安（20点）",
+        "pbr_score": 15,
+        "pbr_comment": "やや割安（15点）",
         "roe_score": 12,
         "roe_comment": "普通（12点）",
         "stability_score": 10,
@@ -50,45 +50,190 @@
   },
   "growth_analysis": {
     "code": "7203",
-    "analysis_period": "2023-2025",
+    "analysis_period": "2021-2025",
     "quarter": "Annual",
     "normalized_quarter": "FY",
     "data_consistency": "全てFYデータで比較",
     "growth_metrics": {
-      "net_sales_cagr": 3.21,
-      "profit_cagr": -1.84,
-      "eps_cagr": -0.88,
-      "latest_net_sales_growth": 0.0,
-      "latest_profit_growth": 0.0
+      "net_sales_cagr": 15.26,
+      "profit_cagr": 20.7,
+      "eps_cagr": -18.2,
+      "latest_net_sales_growth": 6.52,
+      "latest_profit_growth": -3.64
     },
     "growth_trend": {
-      "revenue_trend": "減速",
-      "profit_trend": "加速",
-      "roe_trend": "悪化",
-      "consistency": "不安定"
+      "revenue_trend": "不安定な減速",
+      "revenue_analysis": {
+        "average_growth_rate": 15.4,
+        "recent_average": 13.95,
+        "early_average": 16.85,
+        "volatility": 5.56,
+        "yearly_growth_rates": [
+          15.3,
+          18.4,
+          21.37,
+          6.52
+        ]
+      },
+      "profit_trend": "不安定な利益拡大",
+      "profit_analysis": {
+        "average_growth_rate": 27.76,
+        "recent_average": 49.04,
+        "early_average": 6.47,
+        "volatility": 45.28,
+        "yearly_growth_rates": [
+          26.94,
+          -13.99,
+          101.73,
+          -3.64
+        ]
+      },
+      "roe_trend": "緩やかROE改善",
+      "roe_analysis": {
+        "average_change": 0.92,
+        "recent_change": 2.27,
+        "roe_values": [
+          9.24,
+          10.5,
+          8.38,
+          14.03,
+          12.92
+        ]
+      },
+      "consistency": "非常に高い一貫性",
+      "consistency_analysis": {
+        "net_sales_consistency": {
+          "level": "非常に一貫した成長",
+          "growth_ratio": 1.0,
+          "decline_ratio": 0.0,
+          "periods": {
+            "growth": 4,
+            "decline": 0,
+            "flat": 0,
+            "total": 4
+          }
+        },
+        "profit_consistency": {
+          "level": "やや不安定な成長",
+          "growth_ratio": 0.5,
+          "decline_ratio": 0.5,
+          "periods": {
+            "growth": 2,
+            "decline": 2,
+            "flat": 0,
+            "total": 4
+          }
+        },
+        "eps_consistency": {
+          "level": "減少傾向",
+          "growth_ratio": 0.25,
+          "decline_ratio": 0.5,
+          "periods": {
+            "growth": 1,
+            "decline": 2,
+            "flat": 1,
+            "total": 4
+          }
+        }
+      },
+      "overall_consistency_score": 0.8
     },
     "growth_quality": {
-      "profitability_trend": "悪化",
-      "efficiency_trend": "悪化"
+      "profitability_trend": "改善",
+      "efficiency_trend": "改善"
     },
     "future_outlook": {
-      "growth_sustainability": "低い",
+      "growth_sustainability": "中程度",
       "acceleration_potential": "限定的"
     },
     "growth_score": {
-      "total_score": 10,
+      "total_score": 60,
       "max_score": 100,
-      "growth_rating": "成長鈍化"
+      "growth_rating": "成長企業"
     },
-    "investment_timing": "見送り推奨",
-    "growth_catalysts": [],
-    "growth_risks": [
-      "成長の不安定性",
-      "収益性悪化傾向"
+    "investment_timing": "良いタイミング",
+    "growth_catalysts": [
+      "高い売上成長率",
+      "利益成長率が売上を上回る",
+      "収益性継続改善"
+    ],
+    "growth_risks": [],
+    "yearly_growth_rates": [
+      {
+        "year": 2022,
+        "previous_year": 2021,
+        "net_sales_growth_rate": 15.3,
+        "profit_growth_rate": 26.94,
+        "eps_growth_rate": -74.45,
+        "roe_growth_rate": 13.54
+      },
+      {
+        "year": 2023,
+        "previous_year": 2022,
+        "net_sales_growth_rate": 18.4,
+        "profit_growth_rate": -13.99,
+        "eps_growth_rate": -12.55,
+        "roe_growth_rate": -20.19
+      },
+      {
+        "year": 2024,
+        "previous_year": 2023,
+        "net_sales_growth_rate": 21.37,
+        "profit_growth_rate": 101.73,
+        "eps_growth_rate": 103.9,
+        "roe_growth_rate": 67.52
+      },
+      {
+        "year": 2025,
+        "previous_year": 2024,
+        "net_sales_growth_rate": 6.52,
+        "profit_growth_rate": -3.64,
+        "eps_growth_rate": -1.74,
+        "roe_growth_rate": -7.92
+      }
     ],
     "yearly_data": [
       {
+        "year": 2021,
+        "quarter": "FY",
+        "period_type": "FY",
+        "net_sales": 27214594000000.0,
+        "operating_profit": 2197748000000.0,
+        "profit": 2245261000000.0,
+        "total_assets": 62267140000000.0,
+        "equity": 24288329000000.0,
+        "eps": 803.23,
+        "roe": 9.244197079181529,
+        "operating_margin": 8.075622954360444
+      },
+      {
+        "year": 2022,
+        "quarter": "FY",
+        "period_type": "FY",
+        "net_sales": 31379507000000.0,
+        "operating_profit": 2995697000000.0,
+        "profit": 2850110000000.0,
+        "total_assets": 67688771000000.0,
+        "equity": 27154820000000.0,
+        "eps": 205.23,
+        "roe": 10.495779386495657,
+        "operating_margin": 9.546666874020678
+      },
+      {
         "year": 2023,
+        "quarter": "FY",
+        "period_type": "FY",
+        "net_sales": 37154298000000.0,
+        "operating_profit": 2725025000000.0,
+        "profit": 2451318000000.0,
+        "total_assets": 74303180000000.0,
+        "equity": 29264213000000.0,
+        "eps": 179.47,
+        "roe": 8.376504093925233,
+        "operating_margin": 7.334346621217282
+      },
+      {
+        "year": 2024,
         "quarter": "FY",
         "period_type": "FY",
         "net_sales": 45095325000000.0,
@@ -99,19 +244,6 @@
         "eps": 365.94,
         "roe": 14.032423083543739,
         "operating_margin": 11.870263713588937
-      },
-      {
-        "year": 2024,
-        "quarter": "FY",
-        "period_type": "FY",
-        "net_sales": 48036704000000.0,
-        "operating_profit": 4795586000000.0,
-        "profit": 4765086000000.0,
-        "total_assets": 93601350000000.0,
-        "equity": 36878913000000.0,
-        "eps": 359.56,
-        "roe": 12.920896014478517,
-        "operating_margin": 9.983170369057794
       },
       {
         "year": 2025,
@@ -128,5 +260,5 @@
       }
     ]
   },
-  "test_timestamp": "2025-09-06T10:41:55.550610"
+  "test_timestamp": "2025-09-07T22:37:29.065827"
 }
