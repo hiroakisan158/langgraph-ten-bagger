@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from typing import Optional, Dict, Any, List, Tuple
 from langchain_core.tools import tool
 from langchain_core.runnables import RunnableConfig
-from jquants_api import JQuantsAPI
+from .jquants_api import JQuantsAPI
 from dotenv import load_dotenv
 
 load_dotenv()  # .envファイルから環境変数をロード
