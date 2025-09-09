@@ -19,6 +19,7 @@ VALUATION_ANALYSIS_DESCRIPTION = (
     "企業の割安性を総合判定します。PER、PBR、ROE等の主要財務指標を一括計算し、"
     "現在の株価が割安・適正・割高かを判断するための包括的な財務分析を提供します。"
     "四半期指定可能（1Q, 2Q, 3Q, FY, Annual）、年度指定可能（例：2025）。"
+    "注意：PER・PBRは指定決算期末時点の株価とEPS・BPSで算出（現在株価ではありません）。"
     "戻り値：財務比率、割安性判定、投資魅力度スコア、リスク要因を含む投資判断データ。"
     "LLMがこの企業への投資を検討する際の主要判断材料となります。"
 )
@@ -29,6 +30,15 @@ GROWTH_ANALYSIS_DESCRIPTION = (
     "四半期指定可能（1Q, 2Q, 3Q, FY, Annual）、分析年数指定可能（デフォルト3年）。"
     "戻り値：成長率（CAGR、前年比）、成長トレンド、成長の質、将来性評価を含む成長分析データ。"
     "LLMがこの企業の将来性を評価する際の主要判断材料となります。"
+)
+
+CURRENT_VALUATION_DESCRIPTION = (
+    "企業の現在時点でのPER・PBR等のバリュエーション指標を算出します。"
+    "最新の財務データ（EPS・BPS）と現在の株価を使用してリアルタイムの投資判断指標を提供。"
+    "注意：現在株価と最新決算データの組み合わせのため、決算期末時点とは異なる値になります。"
+    "常に最新の決算データを自動選択し、現在の投資タイミングを判断するための指標を算出。"
+    "戻り値：現在PER・PBR、現在の投資魅力度、リアルタイム割安性判定。"
+    "LLMが現在の投資タイミングを判断する際の主要指標となります。"
 )
 
 # Rate limiting management
@@ -190,6 +200,32 @@ def get_period_end_stock_price(financial_statement: Dict[str, Any], api: JQuants
         return None
 
 
+def get_current_stock_price(api: JQuantsAPI, code: str, days_back: int = 10) -> Optional[float]:
+    """現在の最新株価を取得"""
+    try:
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days_back)
+        
+        date_from = start_date.strftime("%Y-%m-%d")
+        date_to = end_date.strftime("%Y-%m-%d")
+        
+        stock_data = api.get_stock_price(code=code, date_from=date_from, date_to=date_to)
+        
+        if not stock_data or "daily_quotes" not in stock_data:
+            return None
+        
+        quotes = stock_data["daily_quotes"]
+        if not quotes:
+            return None
+        
+        # 最新の営業日の株価を取得
+        latest_quote = max(quotes, key=lambda x: x.get("Date", ""))
+        return safe_float_conversion(latest_quote.get("Close"))
+        
+    except Exception:
+        return None
+
+
 def calculate_investment_attractiveness_score(ratios: Dict[str, Any], financials: Dict[str, Any]) -> Dict[str, Any]:
     """投資魅力度スコアを計算（100点満点）"""
     score = 0
@@ -317,6 +353,8 @@ async def analyze_stock_valuation_tool(
     企業の割安性を総合判定するメインツール。
     LLMが投資判断を行うための包括的な財務分析を提供します。
     
+    重要：PER・PBRは指定決算期末時点の株価で算出されます（現在株価ではありません）
+    
     Args:
         code (str): 企業コード（4桁）
         quarter (Optional[str]): 四半期指定 ("1Q", "2Q", "3Q", "FY", "Annual")
@@ -327,10 +365,10 @@ async def analyze_stock_valuation_tool(
             {
                 "code": "企業コード",
                 "analysis_target": "分析対象（四半期・年度）",
-                "stock_price": "現在株価",
+                "stock_price": "決算期末時点の株価（PER・PBR計算基準）",
                 "fundamental_metrics": {
-                    "per": "PER値",
-                    "pbr": "PBR値", 
+                    "per": "PER値（期末株価/EPS）",
+                    "pbr": "PBR値（期末株価/BPS）", 
                     "roe_percentage": "ROE率（%）",
                     "roa_percentage": "ROA率（%）",
                     "operating_margin_percentage": "営業利益率（%）",
@@ -551,6 +589,359 @@ async def analyze_stock_valuation_tool(
             "code": code,
             "quarter": quarter,
             "year": year
+        }
+
+
+@tool(description=CURRENT_VALUATION_DESCRIPTION)
+async def analyze_current_valuation_tool(
+    code: str,
+    config: RunnableConfig = None
+) -> Dict[str, Any]:
+    """
+    現在時点でのPER・PBR等のリアルタイムバリュエーション分析ツール。
+    最新株価と最新財務データを組み合わせて現在の投資判断指標を提供します。
+    
+    重要：現在株価と最新決算データの組み合わせです（決算期末時点の値ではありません）
+    
+    Args:
+        code (str): 企業コード（4桁）
+        
+    Returns:
+        Dict[str, Any]: 現在バリュエーション分析結果
+            {
+                "code": "企業コード",
+                "analysis_date": "分析実行日",
+                "current_stock_price": "現在株価",
+                "reference_period": "参照決算期間",
+                "current_metrics": {
+                    "current_per": "現在PER（現在株価/年率換算EPS）※四半期EPSは自動で年率換算",
+                    "current_pbr": "現在PBR（現在株価/最新BPS）",
+                    "reference_eps": "参照EPS（四半期累計値）",
+                    "annualized_eps": "年率換算EPS（四半期の場合のみ）",
+                    "reference_roe": "参照ROE（四半期累計値）",
+                    "annualized_roe": "年率換算ROE（四半期の場合のみ）",
+                    "eps_note": "EPS計算方法の説明",
+                    "roe_note": "ROE計算方法の説明"
+                },
+                "current_assessment": {
+                    "per_assessment": "現在PER評価（割安/適正/割高）",
+                    "pbr_assessment": "現在PBR評価",
+                    "overall_assessment": "現在総合評価",
+                    "investment_timing": "投資タイミング評価"
+                },
+                "comparison_with_period_end": {
+                    "period_end_price": "決算期末株価",
+                    "period_end_per": "決算期末PER",
+                    "period_end_pbr": "決算期末PBR",
+                    "price_change_percent": "株価変動率（%）",
+                    "valuation_change": "バリュエーション変化"
+                },
+                "current_investment_score": "現在投資魅力度スコア",
+                "market_timing_analysis": "マーケットタイミング分析",
+                "real_time_insights": "リアルタイム投資洞察"
+            }
+    """
+    try:
+        await rate_limit_delay()
+        api = JQuantsAPI()
+        
+        # 現在の株価を取得
+        current_price = get_current_stock_price(api, code, days_back=10)
+        if current_price is None:
+            return {
+                "error": "現在株価の取得に失敗しました",
+                "code": code
+            }
+        
+        # 最新の財務データを取得（常に最新を使用）
+        financial_data = api.get_financial_statements(code, None)  # 最新年度
+        latest_financial = get_quarterly_financial_data(financial_data, None, None)  # 最新決算データ
+        
+        if not latest_financial:
+            return {
+                "error": "最新財務データの取得に失敗しました",
+                "code": code
+            }
+        
+        # 基本財務数値を取得
+        eps = safe_float_conversion(latest_financial.get("EarningsPerShare"))
+        bps = safe_float_conversion(latest_financial.get("BookValuePerShare"))
+        profit = safe_float_conversion(latest_financial.get("Profit"))
+        equity = safe_float_conversion(latest_financial.get("Equity"))
+        
+        # 現在のバリュエーション指標を計算
+        current_metrics = {}
+        
+        # 決算期間の種類を取得
+        period_type = latest_financial.get("TypeOfCurrentPeriod", "")
+        
+        # 現在PER計算（四半期EPSの場合は年率換算）
+        if eps and eps > 0:
+            # 四半期EPSの場合は年率換算
+            if period_type == "1Q":
+                # 1Q累計EPSを年率換算（×4）
+                annualized_eps = eps * 4
+                current_metrics["current_per"] = round(current_price / annualized_eps, 2)
+                current_metrics["reference_eps"] = eps
+                current_metrics["annualized_eps"] = round(annualized_eps, 2)
+                current_metrics["eps_note"] = "1Q累計EPSを年率換算（×4）"
+            elif period_type == "2Q":
+                # 2Q累計EPSを年率換算（×2）
+                annualized_eps = eps * 2
+                current_metrics["current_per"] = round(current_price / annualized_eps, 2)
+                current_metrics["reference_eps"] = eps
+                current_metrics["annualized_eps"] = round(annualized_eps, 2)
+                current_metrics["eps_note"] = "2Q累計EPSを年率換算（×2）"
+            elif period_type == "3Q":
+                # 3Q累計EPSを年率換算（×4/3）
+                annualized_eps = eps * (4/3)
+                current_metrics["current_per"] = round(current_price / annualized_eps, 2)
+                current_metrics["reference_eps"] = eps
+                current_metrics["annualized_eps"] = round(annualized_eps, 2)
+                current_metrics["eps_note"] = "3Q累計EPSを年率換算（×4/3）"
+            else:
+                # FYまたは年間データの場合はそのまま使用
+                current_metrics["current_per"] = round(current_price / eps, 2)
+                current_metrics["reference_eps"] = eps
+                current_metrics["eps_note"] = "年間EPSまたはFYデータを使用"
+        
+        # 現在PBR計算
+        if bps and bps > 0:
+            current_metrics["current_pbr"] = round(current_price / bps, 2)
+            current_metrics["reference_bps"] = bps
+        elif equity and eps and profit and profit != 0:
+            # BPSが不明な場合の推定計算
+            shares_outstanding = profit / eps
+            calculated_bps = equity / shares_outstanding
+            current_metrics["current_pbr"] = round(current_price / calculated_bps, 2)
+            current_metrics["reference_bps"] = round(calculated_bps, 2)
+        
+        # 参照ROE（四半期データの場合は年率換算）
+        if profit and equity and equity > 0:
+            roe = (profit / equity) * 100
+            
+            # 四半期データの場合は年率換算
+            if period_type == "1Q":
+                annualized_roe = roe * 4
+                current_metrics["reference_roe"] = round(roe, 2)
+                current_metrics["annualized_roe"] = round(annualized_roe, 2)
+                current_metrics["roe_note"] = "1Q累計ROEを年率換算（×4）"
+            elif period_type == "2Q":
+                annualized_roe = roe * 2
+                current_metrics["reference_roe"] = round(roe, 2)
+                current_metrics["annualized_roe"] = round(annualized_roe, 2)
+                current_metrics["roe_note"] = "2Q累計ROEを年率換算（×2）"
+            elif period_type == "3Q":
+                annualized_roe = roe * (4/3)
+                current_metrics["reference_roe"] = round(roe, 2)
+                current_metrics["annualized_roe"] = round(annualized_roe, 2)
+                current_metrics["roe_note"] = "3Q累計ROEを年率換算（×4/3）"
+            else:
+                # FYまたは年間データの場合はそのまま使用
+                current_metrics["reference_roe"] = round(roe, 2)
+                current_metrics["roe_note"] = "年間ROEまたはFYデータを使用"
+        
+        # 現在の評価判定
+        current_assessment = {}
+        
+        # 現在PER評価
+        current_per = current_metrics.get("current_per")
+        if current_per is not None:
+            if current_per < 8:
+                current_assessment["per_assessment"] = "かなり割安"
+            elif current_per < 12:
+                current_assessment["per_assessment"] = "割安"
+            elif current_per < 18:
+                current_assessment["per_assessment"] = "やや割安"
+            elif current_per < 25:
+                current_assessment["per_assessment"] = "適正範囲"
+            elif current_per < 35:
+                current_assessment["per_assessment"] = "やや割高"
+            else:
+                current_assessment["per_assessment"] = "割高"
+        
+        # 現在PBR評価
+        current_pbr = current_metrics.get("current_pbr")
+        if current_pbr is not None:
+            if current_pbr < 0.8:
+                current_assessment["pbr_assessment"] = "かなり割安"
+            elif current_pbr < 1.0:
+                current_assessment["pbr_assessment"] = "割安"
+            elif current_pbr < 1.5:
+                current_assessment["pbr_assessment"] = "やや割安"
+            elif current_pbr < 2.5:
+                current_assessment["pbr_assessment"] = "適正範囲"
+            elif current_pbr < 4.0:
+                current_assessment["pbr_assessment"] = "やや割高"
+            else:
+                current_assessment["pbr_assessment"] = "割高"
+        
+        # 総合評価
+        per_weight = 0.6  # PERの重み
+        pbr_weight = 0.4  # PBRの重み
+        
+        valuation_score = 0
+        if current_per is not None:
+            if current_per < 8:
+                valuation_score += 5 * per_weight
+            elif current_per < 12:
+                valuation_score += 4 * per_weight
+            elif current_per < 18:
+                valuation_score += 3 * per_weight
+            elif current_per < 25:
+                valuation_score += 2 * per_weight
+            else:
+                valuation_score += 1 * per_weight
+        
+        if current_pbr is not None:
+            if current_pbr < 0.8:
+                valuation_score += 5 * pbr_weight
+            elif current_pbr < 1.0:
+                valuation_score += 4 * pbr_weight
+            elif current_pbr < 1.5:
+                valuation_score += 3 * pbr_weight
+            elif current_pbr < 2.5:
+                valuation_score += 2 * pbr_weight
+            else:
+                valuation_score += 1 * pbr_weight
+        
+        # 総合評価とタイミング判定
+        if valuation_score >= 4.5:
+            current_assessment["overall_assessment"] = "かなり割安"
+            current_assessment["investment_timing"] = "絶好の買い場"
+        elif valuation_score >= 3.5:
+            current_assessment["overall_assessment"] = "割安"
+            current_assessment["investment_timing"] = "良い買い場"
+        elif valuation_score >= 2.5:
+            current_assessment["overall_assessment"] = "やや割安"
+            current_assessment["investment_timing"] = "検討推奨"
+        elif valuation_score >= 2.0:
+            current_assessment["overall_assessment"] = "適正範囲"
+            current_assessment["investment_timing"] = "慎重判断"
+        else:
+            current_assessment["overall_assessment"] = "割高傾向"
+            current_assessment["investment_timing"] = "見送り推奨"
+        
+        # 決算期末との比較分析
+        comparison = {}
+        period_end_price = get_period_end_stock_price(latest_financial, api, code)
+        
+        if period_end_price is not None:
+            comparison["period_end_price"] = period_end_price
+            
+            # 期末PER・PBR計算
+            if eps and eps > 0:
+                comparison["period_end_per"] = round(period_end_price / eps, 2)
+            if current_metrics.get("reference_bps"):
+                comparison["period_end_pbr"] = round(period_end_price / current_metrics["reference_bps"], 2)
+            
+            # 株価変動率
+            price_change = ((current_price - period_end_price) / period_end_price) * 100
+            comparison["price_change_percent"] = round(price_change, 2)
+            
+            # バリュエーション変化の解釈
+            if price_change > 10:
+                comparison["valuation_change"] = "株価上昇により割安性低下"
+            elif price_change > 5:
+                comparison["valuation_change"] = "株価やや上昇、割安性やや低下"
+            elif price_change > -5:
+                comparison["valuation_change"] = "株価ほぼ横ばい、バリュエーション変化なし"
+            elif price_change > -10:
+                comparison["valuation_change"] = "株価やや下落、割安性向上"
+            else:
+                comparison["valuation_change"] = "株価下落により割安性向上"
+        
+        # 投資魅力度スコア（現在版）
+        investment_score = 0
+        
+        # PERスコア（30点満点）
+        if current_per is not None:
+            if current_per < 8:
+                investment_score += 30
+            elif current_per < 12:
+                investment_score += 25
+            elif current_per < 18:
+                investment_score += 15
+            elif current_per < 25:
+                investment_score += 10
+            else:
+                investment_score += 0
+        
+        # PBRスコア（20点満点）
+        if current_pbr is not None:
+            if current_pbr < 0.8:
+                investment_score += 20
+            elif current_pbr < 1.0:
+                investment_score += 17
+            elif current_pbr < 1.5:
+                investment_score += 12
+            elif current_pbr < 2.5:
+                investment_score += 8
+            else:
+                investment_score += 0
+        
+        # ROEボーナス（10点満点）
+        reference_roe = current_metrics.get("reference_roe", 0)
+        if reference_roe > 20:
+            investment_score += 10
+        elif reference_roe > 15:
+            investment_score += 7
+        elif reference_roe > 10:
+            investment_score += 5
+        
+        # マーケットタイミング分析
+        market_timing = {}
+        if comparison.get("price_change_percent") is not None:
+            price_change = comparison["price_change_percent"]
+            if price_change < -15:
+                market_timing["timing_assessment"] = "大幅下落後で買い場の可能性"
+                market_timing["risk_level"] = "中リスク（反発期待）"
+            elif price_change < -5:
+                market_timing["timing_assessment"] = "調整局面で投資検討タイミング"
+                market_timing["risk_level"] = "低リスク"
+            elif price_change < 5:
+                market_timing["timing_assessment"] = "安定推移、通常の投資判断"
+                market_timing["risk_level"] = "標準リスク"
+            elif price_change < 20:
+                market_timing["timing_assessment"] = "上昇局面、慎重な投資判断が必要"
+                market_timing["risk_level"] = "やや高リスク"
+            else:
+                market_timing["timing_assessment"] = "大幅上昇後、投資は慎重に"
+                market_timing["risk_level"] = "高リスク（調整懸念）"
+        
+        # リアルタイム投資洞察
+        insights = []
+        if current_per and current_per < 10 and reference_roe > 12:
+            insights.append("低PER×高ROEの魅力的な投資機会")
+        if current_pbr and current_pbr < 1.0:
+            insights.append("PBR1倍割れの割安株として注目")
+        if comparison.get("price_change_percent", 0) < -10:
+            insights.append("決算期末から株価下落、割安性向上中")
+        if investment_score >= 50:
+            insights.append("現在のバリュエーション指標は投資魅力度が高い")
+        
+        return {
+            "code": code,
+            "analysis_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "current_stock_price": current_price,
+            "reference_period": f"{latest_financial.get('CurrentPeriodStartDate')} - {latest_financial.get('CurrentPeriodEndDate')}",
+            "reference_quarter": latest_financial.get('TypeOfCurrentPeriod', 'Unknown'),
+            "current_metrics": current_metrics,
+            "current_assessment": current_assessment,
+            "comparison_with_period_end": comparison,
+            "current_investment_score": {
+                "score": investment_score,
+                "max_score": 60,
+                "score_percentage": round((investment_score / 60) * 100, 1)
+            },
+            "market_timing_analysis": market_timing,
+            "real_time_insights": insights
+        }
+        
+    except Exception as e:
+        return {
+            "error": f"現在バリュエーション分析エラー: {str(e)}",
+            "code": code
         }
 
 
@@ -1209,6 +1600,16 @@ async def test_growth_analysis(code: str, analysis_years: int = 3, quarter: Opti
         # 普通の関数の場合
         return await analyze_growth_potential_tool(code=code, analysis_years=analysis_years, quarter=quarter)
 
+async def test_current_valuation_analysis(code: str) -> Dict[str, Any]:
+    """現在バリュエーション分析の実装を直接呼び出す（テスト用）"""
+    # @toolデコレータの有無に関係なく動作するように修正
+    if hasattr(analyze_current_valuation_tool, 'func') and analyze_current_valuation_tool.func is not None:
+        # LangChainツールオブジェクトの場合
+        return await analyze_current_valuation_tool.func(code=code)
+    else:
+        # 普通の関数の場合
+        return await analyze_current_valuation_tool(code=code)
+
 
 async def main():
     """
@@ -1306,11 +1707,49 @@ async def main():
                 if 'investment_timing' in growth_result:
                     print(f"  ⏰ 投資タイミング: {growth_result['investment_timing']}")
             
-            # 詳細結果をJSONファイルに出力
+            print()
+            
+            # 3. 現在バリュエーション分析のテスト（NEW）
+            print("💹 現在バリュエーション分析実行中...")
+            current_valuation_result = await test_current_valuation_analysis(
+                code=code  # quarterパラメータを削除
+            )
+            
+            if "error" in current_valuation_result:
+                print(f"❌ 現在バリュエーション分析エラー: {current_valuation_result['error']}")
+            else:
+                print("✅ 現在バリュエーション分析結果:")
+                print(f"  現在株価: ¥{current_valuation_result.get('current_stock_price'):,}")
+                print(f"  参照決算期間: {current_valuation_result.get('reference_period')}")
+                
+                if 'current_metrics' in current_valuation_result:
+                    metrics = current_valuation_result['current_metrics']
+                    print("  📊 現在指標:")
+                    print(f"    現在PER: {metrics.get('current_per')}")
+                    print(f"    現在PBR: {metrics.get('current_pbr')}")
+                    print(f"    参照EPS: {metrics.get('reference_eps')}")
+                    print(f"    参照ROE: {metrics.get('reference_roe')}%")
+                
+                if 'current_assessment' in current_valuation_result:
+                    assessment = current_valuation_result['current_assessment']
+                    print(f"  💎 現在評価: {assessment.get('overall_assessment')}")
+                    print(f"  ⏰ 投資タイミング: {assessment.get('investment_timing')}")
+                
+                if 'comparison_with_period_end' in current_valuation_result:
+                    comparison = current_valuation_result['comparison_with_period_end']
+                    if 'price_change_percent' in comparison:
+                        print(f"  📈 期末比株価変動: {comparison['price_change_percent']}%")
+                
+                if 'current_investment_score' in current_valuation_result:
+                    score = current_valuation_result['current_investment_score']
+                    print(f"  🌟 現在投資スコア: {score.get('score')}/{score.get('max_score')} ({score.get('score_percentage')}%)")
+            
+            # 詳細結果をJSONファイルに出力（3つのツール結果を統合）
             output_data = {
                 "company": {"code": code, "name": name},
                 "valuation_analysis": valuation_result,
                 "growth_analysis": growth_result,
+                "current_valuation_analysis": current_valuation_result,  # NEW
                 "test_timestamp": datetime.now().isoformat()
             }
             
