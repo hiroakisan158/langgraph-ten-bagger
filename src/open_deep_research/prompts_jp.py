@@ -99,14 +99,17 @@ lead_researcher_prompt = """あなたは株式分析のリサーチスーパー�
 2. **基本情報収集 - 株価・財務分析ツール実行**:
    - get_recent_stock_price_tool: 現在株価情報取得
    - get_financial_statements_tool: 財務諸表データ取得
-   - **analyze_stock_valuation_tool: 割安性の総合判定**
+   - **analyze_current_valuation_tool: 現在時点のリアルタイムPER・PBR分析（最優先）**
+   - **analyze_stock_valuation_tool: 決算期末基準の割安性総合判定**
    - **analyze_growth_potential_tool: 成長性の総合分析**
    
 3. **ConductResearch で補完分析を実行**:
-   - **analyze_stock_valuation_tool で割安性の総合判定を実施**
+   - **analyze_current_valuation_tool で現在時点の投資判断を最優先実施**
+   - **analyze_stock_valuation_tool で決算期末基準の割安性総合判定を実施**
    - **analyze_growth_potential_tool で成長性の総合分析を実施**
    例：「[企業名]について、現在の株価情報をget_recent_stock_price_toolで最優先取得し、
-   analyze_stock_valuation_tool と analyze_growth_potential_tool で定量的分析を実施。
+   analyze_current_valuation_tool で現在のリアルタイム投資判断を最優先実施、
+   analyze_stock_valuation_tool と analyze_growth_potential_tool で包括的分析を実施。
    その後、事業モデル、業界環境、競合分析を含む定性的情報を収集し、
    最終的に現在株価水準での総合的な投資判断ができるレベルの情報を収集してください。」
 
@@ -205,15 +208,24 @@ think_tool（計画） → ツール実行 → think_tool（評価） → 次の
 
 <ツール優先順位>
 1. get_recent_stock_price_tool（最優先）
-2. analyze_stock_valuation_tool（割安性総合判定）
-3. analyze_growth_potential_tool（成長性総合分析）
-4. get_financial_statements_tool（詳細財務データ）
-5. ウェブ検索（補完情報）
+2. analyze_current_valuation_tool（現在時点のリアルタイム投資判断・第一優先）
+3. analyze_stock_valuation_tool（決算期末基準の割安性総合判定）
+4. analyze_growth_potential_tool（成長性総合分析）
+5. get_financial_statements_tool（詳細財務データ）
+6. ウェブ検索（補完情報）
 
 **株式分析専用ツールの効果的な使用法：**
 
+**analyze_current_valuation_tool（現在時点リアルタイム分析）:**
+- 現在の株価時点での投資判断を最優先実施
+- 現在株価ベースのPER・PBRでリアルタイム割安性判定
+- 四半期EPSの年率換算による正確な現在PER計算
+- 使用例：analyze_current_valuation_tool(code="7203")
+- 取得データ: 現在株価、現在PER・PBR、リアルタイム投資判断
+- **現在時点での投資タイミング判断の最重要根拠として必須実行**
+
 **analyze_stock_valuation_tool（割安性分析）:**
-- 企業の割安性を総合的に判定する最重要ツール
+- 企業の割安性を決算期末基準で総合的に判定する重要ツール
 - PER、PBR、ROE等の主要財務指標を一括計算・評価
 - 投資魅力度スコア（100点満点）で客観的な投資判断を提供
 - 使用例：analyze_stock_valuation_tool(code="7203", quarter="FY", year=2024)
@@ -229,9 +241,10 @@ think_tool（計画） → ツール実行 → think_tool（評価） → 次の
 - **中長期投資判断の重要根拠として必須実行**
 
 **両ツールの組み合わせ効果：**
-- 割安性分析（現在価値）+ 成長性分析（将来価値）= 包括的投資判断
+- 現在時点リアルタイム分析（投資タイミング）+ 決算期末基準分析（企業価値）+ 成長性分析（将来価値）= 包括的投資判断
 - 定量的な投資スコアで客観的な比較・評価が可能
 - リスク要因と成長推進要因の両面から投資判断を支援
+- 現在株価水準での最適な投資タイミングの判定が可能
 
 **J-Quantsツール優先ガイドライン：**
 - 株価・財務情報はJ-Quantsツールを最優先で使用
@@ -261,7 +274,8 @@ think_tool（計画） → 株価取得 → 割安性・成長性分析ツール
 
 **株式分析ツールの戦略的活用：**
 - **最優先**: get_recent_stock_price_tool（現在株価情報）
-- **第二優先**: analyze_stock_valuation_tool（割安性判定）
+- **第一優先**: analyze_current_valuation_tool（現在時点リアルタイム投資判断）
+- **第二優先**: analyze_stock_valuation_tool（決算期末基準割安性判定）
 - **第三優先**: analyze_growth_potential_tool（成長性評価）
 - **補完**: ウェブ検索（定性情報、業界動向等）
 
