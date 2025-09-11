@@ -7,7 +7,7 @@
     "code": "6758",
     "analysis_target": "2024年度 FY",
     "stock_price": 12985.0,
-    "analysis_date": "2025-09-07",
+    "analysis_date": "2025-09-09",
     "period": "2023-04-01 - 2024-03-31",
     "fundamental_metrics": {
       "per": 16.47,
@@ -258,5 +258,46 @@
       }
     ]
   },
-  "test_timestamp": "2025-09-07T22:37:43.040691"
+  "current_valuation_analysis": {
+    "code": "6758",
+    "analysis_date": "2025-09-09 23:02:24",
+    "current_stock_price": 4217.0,
+    "reference_period": "2025-04-01 - 2025-06-30",
+    "reference_quarter": "1Q",
+    "current_metrics": {
+      "current_per": 26.76,
+      "reference_eps": 39.4,
+      "annualized_eps": 157.6,
+      "eps_note": "1Q累計EPSを年率換算（×4）",
+      "current_pbr": 2.95,
+      "reference_bps": 1428.2,
+      "reference_roe": 2.76,
+      "annualized_roe": 11.03,
+      "roe_note": "1Q累計ROEを年率換算（×4）"
+    },
+    "current_assessment": {
+      "per_assessment": "やや割高",
+      "pbr_assessment": "やや割高",
+      "overall_assessment": "割高傾向",
+      "investment_timing": "見送り推奨"
+    },
+    "comparison_with_period_end": {
+      "period_end_price": 3730.0,
+      "period_end_per": 94.67,
+      "period_end_pbr": 2.61,
+      "price_change_percent": 13.06,
+      "valuation_change": "株価上昇により割安性低下"
+    },
+    "current_investment_score": {
+      "score": 0,
+      "max_score": 60,
+      "score_percentage": 0.0
+    },
+    "market_timing_analysis": {
+      "timing_assessment": "上昇局面、慎重な投資判断が必要",
+      "risk_level": "やや高リスク"
+    },
+    "real_time_insights": []
+  },
+  "test_timestamp": "2025-09-09T23:02:24.140293"
 }
