@@ -18,8 +18,9 @@ from mcp import McpError
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from open_deep_research.state import Summary, ResearchComplete
 from open_deep_research.configuration import SearchAPI, Configuration
-from open_deep_research.tools import think_tool, get_recent_stock_price_tool, get_financial_statements_tool
-from open_deep_research.tools.stock_analysis_tool import analyze_stock_valuation_tool, analyze_growth_potential_tool
+from open_deep_research.tools import think_tool
+from open_deep_research.tools.jquants_tools import get_recent_stock_price_tool, get_financial_statements_tool, get_last_half_year_stock_price_tool
+from open_deep_research.tools.stock_analysis_tool import analyze_stock_valuation_tool, analyze_growth_potential_tool, analyze_current_valuation_tool
 from open_deep_research.prompts_jp import summarize_webpage_prompt
 
 
@@ -300,10 +301,12 @@ async def get_all_tools(config: RunnableConfig):
     # Add J-Quants custom tools first (higher priority)
     tools.append(get_recent_stock_price_tool)  # 最優先
     tools.append(get_financial_statements_tool)
+    tools.append(get_last_half_year_stock_price_tool)
     
     # Add stock analysis tools for comprehensive financial analysis
     tools.append(analyze_stock_valuation_tool)  # 割安性分析ツール
     tools.append(analyze_growth_potential_tool)  # 成長性分析ツール
+    tools.append(analyze_current_valuation_tool)  # 現在の株価評価分析ツール
     
     # Then add search tools
     tools.extend(await get_search_tool(search_api))

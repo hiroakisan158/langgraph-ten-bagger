@@ -17,6 +17,11 @@ JQUANTS_STOCK_PRICE_DESCRIPTION = (
     "株式分析では必ず最初に実行してください。直近1週間の株価データが取得できます。"
 )
 
+JQUANTS_HALF_YEAR_STOCK_PRICE_DESCRIPTION = (
+    "J-Quants APIを使って企業コードから過去半年間の株価推移を取得します。"
+    "トークン節約のため約半月ごと（12回分）のデータに間引いて提供します。株価トレンド分析に最適です。"
+)
+
 # Rate limiting management
 _last_api_call_time = 0
 _min_delay_between_calls = 2.0  # 最小2秒間隔
@@ -97,8 +102,7 @@ async def get_recent_stock_price_tool(
 ) -> Dict[str, Any]:
     """
     【重要】株式分析で最初に実行すべきツール
-    J-Quants APIを使って企業コードから現在の株価情報を取得します。
-    投資判断には現在の株価情報が必須です。
+    J-Quants APIを使って企業コードから過去2週間の株価情報を取得します。
 
     Args:
         code (str): 企業コード（4桁の数字）例：7203（トヨタ）、8697（楽天）
@@ -118,8 +122,8 @@ async def get_recent_stock_price_tool(
         
         # 直近1週間の日付を計算（土日を考慮して営業日のみ）
         end_date = datetime.now()
-        start_date = end_date - timedelta(days=10)  # 土日を考慮して10日前から
-        
+        start_date = end_date - timedelta(days=20)  # 土日を考慮して20日前から
+
         date_from = start_date.strftime("%Y-%m-%d")
         date_to = end_date.strftime("%Y-%m-%d")
         
@@ -135,6 +139,82 @@ async def get_recent_stock_price_tool(
     except Exception as e:
         return {
             "error": f"株価取得エラー: {str(e)}",
+            "code": code,
+            "suggestion": "企業コードが正しいか、または企業が東証上場しているかを確認してください"
+        }
+
+@tool(description=JQUANTS_HALF_YEAR_STOCK_PRICE_DESCRIPTION)
+async def get_last_half_year_stock_price_tool(
+    code: str,
+    config: RunnableConfig = None
+) -> Dict[str, Any]:
+    """
+    過去半年間の株価推移を約半月ごとのデータに間引いて取得します。
+    トークン節約とトレンド分析に最適化されています。
+
+    Args:
+        code (str): 企業コード（4桁の数字）例：7203（トヨタ）、8697（楽天）
+    Returns:
+        過去半年間の株価推移データ（約12回分のサンプリング）
+    """
+    # 企業コードの検証
+    if not code.isdigit() or len(code) != 4:
+        return {
+            "error": f"無効な企業コード: {code}（4桁の数字である必要があります）",
+            "valid_format": "例: 7203（トヨタ）, 6502（東芝）, 9984（ソフトバンク）"
+        }
+    
+    try:
+        # レート制限対応の遅延
+        await rate_limit_delay()
+        
+        # 過去半年（180日）の日付を計算
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=180)  # 約6ヶ月前
+
+        date_from = start_date.strftime("%Y-%m-%d")
+        date_to = end_date.strftime("%Y-%m-%d")
+        
+        api = JQuantsAPI()
+        result = api.get_stock_price(code=code, date_from=date_from, date_to=date_to)
+        
+        # データが取得できた場合、約半月ごとに間引く
+        if "daily_prices" in result and result["daily_prices"]:
+            daily_prices = result["daily_prices"]
+            
+            # 約半月ごと（12-15日間隔）でサンプリング
+            sampling_interval = max(1, len(daily_prices) // 12)  # 最大12回分のデータ
+            sampled_prices = []
+            
+            for i in range(0, len(daily_prices), sampling_interval):
+                sampled_prices.append(daily_prices[i])
+            
+            # 最新のデータも確実に含める
+            if daily_prices and daily_prices[-1] not in sampled_prices:
+                sampled_prices.append(daily_prices[-1])
+            
+            # サンプリング情報を追加
+            result["sampled_prices"] = sampled_prices
+            result["sampling_info"] = {
+                "total_days": len(daily_prices),
+                "sampled_days": len(sampled_prices),
+                "sampling_interval": sampling_interval,
+                "description": "約半月ごとのサンプリングデータ（トークン節約最適化）"
+            }
+            
+            # 元の日次データは削除してトークン節約
+            del result["daily_prices"]
+        
+        # 結果に企業コード情報を追加
+        result["requested_code"] = code
+        result["date_range"] = f"{date_from} to {date_to}"
+        result["analysis_period"] = "過去半年間（約6ヶ月）"
+        
+        return result
+        
+    except Exception as e:
+        return {
+            "error": f"半年間株価取得エラー: {str(e)}",
             "code": code,
             "suggestion": "企業コードが正しいか、または企業が東証上場しているかを確認してください"
         }
