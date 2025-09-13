@@ -21,6 +21,7 @@ from open_deep_research.prompts_jp import (
 )
 from logger_config import configure_logging
 from langfuse.langchain import CallbackHandler
+import streamlit.components.v1 as components
 
 load_dotenv()
 
@@ -32,6 +33,55 @@ logger = configure_logging()
 
 # History file path
 HISTORY_FILE = os.getenv("RESEARCH_HISTORY_FILE", "research_history.json")
+
+############################################
+# Clipboard Functions
+############################################
+def copy_to_clipboard(text):
+    """Create a copy to clipboard button using JavaScript"""
+    # Escape text for JavaScript
+    escaped_text = text.replace("\\", "\\\\").replace("`", "\\`").replace("$", "\\$")
+    
+    button_html = f"""
+    <div style="margin: 10px 0;">
+        <button 
+            onclick="copyToClipboard()"
+            style="
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                padding: 8px 16px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 14px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 4px;
+            "
+        >
+            📋 クリップボードにコピー
+        </button>
+        <span id="copy-status" style="margin-left: 10px; color: green; font-size: 12px;"></span>
+    </div>
+    
+    <script>
+        function copyToClipboard() {{
+            const text = `{escaped_text}`;
+            navigator.clipboard.writeText(text).then(function() {{
+                document.getElementById('copy-status').innerText = '✅ コピーしました！';
+                setTimeout(function() {{
+                    document.getElementById('copy-status').innerText = '';
+                }}, 2000);
+            }}, function(err) {{
+                document.getElementById('copy-status').innerText = '❌ コピーに失敗しました';
+                console.error('Could not copy text: ', err);
+            }});
+        }}
+    </script>
+    """
+    
+    components.html(button_html, height=60)
 
 ############################################
 # History Management Functions
@@ -175,6 +225,9 @@ def display_history_entry(entry: dict):
         final_report = entry["result"].get("final_report", "No report generated")
         st.markdown("### Research Results")
         st.markdown(final_report)
+        
+        # Add copy to clipboard button for the final report
+        copy_to_clipboard(final_report)
         
         # Add expandable sections for more details
         with st.expander("Research Process Details"):
@@ -359,6 +412,9 @@ with st.sidebar:
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
+        # Add copy button for assistant messages
+        if message["role"] == "assistant":
+            copy_to_clipboard(message["content"])
 
 ############################################
 # React to user input
@@ -394,6 +450,9 @@ if prompt := st.chat_input("What would you like me to research?"):
                 # Display the research results
                 st.markdown("## Research Results")
                 st.markdown(final_report)
+                
+                # Add copy to clipboard button for the new result
+                copy_to_clipboard(final_report)
                 
                 # Add expandable sections for more details
                 with st.expander("Research Process Details"):
