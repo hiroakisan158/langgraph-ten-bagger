@@ -17,12 +17,42 @@ J-Quants APIと高度なDeep Research技術を活用した包括的な株式投�
 
 ## クイックスタート
 
-### 方法1: 直接Streamlit実行
+### 方法1: Docker Compose（推奨）
+最も簡単で確実な方法です。
+
+```bash
+# 1. 環境変数ファイルを作成
+cp .env.template .env
+
+# 2. .envファイルを編集して実際のAPIキーを設定
+# OPENAI_API_KEY=your_actual_openai_api_key
+# JQUANTS_REFRESH_TOKEN=your_actual_jquants_refresh_token
+# など
+
+# 3. アプリケーションをビルド・起動
+docker-compose up
+
+# バックグラウンドで起動する場合
+docker-compose up -d
+
+# ログを確認
+docker-compose logs -f
+```
+
+アプリケーションは `http://localhost:8501` で起動します。
+
+### 方法2: シンプルデプロイスクリプト
+```bash
+# 自動デプロイスクリプトを実行
+./deploy.sh
+```
+
+### 方法3: 直接Streamlit実行
 ```bash
 streamlit run streamlit_main.py
 ```
 
-### 方法2: Dockerビルド＆実行
+### 方法4: Dockerビルド＆実行
 ```bash
 # Dockerイメージをビルド
 docker build -t ten-baggers-app:latest .
@@ -94,6 +124,113 @@ streamlit run streamlit_main.py
 ```
 
 アプリケーションは `http://localhost:8501` で起動します。
+
+## Docker Composeを使用したデプロイ
+
+### 📋 事前準備
+
+1. **環境変数ファイルの作成**
+   ```bash
+   cp .env.template .env
+   ```
+
+2. **.envファイルの編集**
+   ```bash
+   # 必須設定項目
+   OPENAI_API_KEY=your_actual_openai_api_key
+   JQUANTS_REFRESH_TOKEN=your_actual_jquants_refresh_token
+   
+   # オプション設定
+   LANGFUSE_SECRET_KEY=your_langfuse_secret_key
+   LANGFUSE_PUBLIC_KEY=your_langfuse_public_key
+   LANGFUSE_HOST=https://cloud.langfuse.com
+   TAVILY_API_KEY=your_tavily_api_key
+   GROQ_API_KEY=your_groq_api_key
+   ```
+
+### 🚀 基本操作
+
+```bash
+# アプリケーションを起動（フォアグラウンド）
+docker-compose up
+
+# アプリケーションを起動（バックグラウンド）
+docker-compose up -d
+
+# ビルドから実行まで一括
+docker-compose up --build
+
+# 停止
+docker-compose down
+
+# 停止してボリュームも削除
+docker-compose down -v
+```
+
+### 📊 ログとモニタリング
+
+```bash
+# リアルタイムログの確認
+docker-compose logs -f
+
+# 特定サービスのログ
+docker-compose logs -f app
+
+# コンテナの状態確認
+docker-compose ps
+
+# ヘルスチェックの確認
+docker-compose ps
+```
+
+### 🔧 トラブルシューティング
+
+```bash
+# コンテナに入ってデバッグ
+docker-compose exec app bash
+
+# イメージを完全にリビルド
+docker-compose down
+docker-compose build --no-cache
+docker-compose up
+
+# ボリュームをクリア
+docker system prune -f
+docker volume prune -f
+```
+
+### 🌐 Azure App Serviceでのデプロイ
+
+Azure App ServiceでWebアプリとしてデプロイする場合：
+
+1. **docker-compose.ymlをそのまま使用**
+2. **環境変数をApp ServiceのApplication Settingsで設定**
+   - App Service側の環境変数が優先されます
+   - `.env`ファイルの値は上書きされます
+
+```bash
+# Azure CLI example
+az webapp config appsettings set \
+  --resource-group <resource-group> \
+  --name <app-name> \
+  --settings \
+    OPENAI_API_KEY="<your-key>" \
+    JQUANTS_REFRESH_TOKEN="<your-token>" \
+    WEBSITES_PORT="8501"
+```
+
+### 📁 ファイル構成
+
+Docker関連のファイル構成：
+```
+├── Dockerfile              # アプリケーションイメージ定義
+├── docker-compose.yml      # サービス構成定義
+├── .dockerignore           # Dockerビルド時の除外ファイル
+├── .env.template           # 環境変数テンプレート
+├── .env                    # 実際の環境変数（作成必要）
+├── deploy.sh               # 自動デプロイスクリプト
+└── .streamlit/config.toml  # Streamlit設定
+```
 
 ## 機能
 

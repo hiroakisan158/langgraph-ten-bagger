@@ -6,7 +6,7 @@ authors = [
     { name = "Lance Martin" }
 ]
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 requires-python = ">=3.10"
 dependencies = [
     "langgraph>=0.5.3",
